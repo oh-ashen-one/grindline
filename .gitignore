@@ -1,0 +1,7 @@
+.godot/
+*.tmp
+shots/
+scripts/ralph/trajectory.jsonl
+scripts/ralph/archive/
+LAST_*.txt
+LAST_*.md

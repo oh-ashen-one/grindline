@@ -1,0 +1,33 @@
+{
+  "id": "grindline-assets",
+  "version": 1,
+  "note": "Staged CC0 assets. Game code loads by id; missing file -> primitive fallback.",
+  "items": [
+    {"id": "char-boy", "path": "mini-skate/Models/OBJ format/character-skate-boy.obj", "cat": "character", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "char-girl", "path": "mini-skate/Models/OBJ format/character-skate-girl.obj", "cat": "character", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "skateboard", "path": "mini-skate/Models/OBJ format/skateboard.obj", "cat": "board", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "floor-concrete", "path": "mini-skate/Models/OBJ format/floor-concrete.obj", "cat": "floor", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "floor-wood", "path": "mini-skate/Models/OBJ format/floor-wood.obj", "cat": "floor", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "half-pipe", "path": "mini-skate/Models/OBJ format/half-pipe.obj", "cat": "ramp", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "bowl-side", "path": "mini-skate/Models/OBJ format/bowl-side.obj", "cat": "ramp", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "bowl-corner-inner", "path": "mini-skate/Models/OBJ format/bowl-corner-inner.obj", "cat": "ramp", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "bowl-corner-outer", "path": "mini-skate/Models/OBJ format/bowl-corner-outer.obj", "cat": "ramp", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "rail-low", "path": "mini-skate/Models/OBJ format/rail-low.obj", "cat": "rail", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "rail-high", "path": "mini-skate/Models/OBJ format/rail-high.obj", "cat": "rail", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "rail-slope", "path": "mini-skate/Models/OBJ format/rail-slope.obj", "cat": "rail", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "rail-curve", "path": "mini-skate/Models/OBJ format/rail-curve.obj", "cat": "rail", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "obstacle-box", "path": "mini-skate/Models/OBJ format/obstacle-box.obj", "cat": "ledge", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "obstacle-middle", "path": "mini-skate/Models/OBJ format/obstacle-middle.obj", "cat": "ledge", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "obstacle-end", "path": "mini-skate/Models/OBJ format/obstacle-end.obj", "cat": "ledge", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "steps", "path": "mini-skate/Models/OBJ format/steps.obj", "cat": "stairs", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "pallet", "path": "mini-skate/Models/OBJ format/pallet.obj", "cat": "prop", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "structure-platform", "path": "mini-skate/Models/OBJ format/structure-platform.obj", "cat": "structure", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "structure-wood", "path": "mini-skate/Models/OBJ format/structure-wood.obj", "cat": "structure", "source": "kenney/mini-skate", "license": "CC0"},
+    {"id": "colormap-a", "path": "mini-skate/Models/Textures/variation-a.png", "cat": "texture", "source": "kenney/mini-skate", "license": "CC0"}
+  ],
+  "audio_dirs": [
+    {"id": "impact", "path": "impact-sounds/Audio", "license": "CC0"},
+    {"id": "ui", "path": "interface-sounds/Audio", "license": "CC0"},
+    {"id": "jingles", "path": "music-jingles/Audio", "license": "CC0"}
+  ]
+}
