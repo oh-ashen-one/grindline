@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/skater/locomotion.gd" id="1_loco"]
 [ext_resource type="PackedScene" path="res://assets/models/characters/skater_boy.glb" id="2_boy"]
 [ext_resource type="Script" path="res://scripts/skater/air_state.gd" id="3_air"]
 [ext_resource type="Script" path="res://scripts/skater/grind_state.gd" id="4_grind"]
 [ext_resource type="Script" path="res://scripts/run/run_state.gd" id="5_run"]
+[ext_resource type="Script" path="res://scripts/fx/light_rig.gd" id="7_light"]
 
 [sub_resource type="BoxShape3D" id="shape_floor"]
 size = Vector3(24, 1, 24)
@@ -26,6 +27,9 @@ bottom_radius = 0.05
 height = 4.0
 
 [node name="SkaterCell" type="Node3D"]
+
+[node name="LightRig" type="Node" parent="."]
+script = ExtResource("7_light")
 
 [node name="FloorBody" type="StaticBody3D" parent="."]
 

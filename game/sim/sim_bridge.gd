@@ -344,6 +344,32 @@ func _probe(step: Dictionary) -> void:
 				result.probes_ok.append(name)
 			else:
 				result.probes[name] = "apex %.3f outside [%s,%s]" % [best, step.get("min"), step.get("max")]
+		"env_report":
+			_sync_qa()
+			var e: Dictionary = qa.get("env", {})
+			if e.get("sky") == true and e.get("sun") == true and e.get("fog") == true:
+				result.probes[name] = "ok"
+				result.probes_ok.append(name)
+			else:
+				result.probes[name] = JSON.stringify(e)
+		"theme_report":
+			var ok_theme := false
+			if current_scene != null:
+				var wm := current_scene.find_child("Wordmark", true, false)
+				if wm != null and wm.label_settings != null:
+					var ls: LabelSettings = wm.label_settings
+					ok_theme = ls.font != null \
+						and ls.font.resource_path.ends_with("BebasNeue-Regular.ttf") \
+						and ls.font_size == 140 \
+						and ls.shadow_offset == Vector2(5, 5)
+			var th := load("res://scripts/ui/theme.gd")
+			var ink_ok: bool = th.INK.to_html(false) == "14100e"
+			var paper_ok: bool = th.PAPER.to_html(false) == "f5ead8"
+			if ok_theme and ink_ok and paper_ok:
+				result.probes[name] = "ok"
+				result.probes_ok.append(name)
+			else:
+				result.probes[name] = "theme mismatch"
 		"approx_path":
 			var av: Variant = _lookup(String(step["path"]))
 			if av == null:

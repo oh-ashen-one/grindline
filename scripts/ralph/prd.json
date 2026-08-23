@@ -208,6 +208,58 @@
       ]
     },
     {
+      "id": "US-201",
+      "title": "Dusk lighting rig: HDRI sky, sunset key, fog depth",
+      "description": "WorldEnvironment in the cell: Poly Haven industrial_sunset_puresky HDR as sky, DirectionalLight at pitch -22 deg azimuth 35 deg color ffd9a8 energy 1.2, volumetric-off fog d98d55 from 45 m to 120 m, ACES-ish tonemap exposure 1.0.",
+      "acceptanceCriteria": [
+        "environment node exposes sky with hdri-dusk texture",
+        "sun rotation matches pitch -22 deg within 1 deg and energy 1.2 plus/minus 0.05",
+        "fog limits read 45/120 with color d98d55",
+        "probe env_report passes headless without pixel work"
+      ],
+      "priority": 201,
+      "phase": 2,
+      "qualityClass": "look-lock",
+      "evidenceIds": [
+        "title"
+      ],
+      "passes": true,
+      "managerInterventions": 0,
+      "allowedFiles": [
+        "scripts/fx/light_rig.gd",
+        "game/scenes/skater_cell.tscn"
+      ],
+      "testFile": "tests_staged/test_us201_lighting.sh",
+      "verify": "bash tests_staged/test_us201_lighting.sh",
+      "blockedBy": []
+    },
+    {
+      "id": "US-202",
+      "title": "HUD theme system: Bebas chips, ink/paper palette, hard shadows",
+      "description": "theme.gd builds LabelSettings/theme resources once: wordmark 140 px paper f5ead8 ink shadow 14100e offset 5,5 size 6; chips use ink on paper with 3 px hard shadow; all text Bebas Neue; no engine default font anywhere in HUD.",
+      "acceptanceCriteria": [
+        "theme.gd exposes wordmark_settings/chip_settings with exact BRIEF colors",
+        "font resource is assets Bebas Neue ttf for every settings object",
+        "main.tscn TitleLayer labels consume theme.gd settings",
+        "probe theme_report passes headless"
+      ],
+      "priority": 202,
+      "phase": 2,
+      "qualityClass": "look-lock",
+      "evidenceIds": [
+        "title"
+      ],
+      "passes": true,
+      "managerInterventions": 0,
+      "allowedFiles": [
+        "scripts/ui/theme.gd",
+        "game/scenes/main.tscn"
+      ],
+      "testFile": "tests_staged/test_us202_theme.sh",
+      "verify": "bash tests_staged/test_us202_theme.sh",
+      "blockedBy": []
+    },
+    {
       "id": "US-Q02",
       "title": "Look lock: one final-quality slice (lighting, materials, HUD, framing)",
       "description": "Capstone of phase 2 (all US-2xx mini-stories pass first). One canonical frame pair reaches ship bar: dusk HDRI sky, sunset key light, PBR concrete/asphalt ground, colormap kit props, Bebas Neue HUD chips with hard shadows; captured via sim bridge screenshots at title and primary-action states and compared against reference mechanisms (palette separation, silhouette readability) recorded in QUALITY-LEDGER.md.",
@@ -232,7 +284,11 @@
         "scripts/fx/light_rig.gd"
       ],
       "testFile": "tests_staged/test_q02_look_lock.sh",
-      "verify": "bash tests_staged/test_q02_look_lock.sh"
+      "verify": "bash tests_staged/test_q02_look_lock.sh",
+      "blockedBy": [
+        "US-201",
+        "US-202"
+      ]
     },
     {
       "id": "US-Q03",
