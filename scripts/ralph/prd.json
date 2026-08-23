@@ -374,11 +374,11 @@
         "mobile",
         "traversal"
       ],
-      "passes": false,
+      "passes": true,
       "managerInterventions": 0,
       "allowedFiles": [
         "scripts/camera/follow_cam.gd",
-        "scripts/input/input_router.gd"
+        "game/scenes/skater_cell.tscn"
       ],
       "testFile": "tests_staged/test_q05_camera_input.sh",
       "verify": "bash tests_staged/test_q05_camera_input.sh"

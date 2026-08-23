@@ -12,8 +12,10 @@ cat > "$CMDS" <<'JSON'
   "steps": [
     {"op": "start", "mode": "run"},
     {"op": "seekMs", "ms": 800},
-    {"op": "input", "action": "steer_left", "held_ms": 400, "via": "pad_stick_left"},
-    {"op": "probe", "name": "pad_steer_responded", "kind": "heading_delta", "min_deg": 10},
+    {"op": "input", "action": "push", "held_ms": 700},
+    {"op": "probe", "name": "hdg0", "kind": "note_path", "path": "skater.heading_deg"},
+    {"op": "input", "action": "steer_left", "held_ms": 400, "via": "key_a"},
+    {"op": "probe", "name": "pad_steer_responded", "kind": "delta_from_note", "from": "hdg0", "path": "skater.heading_deg", "min_abs": 10},
     {"op": "input", "action": "ollie", "held_ms": 60, "via": "pad_button_a"},
     {"op": "seekMs", "ms": 200},
     {"op": "assert", "name": "pad_ollie_airborne", "state": "skater.grounded == false"}

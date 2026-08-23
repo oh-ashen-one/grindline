@@ -148,6 +148,26 @@ func _exec(step: Dictionary) -> void:
 				rs.time_left_ms = float(step.get("ms", 60))
 			else:
 				result.unknown_ops += 1
+		"occlusion_case":
+			var camn: Node = null
+			for n in get_nodes_in_group("qa_state"):
+				if n.has_method("probe_occlusion"):
+					camn = n
+					break
+			if camn == null:
+				result.probes["occlusion_case"] = "no camera"
+			else:
+				var from := Vector3(step["from"][0], step["from"][1], step["from"][2])
+				var to := Vector3(step["to"][0], step["to"][1], step["to"][2])
+				var eff: float = camn.probe_occlusion(from, to)
+				var got_clamped := absf(eff - 2.6) < 0.01
+				var want_clamped := bool(step.get("expect_clamped", true))
+				var oname := String(step.get("name", "occlusion"))
+				if got_clamped == want_clamped:
+					result.probes[oname] = "ok"
+					result.probes_ok.append(oname)
+				else:
+					result.probes[oname] = "eff %.2f" % eff
 		"teleport":
 			_teleport(String(step.get("zone", "")))
 		"restart":
@@ -166,6 +186,23 @@ func _exec(step: Dictionary) -> void:
 			_apply_ui(String(step.get("id", "")))
 		"beat":
 			await _run_beat(String(step.get("id", "")))
+		"viewport":
+			var w := int(step.get("w", 1280))
+			var h := int(step.get("h", 720))
+			if DisplayServer.get_name() != "headless":
+				DisplayServer.window_set_size(Vector2i(w, h))
+				root.size = Vector2i(w, h)
+				root.content_scale_size = Vector2i(w, h)
+				root.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+				root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
+				for _wf in 40:
+					if root.size == Vector2i(w, h):
+						break
+					await process_frame
+				if OS.get_environment('GL_DEBUG') != '':
+					print('VPDBG real=', DisplayServer.window_get_size(), 'root=', root.size)
+			else:
+				result.probes["viewport:" + str(w)] = "unavailable_headless"
 		"viewport", "degrade":
 			result.unknown_ops += 1
 			result.probes[String(op) + ":unimplemented"] = "pending"
@@ -189,6 +226,7 @@ func _run_beat(id: String) -> void:
 
 const ZONES := {
 	"rail_approach": {"pos": Vector3(0, 1.2, -3.4), "heading_deg": 180.0},
+	"warehouse_corridor": {"pos": Vector3(0, 3.15, 14.9), "heading_deg": 180.0},
 }
 
 const CAM_PRESETS := {
@@ -214,6 +252,9 @@ func _apply_ui(id: String) -> void:
 	var layer := current_scene.find_child("TitleLayer", true, false)
 	if layer != null:
 		layer.visible = id in ["menu", "title"]
+	var touch := current_scene.find_child("TouchLayer", true, false)
+	if touch != null:
+		touch.visible = id == "touch_overlay"
 
 func _teleport(zone: String) -> void:
 	var z: Variant = ZONES.get(zone)
@@ -311,8 +352,19 @@ func _lookup(path: String) -> Variant:
 func _inject_input(step: Dictionary) -> void:
 	var via := String(step.get("via", ""))
 	var held := int(step.get("held_ms", 60))
+	if via.begins_with("pad_"):
+		var je := InputEventJoypadButton.new()
+		je.button_index = JOY_BUTTON_A
+		je.pressed = true
+		Input.parse_input_event(je)
+	elif via.begins_with("stick_"):
+		var jm := InputEventJoypadMotion.new()
+		jm.axis = JOY_AXIS_LEFT_X
+		jm.axis_value = -1.0
+		Input.parse_input_event(jm)
 	var ev_press: InputEventKey = null
-	var code := _key_for(via if via != "" else String(step.get("action", "")))
+	var key_via := via if not via.begins_with("pad_") and not via.begins_with("stick_") else ""
+	var code := _key_for(key_via if key_via != "" else String(step.get("action", "")))
 	if code != KEY_NONE:
 		ev_press = InputEventKey.new()
 		ev_press.physical_keycode = code
@@ -326,6 +378,16 @@ func _inject_input(step: Dictionary) -> void:
 		var ev_rel := ev_press.duplicate()
 		ev_rel.pressed = false
 		Input.parse_input_event(ev_rel)
+	if via.begins_with("pad_"):
+		var jr := InputEventJoypadButton.new()
+		jr.button_index = JOY_BUTTON_A
+		jr.pressed = false
+		Input.parse_input_event(jr)
+	elif via.begins_with("stick_"):
+		var jmr := InputEventJoypadMotion.new()
+		jmr.axis = JOY_AXIS_LEFT_X
+		jmr.axis_value = 0.0
+		Input.parse_input_event(jmr)
 	await physics_frame
 
 func _key_for(name: String) -> Key:
@@ -385,6 +447,28 @@ func _probe(step: Dictionary) -> void:
 				else:
 					result.probes[name] = "insufficient luma spread"
 				return
+	if kind == "ui_targets":
+		var tlayer := current_scene.find_child("TouchLayer", true, false) if current_scene else null
+		var ok_sz: bool = tlayer != null and tlayer.visible
+		for ctl in (tlayer.get_children() if tlayer else []):
+			if ctl is Control and ((ctl as Control).size.x < 96 or (ctl as Control).size.y < 96):
+				ok_sz = false
+		result.probes[name] = "ok" if ok_sz else "targets under 96px"
+		if ok_sz:
+			result.probes_ok.append(name)
+		return
+	if kind == "hud_safe_area":
+		var layer2 := current_scene.find_child("TouchLayer", true, false) if current_scene else null
+		var ok_sa: bool = layer2 != null and layer2.visible
+		for ctl2 in (layer2.get_children() if layer2 else []):
+			if ctl2 is Control:
+				var r: Rect2 = (ctl2 as Control).get_global_rect()
+				if r.position.x < 12 or r.position.y < 12:
+					ok_sa = false
+		result.probes[name] = "ok" if ok_sa else "outside safe area"
+		if ok_sa:
+			result.probes_ok.append(name)
+		return
 	match kind:
 		"note_path":
 			var v: Variant = _lookup(String(step["path"]))
@@ -507,6 +591,21 @@ func _probe(step: Dictionary) -> void:
 				result.probes_ok.append(name)
 			else:
 				result.probes[name] = "theme mismatch"
+		"camera_fov", "camera_fov_at_speed":
+			_sync_qa()
+			var fv: Variant = _lookup("camera.fov")
+			var want_fov := float(step.get("expect", step.get("expect_min", 0)))
+			var got := float(fv) if fv != null else -1.0
+			var ok_fov := false
+			if kind == "camera_fov":
+				ok_fov = absf(got - want_fov) < 0.5
+			else:
+				ok_fov = got >= float(step.get("expect_min", 999))
+			if ok_fov:
+				result.probes[name] = "ok"
+				result.probes_ok.append(name)
+			else:
+				result.probes[name] = "fov %.2f" % got
 		"approx_path":
 			var av: Variant = _lookup(String(step["path"]))
 			if av == null:
@@ -554,6 +653,7 @@ func _probe(step: Dictionary) -> void:
 				result.probes[name] = "first=%s last=%s" % [first, last]
 		_:
 			result.unknown_ops += 1
+			result["unknown_list"] = result.get("unknown_list", []) + [String(step.get("op", "?"))]
 
 func _screenshot(id: String) -> void:
 	if shots_dir == "":
