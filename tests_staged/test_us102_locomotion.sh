@@ -3,7 +3,7 @@
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 require_godot
 import_gate
-CMDS="$(mktemp /tmp/gl_cmds_102_XXXX.json)"
+CMDS="$(mktemp -t grindline)"
 cat > "$CMDS" <<'JSON'
 {
   "seed": 3,

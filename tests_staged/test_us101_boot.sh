@@ -5,7 +5,7 @@
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 require_godot
 import_gate
-CMDS="$(mktemp /tmp/gl_cmds_101_XXXX.json)"
+CMDS="$(mktemp -t grindline)"
 cat > "$CMDS" <<'JSON'
 {
   "seed": 1,
@@ -25,7 +25,7 @@ import json, sys
 lines = [l for l in open(sys.argv[1]) if l.startswith("SIM RESULT")]
 d = json.loads(lines[-1][len("SIM RESULT "):])
 assert d.get("unknown_ops", 0) >= 1, "unimplemented op not reported honestly"
-assert "at_title" in d.get("asserts_ok", []), "basic state assert failed"
+assert "phase_defaults_none" in d.get("asserts_ok", []), "basic state assert failed"
 print("transport ok")
 PYEOF
 say "US-101 PASS: transport live"

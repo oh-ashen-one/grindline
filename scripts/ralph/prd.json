@@ -21,7 +21,7 @@
       "evidenceIds": [
         "traversal"
       ],
-      "passes": false,
+      "passes": true,
       "managerInterventions": 0,
       "allowedFiles": [
         "project.godot",

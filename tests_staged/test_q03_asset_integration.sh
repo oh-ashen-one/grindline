@@ -28,7 +28,7 @@ for a in man["assets"]:
 print(f"static extents ok for {checked} assets")
 PYEOF
 
-CMDS="$(mktemp /tmp/grindline_cmds_q03_XXXX.json)"
+CMDS="$(mktemp -t grindline)"
 cat > "$CMDS" <<'JSON'
 {
   "seed": 3,

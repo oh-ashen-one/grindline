@@ -8,7 +8,7 @@ import_gate
 bash "$(dirname "${BASH_SOURCE[0]}")/probe_input_keyboard.sh" || die "keyboard probe failed"
 bash "$(dirname "${BASH_SOURCE[0]}")/probe_input_gamepad.sh" || die "gamepad probe failed"
 
-CMDS="$(mktemp /tmp/grindline_cmds_q05_XXXX.json)"
+CMDS="$(mktemp -t grindline)"
 cat > "$CMDS" <<'JSON'
 {
   "seed": 3,

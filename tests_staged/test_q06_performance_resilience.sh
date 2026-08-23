@@ -5,7 +5,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 require_godot
 import_gate
 
-CMDS="$(mktemp /tmp/grindline_cmds_q06_XXXX.json)"
+CMDS="$(mktemp -t grindline)"
 cat > "$CMDS" <<'JSON'
 {
   "seed": 7,
@@ -27,7 +27,7 @@ assert_sim_json "int(d.get('particles', 9999)) <= 400"
 assert_sim_json "float(d.get('resident_asset_mb', 9999)) <= 350.0"
 
 # degradation ladder: force level 1 and measure particle halving + AI drop
-CMDS2="$(mktemp /tmp/grindline_cmds_q06b_XXXX.json)"
+CMDS2="$(mktemp -t grindline)"
 cat > "$CMDS2" <<'JSON'
 {
   "seed": 7,
