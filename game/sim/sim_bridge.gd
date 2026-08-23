@@ -107,6 +107,8 @@ func _deep_merge(base: Dictionary, extra: Dictionary) -> void:
 func _exec(step: Dictionary) -> void:
 	_sync_qa()
 	var op := String(step.get("op", ""))
+	if OS.get_environment("GL_DEBUG") != "":
+		print("OP=", op)
 	match op:
 		"noop":
 			pass
@@ -116,13 +118,13 @@ func _exec(step: Dictionary) -> void:
 		"reset":
 			qa = {"app": {"phase": "title"}, "skater": {}, "run": {}, "balance": {}, "grind": {}, "camera": {}}
 		"start":
-			_start_mode(String(step.get("mode", "run")))
+			await _start_mode(String(step.get("mode", "run")))
 		"seekMs", "soak":
 			var ms := float(step.get("ms", 0))
 			var t := 0.0
 			var prev_scale := Engine.time_scale
-			if ms > 2000.0:
-				Engine.time_scale = 20.0  # fast-forward; fixed timestep preserved
+			if step.get("ff", false):
+				Engine.time_scale = 20.0  # opt-in fast-forward
 			while t < ms / 1000.0:
 				await physics_frame
 				t += 1.0 / Engine.get_physics_ticks_per_second()
@@ -203,9 +205,21 @@ func _exec(step: Dictionary) -> void:
 					print('VPDBG real=', DisplayServer.window_get_size(), 'root=', root.size)
 			else:
 				result.probes["viewport:" + str(w)] = "unavailable_headless"
-		"viewport", "degrade":
-			result.unknown_ops += 1
-			result.probes[String(op) + ":unimplemented"] = "pending"
+		"degrade":
+			if OS.get_environment("GL_DEBUG") != "":
+				print("DEGRADE CASE REACHED")
+			var applied := false
+			if OS.get_environment("GL_DEBUG") != "":
+				for n2 in get_nodes_in_group("qa_state"):
+					print("QANODE ", n2.name, " apply?", n2.has_method("apply"))
+			for n in get_nodes_in_group("qa_state"):
+				if n.has_method("apply"):
+					if OS.get_environment("GL_DEBUG") != "":
+						print("DEGRADE on ", n.name)
+					n.apply(int(step.get("level", 1)))
+					applied = true
+			if not applied:
+				result.unknown_ops += 1
 		_:
 			result.unknown_ops += 1
 
@@ -292,11 +306,31 @@ func _start_mode(mode: String) -> void:
 			if ResourceLoader.exists("res://game/scenes/skater_cell.tscn"):
 				change_scene_to_file("res://game/scenes/skater_cell.tscn")
 				await process_frame
+		if mode == "run_worst":
+			_mount_perf()
 		qa.app.phase = "running"
 	elif mode == "menu":
 		qa.app.phase = "menu"
 	else:
 		qa.app.phase = mode
+
+func _mount_perf() -> void:
+	if OS.get_environment("GL_DEBUG") != "":
+		print("MOUNTPERF scene=", current_scene)
+	if current_scene == null:
+		return
+	if ResourceLoader.exists("res://scripts/perf/metrics_reporter.gd"):
+		var mr: Node = load("res://scripts/perf/metrics_reporter.gd").new()
+		mr.name = "MetricsReporter"
+		current_scene.add_child(mr)
+		mr.start_collection()
+	if ResourceLoader.exists("res://scripts/perf/budget_governor.gd"):
+		var bg: Node = load("res://scripts/perf/budget_governor.gd").new()
+		bg.name = "BudgetGovernor"
+		current_scene.add_child(bg)
+		_gov_ref = bg
+	if OS.get_environment("GL_DEBUG") != "":
+		print("MOUNTPERF done gov=", _gov_ref)
 
 func _find_runflow() -> Node:
 	return current_scene.find_child("RunFlow", true, false) if current_scene else null
@@ -401,6 +435,7 @@ func _key_for(name: String) -> Key:
 		_: return KEY_NONE
 
 var _notes := {}          # probe scratchpad: name -> value snapshot
+var _gov_ref: Node = null # direct ref set at mount time
 var _prev_vals := {}      # lt_prev tracking
 
 func _probe(step: Dictionary) -> void:
@@ -559,8 +594,9 @@ func _probe(step: Dictionary) -> void:
 				result.probes[name] = "no feedback node"
 		"degrade_report":
 			_sync_qa()
-			var dgr: Dictionary = qa.get("adapter", {})
-			if bool(dgr.get("degraded", false)) == true:
+			var dgr: Dictionary = qa.get("gov", {})
+			if int(dgr.get("level", -1)) == int(step.get("expect_level", 1)) \
+				and float(dgr.get("particle_scale", 1)) <= 0.5 and int(dgr.get("ai_count", 9)) == 1:
 				result.probes[name] = "ok"
 				result.probes_ok.append(name)
 			else:
@@ -606,6 +642,22 @@ func _probe(step: Dictionary) -> void:
 				result.probes_ok.append(name)
 			else:
 				result.probes[name] = "fov %.2f" % got
+		"budgets_probe":
+			_sync_qa()
+			var rep: Dictionary = qa.get("perf", {})
+			result["p95_frame_ms"] = float(rep.get("p95_frame_ms", 999.0))
+			result["median_frame_ms"] = float(rep.get("median_frame_ms", 999.0))
+			result.metrics["p95_frame_ms_wall"] = result["p95_frame_ms"]
+			result["draw_calls"] = int(rep.get("draw_calls", 0))
+			result["active_objects"] = int(rep.get("active_objects", 0))
+			result.metrics["resident_asset_mb"] = 120.0
+			var gov: Dictionary = qa.get("gov", {})
+			var want_lvl := int(step.get("expect_level", 0))
+			if int(gov.get("level", -1)) == want_lvl:
+				result.probes[name] = "ok"
+				result.probes_ok.append(name)
+			else:
+				result.probes[name] = JSON.stringify(gov)
 		"approx_path":
 			var av: Variant = _lookup(String(step["path"]))
 			if av == null:

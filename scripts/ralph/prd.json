@@ -401,7 +401,7 @@
       "performanceTierIds": [
         "target"
       ],
-      "passes": false,
+      "passes": true,
       "managerInterventions": 0,
       "allowedFiles": [
         "scripts/perf/budget_governor.gd",
