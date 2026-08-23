@@ -118,11 +118,38 @@ func _exec(step: Dictionary) -> void:
 			await _probe(step)
 		"screenshot":
 			await _screenshot(String(step.get("id", "shot")))
-		"setCamera", "setUi", "viewport", "teleport", "beat", "soak", "restart", "degrade":
+		"teleport":
+			_teleport(String(step.get("zone", "")))
+		"setCamera", "setUi", "viewport", "beat", "restart", "degrade":
 			result.unknown_ops += 1
 			result.probes[String(op) + ":unimplemented"] = "pending"
 		_:
 			result.unknown_ops += 1
+
+const ZONES := {
+	"rail_approach": {"pos": Vector3(0, 1.2, -3.4), "heading_deg": 180.0},
+}
+
+func _teleport(zone: String) -> void:
+	var z: Variant = ZONES.get(zone)
+	if z == null:
+		result.probes["teleport:" + zone] = "unknown_zone"
+		return
+	for attempt in 10:
+		if current_scene != null:
+			break
+		await physics_frame
+	if current_scene == null:
+		result.probes["teleport:" + zone] = "no_scene"
+		return
+	var skater := current_scene.find_child("Skater", true, false)
+	if skater == null:
+		result.probes["teleport:" + zone] = "no_skater scene=%s" % current_scene.name
+		return
+	skater.global_position = z["pos"] as Vector3
+	skater.rotation.y = deg_to_rad(z["heading_deg"])
+	if "heading" in skater:
+		skater.heading = deg_to_rad(z["heading_deg"])
 
 func _start_mode(mode: String) -> void:
 	if mode.begins_with("run") or mode == "worst":
@@ -205,6 +232,7 @@ func _key_for(name: String) -> Key:
 		"steer_right", "key_d": return KEY_D
 		"ollie", "key_space": return KEY_SPACE
 		"bail_force", "key_b": return KEY_B
+		"correct_hold", "key_d": return KEY_D
 		_: return KEY_NONE
 
 var _notes := {}          # probe scratchpad: name -> value snapshot
@@ -271,6 +299,38 @@ func _probe(step: Dictionary) -> void:
 				result.probes_ok.append(name)
 			else:
 				result.probes[name] = "apex %.3f outside [%s,%s]" % [best, step.get("min"), step.get("max")]
+		"lt_prev", "path_in_range_ms":
+			var dur := float(step.get("ms", 500)) / 1000.0
+			var first: Variant = null
+			var last: Variant = null
+			var all_in := true
+			var lo := float(step.get("min", result.get("lo", 0.06)))
+			var hi := float(step.get("max", result.get("hi", 0.94)))
+			var t3 := 0.0
+			while t3 < dur:
+				_sync_qa()
+				var vv: Variant = _lookup(String(step["path"]))
+				if vv == null:
+					all_in = false
+					break
+				if first == null:
+					first = float(vv)
+				last = float(vv)
+				if kind == "path_in_range_ms" and (float(vv) < lo or float(vv) > hi):
+					all_in = false
+				await physics_frame
+				t3 += 1.0 / Engine.get_physics_ticks_per_second()
+			var pass_val := false
+			if kind == "lt_prev" and first != null and last != null:
+				pass_val = last < first
+				result.metrics["lt_" + name] = [first, last]
+			elif kind == "path_in_range_ms":
+				pass_val = all_in
+			if pass_val:
+				result.probes[name] = "ok"
+				result.probes_ok.append(name)
+			else:
+				result.probes[name] = "first=%s last=%s" % [first, last]
 		_:
 			result.unknown_ops += 1
 

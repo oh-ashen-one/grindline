@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/skater/locomotion.gd" id="1_loco"]
 [ext_resource type="PackedScene" path="res://assets/models/characters/skater_boy.glb" id="2_boy"]
 [ext_resource type="Script" path="res://scripts/skater/air_state.gd" id="3_air"]
+[ext_resource type="Script" path="res://scripts/skater/grind_state.gd" id="4_grind"]
 
 [sub_resource type="BoxShape3D" id="shape_floor"]
 size = Vector3(24, 1, 24)
@@ -13,6 +14,15 @@ height = 1.75
 
 [sub_resource type="PlaneMesh" id="mesh_floor"]
 size = Vector2(24, 24)
+
+[sub_resource type="CylinderShape3D" id="shape_rail"]
+radius = 0.05
+height = 4.0
+
+[sub_resource type="CylinderMesh" id="mesh_rail"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 4.0
 
 [node name="SkaterCell" type="Node3D"]
 
@@ -43,6 +53,23 @@ shape = SubResource("shape_skater")
 
 [node name="AirState" type="Node" parent="Skater"]
 script = ExtResource("3_air")
+
+[node name="GrindState" type="Node" parent="Skater"]
+script = ExtResource("4_grind")
+
+[node name="RailBody" type="StaticBody3D" parent="." groups=["grind"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -6)
+meta/rail_axis = "z"
+meta/rail_len = 4.0
+meta/top_y = 0.62
+
+[node name="RailShape" type="CollisionShape3D" parent="RailBody"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
+shape = SubResource("shape_rail")
+
+[node name="RailMesh" type="MeshInstance3D" parent="RailBody"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
+mesh = SubResource("mesh_rail")
 
 [node name="Visual" parent="Skater" instance=ExtResource("2_boy")]
 transform = Transform3D(2.263, 0, 0, 0, 2.263, 0, 0, 0, 2.263, 0, -0.85, 0)

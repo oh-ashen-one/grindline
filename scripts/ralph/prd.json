@@ -90,7 +90,7 @@
     {
       "id": "US-104",
       "title": "Grind latch + balance meter on the flat rail",
-      "description": "Shape-cast below feet finds Rail node group 'grind'; airborne + capture radius 0.35 m latches board to rail axis; velocity redirects along it; balance meter starts 0.5, decays 0.22/s scaled by slope, input corrects 0.35/s per unit, fail outside 0.06..0.94 drops to bail.",
+      "description": "GrindState node (child of Skater; wired in cell scene alongside a group-'grind' rail piece): airborne capture radius 0.35 m latches board to rail axis, redirects speed along it, locks height to rail top; balance value starts 0.5, drifts 0.22/s (flat), steer correction 0.35/s per unit, fail outside 0.06..0.94 drops to ground with speed kept; ollie hops off. Visual meter widget lands with feedback atoms.",
       "acceptanceCriteria": [
         "latch snaps lateral offset under 0.15 m and zeroes vertical velocity",
         "meter value decays measurably without input over 500 ms",
@@ -103,11 +103,11 @@
       "evidenceIds": [
         "traversal"
       ],
-      "passes": false,
+      "passes": true,
       "managerInterventions": 0,
       "allowedFiles": [
         "scripts/skater/grind_state.gd",
-        "scripts/ui/balance_meter.gd"
+        "game/scenes/skater_cell.tscn"
       ],
       "testFile": "tests_staged/test_us104_grind.sh",
       "verify": "bash tests_staged/test_us104_grind.sh",
