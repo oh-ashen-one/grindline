@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "projectName": "grindline",
+  "dimensions": "3d",
+  "productFantasy": "You are a street skater in a dusk-lit industrial plaza, chaining ollies, grinds and manuals into ever-longer combos while a two-minute clock burns; every landed line feels loud, fast and earned, and bailing costs you everything you stacked.",
+  "assetManifest": "assets/asset-manifest.json",
+  "requiredPhases": [1, 2, 3, 4, 5, 6, 7],
+  "humanCheckpoints": [2, 7],
+  "requiredStoryClasses": [
+    "vertical-slice",
+    "look-lock",
+    "asset-integration",
+    "feedback-atom",
+    "camera-input",
+    "performance-resilience",
+    "critique-ship"
+  ],
+  "requiredAssetRoles": ["hero", "environment-kit", "primary-interactable"],
+  "requiredCharacterClipRoles": ["idle", "locomotion", "primaryAction", "hitOrFail"],
+  "productShell": {
+    "coreFlows": ["boot", "menu", "play", "pause", "failure", "restart", "settings"],
+    "persistenceContract": "High-score table (top 10 with name, score, combo), selected skater, and settings (music/sfx volume, camera nudge invert) persist to user://grindline_save.json. A corrupt or unreadable file is quarantined to user://grindline_save.corrupt and a fresh default save is created; no run blocks on I/O.",
+    "loadingFallback": "Boot shows the GRINDLINE title card with an animated progress bar fed by real import steps; any asset that fails to load within 10s drops to its manifest fallback and the bar continues. No network reads at boot.",
+    "missingMediaFallback": "A missing model swaps to a flat-shaded gray hull of matching bounds, a missing texture to flat palette gray, a missing sound to silence; gameplay never halts and the HUD flags degraded mode with a small wrench icon."
+  },
+  "assetIo": {
+    "maxConcurrentLoads": 4,
+    "retryAttempts": 2,
+    "timeoutMs": 10000,
+    "backoffPolicy": "Exponential: retry after 250ms then 500ms, then fall back per manifest entry; all loads are local res:// reads",
+    "localOnlyAtShip": true
+  },
+  "sharedSimulation": [
+    {
+      "quantity": "Skater ground truth: height above surface, surface normal, and grind-surface classification at the board contact point",
+      "source": "game/scripts/sim/ground_probe.gd — single raycast+shape-cast authority all consumers query",
+      "consumers": ["follow camera height/FOV", "trick state machine and balance meter"]
+    },
+    {
+      "quantity": "Run timer and combo multiplier state (time left, current combo score, multiplier)",
+      "source": "game/scripts/run/run_state.gd — one autoload-owned model emitting signals only",
+      "consumers": ["HUD widgets", "score persistence and S-K-A-T-E objective tracker"]
+    }
+  ],
+  "referenceContract": [
+    {
+      "id": "reference-01",
+      "source": "https://kenney.nl/assets/factory-kit (pack preview image)",
+      "localPath": "quality/references/ref-foundry-mood.png",
+      "sha256": "7155107c8e9e96596e40d37e74492aad4b456371de584d4899c37a7a8d09a730",
+      "learn": ["industrial prop palette: warm rust orange, safety yellow, cool steel gray", "prop density rhythm: large silhouettes broken by small crates/cones", "flat-shaded low-poly material treatment under warm light"],
+      "mustNotCopy": ["no factory-kit layout as a level map", "no recognizable branded machines", "no exact prop arrangement"],
+      "evidenceId": "traversal"
+    },
+    {
+      "id": "reference-02",
+      "source": "https://ambientcg.com/view/Concrete034 (material preview)",
+      "localPath": "quality/references/ref-surface-concrete.png",
+      "sha256": "1791296c8f27af6e41d6b33d11810cbe6d5d7bc0fa7375a16ce9f8a576274bf0",
+      "learn": ["weathered concrete value range for skate surfaces", "stain and seam density that reads 'street' without noise spam", "warm bounce under dusk sky HDRI"],
+      "mustNotCopy": ["no photographic texture reuse beyond the licensed ambientCG set already pinned in the manifest"],
+      "evidenceId": "title"
+    },
+    {
+      "id": "reference-03",
+      "source": "https://kenney.nl/assets/mini-skate (pack preview image)",
+      "localPath": "quality/references/ref-park-kit.png",
+      "sha256": "0bdf59ab81be81f9dd70b6e7bc0789c4493b413529b022dcb2fbec6a4f2f3dab",
+      "learn": ["toy-clean silhouette language for ramps, rails and bowls", "colormap-driven material separation between wood, metal and grip", "readable obstacle heights at game camera distance"],
+      "mustNotCopy": ["no Kenney preview layout as our park plan", "no character poses reused as marketing art"],
+      "evidenceId": "primary-action"
+    }
+  ],
+  "actionBeats": [
+    {
+      "id": "ollie-beat",
+      "stateResult": "Grounded-to-air transition: vertical velocity set to 7.2 m/s, trick window opens, board snaps under feet; measurable as y-velocity flip and state change within one physics tick",
+      "timelineMs": {"anticipation": 40, "contact": 0, "response": 120, "settle": 90},
+      "channels": ["state", "motion", "visual", "audio", "hud"],
+      "evidenceIds": ["primary-action"]
+    },
+    {
+      "id": "grind-beat",
+      "stateResult": "Airborne-to-grind latch: board locks to rail line, velocity redirects along rail axis, balance meter appears and decays; measurable as grind state + lateral offset bounded within 0.15 m",
+      "timelineMs": {"anticipation": 0, "contact": 60, "response": 200, "settle": 150},
+      "channels": ["state", "motion", "visual", "audio", "hud"],
+      "evidenceIds": ["primary-action"]
+    },
+    {
+      "id": "bail-beat",
+      "stateResult": "Combo lost: ragdoll tumble plays, multiplier resets to 1, camera shake trauma 0.6, control locked 900ms then reset at last safe spot",
+      "timelineMs": {"anticipation": 0, "contact": 80, "response": 500, "settle": 320},
+      "channels": ["state", "motion", "visual", "audio", "hud"],
+      "evidenceIds": ["failure"]
+    }
+  ],
+  "canonicalEvidence": [
+    {"id": "title", "seed": 1, "state": "Main menu after boot, default skater highlighted, dusk park visible behind panel", "camera": "slow orbit cam preset menu_orbit", "viewport": [1280, 720], "assertions": ["GRINDLINE wordmark visible in Bebas Neue", "press-start prompt visible", "skater visible on board"]},
+    {"id": "traversal", "seed": 3, "state": "In-run: pushing across central plaza toward funbox, speed 8 m/s", "camera": "follow cam preset follow_default", "viewport": [1280, 720], "assertions": ["skater grounded within 0.05 m of floor", "speed HUD shows 8 plus/minus 0.5", "park props drawn: funbox, rails, warehouse walls", "no visible pop-in inside 40 m"]},
+    {"id": "primary-action", "seed": 3, "state": "Ollie onto rail followed by 50-50 grind for at least 1.0 s", "camera": "follow cam preset follow_action", "viewport": [1280, 720], "assertions": ["grind state active with balance meter visible", "combo counter incremented", "grind sparks particle burst active"]},
+    {"id": "failure", "seed": 3, "state": "Bail from failed landing during combo", "camera": "follow cam preset follow_default", "viewport": [1280, 720], "assertions": ["tumble anim clip playing", "combo lost banner visible", "multiplier reset to 1 in HUD"]},
+    {"id": "mobile", "seed": 3, "state": "Same traversal state rendered at portrait viewport with touch controls overlay", "camera": "follow cam preset follow_default", "viewport": [390, 844], "assertions": ["touch buttons within safe area insets", "no critical HUD element occluded", "all buttons at least 72 px tall"]},
+    {"id": "worst-performance", "seed": 7, "state": "Worst scene: full park populated with all props, 2 AI skaters, grind particles, max music+SFX", "camera": "follow cam preset follow_default", "viewport": [1280, 720], "assertions": ["p95 frame time within tier budget", "draw calls within budget", "no asset streaming hitches over 30 s"]},
+    {"id": "ship-title-flow", "seed": 1, "state": "Full first-minute flow: boot to menu, start run, pause, restart", "camera": "menu_orbit then follow_default", "viewport": [1280, 720], "assertions": ["every transition completes under 3 s", "no orphan input focus", "settings persist after restart"]}
+  ],
+  "performanceTiers": [
+    {
+      "id": "target",
+      "device": "Apple Mac Studio M-class (Apple Silicon, integrated GPU) at 1280x720, also representative of Apple Silicon MacBook Air class",
+      "worstScene": "worst-performance canonical state: full park, all props, 2 AI skaters, grind particles active",
+      "durationSeconds": 30,
+      "maxP95FrameMs": 16.9,
+      "maxDrawCalls": 220,
+      "maxActiveObjects": 900,
+      "maxParticles": 400,
+      "maxPixelRatio": 1.0,
+      "maxConcurrentAssetLoads": 4,
+      "maxResidentAssetMB": 350,
+      "preserve": ["input latency under 100 ms motion-to-photon delta for steer/ollie", "combo timer accuracy to one frame", "balance meter readability"],
+      "degradeOrder": ["particle spawn rate halves", "AI skaters drop to 1", "shadow atlas resolution halves", "props beyond 35 m cull harder"],
+      "poolBudgets": {"sparks": 160, "dust": 80, "score-popups": 24, "ai-skaters": 2}
+    }
+  ],
+  "inputMatrix": [
+    {"device": "macOS keyboard", "input": "WASD/arrows steer+push, Space ollie, J/K/L flip-grab-manual modifiers, Shift crouch/pump, Esc pause", "firstAction": "hold W to push off within 2 s of run start", "viewport": [1280, 720], "minTargetPx": 48, "probe": "tests_staged/probe_input_keyboard.sh"},
+    {"device": "gamepad (Xbox/PlayStation layout via Godot input map)", "input": "left stick steer, RT/A push-ollie family, face buttons trick modifiers, Start pause", "firstAction": "tilt stick or press A to move within 2 s", "viewport": [1280, 720], "minTargetPx": 64, "probe": "tests_staged/probe_input_gamepad.sh"},
+    {"device": "touch (portrait fallback)", "input": "left virtual stick zone, right tap = ollie, swipe = trick modifier", "firstAction": "tap right zone to ollie from standstill", "viewport": [390, 844], "minTargetPx": 96, "probe": "tests_staged/probe_ui_touch.sh"}
+  ],
+  "debugBridge": {
+    "transport": "Headless Godot sim scene (sim/sim_bridge.tscn) driven by CLI: godot --headless --path . sim/sim_bridge.tscn -- --script-json commands.json; deterministic seed via reset(seed); JSON status lines on stdout, PNG screenshots written to shots/, exit code carries pass/fail",
+    "capabilities": ["reset", "start", "stepOrSeek", "input", "setCamera", "setUi", "state", "metrics", "screenshot"]
+  },
+  "proofBoundary": {
+    "buildGate": "godot --headless --path . --import must parse every scene/script with zero errors before any story verify runs",
+    "runtimeGate": "Behavioral claims require the sim bridge running the real game headless with measured stdout metrics and screenshots; grep alone never proves behavior",
+    "targetDevice": "macOS desktop on Apple Silicon (Mac Studio primary), keyboard-first with full gamepad support; touch portrait verified via viewport emulation only",
+    "humanPlaytestRequired": true
+  }
+}

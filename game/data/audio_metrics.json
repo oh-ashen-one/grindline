@@ -1,0 +1,114 @@
+{
+ "assets/impact-sounds/Audio/impactSoft_heavy_000.ogg": {
+  "path": "assets/impact-sounds/Audio/impactSoft_heavy_000.ogg",
+  "durationMs": 505,
+  "lufs": -15.8,
+  "peakDb": -0.9,
+  "maxFileMB": 0.007
+ },
+ "assets/impact-sounds/Audio/impactWood_medium_000.ogg": {
+  "path": "assets/impact-sounds/Audio/impactWood_medium_000.ogg",
+  "durationMs": 333,
+  "lufs": -70.0,
+  "peakDb": -1.0,
+  "maxFileMB": 0.007
+ },
+ "assets/impact-sounds/Audio/impactMetal_light_000.ogg": {
+  "path": "assets/impact-sounds/Audio/impactMetal_light_000.ogg",
+  "durationMs": 351,
+  "lufs": -70.0,
+  "peakDb": -1.0,
+  "maxFileMB": 0.008
+ },
+ "assets/impact-sounds/Audio/impactPlate_medium_000.ogg": {
+  "path": "assets/impact-sounds/Audio/impactPlate_medium_000.ogg",
+  "durationMs": 609,
+  "lufs": -21.7,
+  "peakDb": -1.4,
+  "maxFileMB": 0.011
+ },
+ "assets/impact-sounds/Audio/impactGeneric_light_000.ogg": {
+  "path": "assets/impact-sounds/Audio/impactGeneric_light_000.ogg",
+  "durationMs": 139,
+  "lufs": -70.0,
+  "peakDb": -1.2,
+  "maxFileMB": 0.007
+ },
+ "assets/impact-sounds/Audio/impactMining_002.ogg": {
+  "path": "assets/impact-sounds/Audio/impactMining_002.ogg",
+  "durationMs": 805,
+  "lufs": -22.9,
+  "peakDb": -1.2,
+  "maxFileMB": 0.012
+ },
+ "assets/interface-sounds/Audio/select_004.ogg": {
+  "path": "assets/interface-sounds/Audio/select_004.ogg",
+  "durationMs": 383,
+  "lufs": -70.0,
+  "peakDb": -0.7,
+  "maxFileMB": 0.008
+ },
+ "assets/interface-sounds/Audio/back_004.ogg": {
+  "path": "assets/interface-sounds/Audio/back_004.ogg",
+  "durationMs": 73,
+  "lufs": -70.0,
+  "peakDb": -0.9,
+  "maxFileMB": 0.008
+ },
+ "assets/interface-sounds/Audio/confirmation_001.ogg": {
+  "path": "assets/interface-sounds/Audio/confirmation_001.ogg",
+  "durationMs": 290,
+  "lufs": -70.0,
+  "peakDb": -0.9,
+  "maxFileMB": 0.009999999999999998
+ },
+ "assets/interface-sounds/Audio/error_004.ogg": {
+  "path": "assets/interface-sounds/Audio/error_004.ogg",
+  "durationMs": 103,
+  "lufs": -70.0,
+  "peakDb": -1.2,
+  "maxFileMB": 0.007
+ },
+ "assets/interface-sounds/Audio/toggle_001.ogg": {
+  "path": "assets/interface-sounds/Audio/toggle_001.ogg",
+  "durationMs": 139,
+  "lufs": -70.0,
+  "peakDb": -0.9,
+  "maxFileMB": 0.008
+ },
+ "assets/interface-sounds/Audio/scroll_002.ogg": {
+  "path": "assets/interface-sounds/Audio/scroll_002.ogg",
+  "durationMs": 1000,
+  "lufs": -22.7,
+  "peakDb": -0.9,
+  "maxFileMB": 0.024
+ },
+ "assets/interface-sounds/Audio/click_002.ogg": {
+  "path": "assets/interface-sounds/Audio/click_002.ogg",
+  "durationMs": 10,
+  "lufs": -70.0,
+  "peakDb": -0.8,
+  "maxFileMB": 0.005
+ },
+ "assets/music-jingles/Audio/8-bit-jingles/jingles_NES00.ogg": {
+  "path": "assets/music-jingles/Audio/8-bit-jingles/jingles_NES00.ogg",
+  "durationMs": 1758,
+  "lufs": -11.1,
+  "peakDb": -4.8,
+  "maxFileMB": 0.039
+ },
+ "assets/music-jingles/Audio/8-bit-jingles/jingles_NES08.ogg": {
+  "path": "assets/music-jingles/Audio/8-bit-jingles/jingles_NES08.ogg",
+  "durationMs": 621,
+  "lufs": -10.2,
+  "peakDb": -4.4,
+  "maxFileMB": 0.017
+ },
+ "assets/music/music_fight.ogg": {
+  "path": "assets/music/music_fight.ogg",
+  "durationMs": 166060,
+  "lufs": -8.3,
+  "peakDb": 1.1,
+  "maxFileMB": 2.981
+ }
+}

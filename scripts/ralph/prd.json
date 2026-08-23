@@ -1,0 +1,160 @@
+{
+  "projectName": "grindline",
+  "branchName": "ralph/grindline",
+  "description": "GRINDLINE: THPS2-style arcade skating in Godot 4 — one dusk industrial plaza, 2-minute scored runs, ollies/grinds/manuals, S-K-A-T-E objectives, 4-skater roster, ship-quality.",
+  "regressionVerify": "jq -r '.userStories[] | select(.passes==true) | .verify' scripts/ralph/prd.json | while IFS= read -r cmd; do echo \"REGRESSION: $cmd\"; bash -c \"$cmd\" || exit 1; done",
+  "userStories": [
+    {
+      "id": "US-Q01",
+      "title": "Playable vertical slice: control-to-score-to-restart loop",
+      "description": "Capstone of phase 1 (all US-1xx mini-stories must carry passes:true first). From boot: title/menu leads into a run in a minimal park cell where the skater pushes (W), steers, ollies (Space) over an obstacle, bails or lands, scores at least one combo, sees timer expiry end the run, and restarts cleanly. Sim bridge drives reset(3)/start(run)/input sequences and asserts the full state chain mechanically.",
+      "acceptanceCriteria": [
+        "godot --headless --path . --import parses with zero errors",
+        "sim bridge input sequence push-steer-ollie yields airborne state within 500 ms sim time",
+        "landing a completed ollie adds score and increments combo counter exactly once",
+        "timer expiry transitions run_state to results without orphan nodes",
+        "restart reseeds identical park layout and zeroed score within 1 s",
+        "tests_staged/test_q01_vertical_slice.sh exits 0 printing SIM RESULT pass"
+      ],
+      "priority": 190,
+      "phase": 1,
+      "qualityClass": "vertical-slice",
+      "evidenceIds": ["traversal", "failure"],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": ["game/scenes/main.tscn", "scripts/orchestration/run_flow.gd"],
+      "testFile": "tests_staged/test_q01_vertical_slice.sh",
+      "verify": "bash tests_staged/test_q01_vertical_slice.sh"
+    },
+    {
+      "id": "US-Q02",
+      "title": "Look lock: one final-quality slice (lighting, materials, HUD, framing)",
+      "description": "Capstone of phase 2 (all US-2xx mini-stories pass first). One canonical frame pair reaches ship bar: dusk HDRI sky, sunset key light, PBR concrete/asphalt ground, colormap kit props, Bebas Neue HUD chips with hard shadows; captured via sim bridge screenshots at title and primary-action states and compared against reference mechanisms (palette separation, silhouette readability) recorded in QUALITY-LEDGER.md.",
+      "acceptanceCriteria": [
+        "shots/title.png and shots/primary-action.png exist, are valid PNGs at 1280x720",
+        "sim-reported palette check finds safety-yellow accent and steel-gray metal pixel clusters in traversal frame",
+        "skater silhouette contrast against sky exceeds 35 percent mean luminance delta in airborne frame",
+        "HUD uses font-bebas glyphs only; no engine default font pixels in chip regions",
+        "QUALITY-LEDGER.md gains a look-lock finding row with measured values"
+      ],
+      "priority": 290,
+      "phase": 2,
+      "qualityClass": "look-lock",
+      "evidenceIds": ["title", "primary-action"],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": ["scripts/ui/theme.gd", "scripts/fx/light_rig.gd"],
+      "testFile": "tests_staged/test_q02_look_lock.sh",
+      "verify": "bash tests_staged/test_q02_look_lock.sh"
+    },
+    {
+      "id": "US-Q03",
+      "title": "Asset integration: every shipping asset loads through the measured adapter",
+      "description": "Capstone of phase 3 (all US-3xx mini-stories pass first). Park builder instantiates the full LEDGEWORKS layout from data: all 8 authored street pieces, Kenney kit pieces, factory props, five PBR surface sets, HDRI, characters with clip map, board, audio banks. Each asset flows through the manifest adapter (id -> path -> normalized instance) with fallback verification when a file is deliberately hidden.",
+      "acceptanceCriteria": [
+        "adapter loads 100 percent of manifest ids with category environment, prop, character or animation; zero missing",
+        "measured GLB extents match manifest targetSizeMeters within 6 percent on all axes",
+        "character AnimationTree exposes idle, skate, skate-air, die clips mapped from anim-* entries",
+        "hiding any one asset file degrades to its manifest fallback while the run continues (degraded-mode wrench flag true)",
+        "full park scene draws with draw calls under 220 in sim metrics",
+        "tests_staged/test_q03_asset_integration.sh exits 0"
+      ],
+      "priority": 390,
+      "phase": 3,
+      "qualityClass": "asset-integration",
+      "assetIds": ["hero-boy", "hero-girl", "board", "park-quarter_pipe", "park-funbox", "park-rail", "k-half-pipe", "k-floor-concrete", "tex-concrete", "hdri-dusk", "music-run"],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": ["scripts/park/layout_builder.gd", "scripts/park/asset_adapter.gd"],
+      "testFile": "tests_staged/test_q03_asset_integration.sh",
+      "verify": "bash tests_staged/test_q03_asset_integration.sh"
+    },
+    {
+      "id": "US-Q04",
+      "title": "Feedback atoms: ollie, grind and bail beats complete on all channels",
+      "description": "Capstone of phase 4 (all US-4xx mini-stories pass first). The three contract action beats fire with state/motion/visual/audio/HUD channels inside their timeline windows: ollie-beat 250 ms total, grind-beat 410 ms, bail-beat 900 ms; sparks pool recycles; balance meter readable; hitstop only on specials.",
+      "acceptanceCriteria": [
+        "ollie-beat: vertical velocity sign flips within one physics tick of input; dust burst 8 particles; popup queued",
+        "grind-beat: latch snaps lateral offset under 0.15 m; spark burst 16; scrape loop audible flag true; meter visible by 200 ms",
+        "bail-beat: multiplier resets to 1; trauma 0.6 applied; banner slide-out completes by 900 ms",
+        "pool budgets respected: no runtime allocation beyond contract poolBudgets during 60 s trick soak",
+        "sim prints per-beat channel timing table matching windows within tolerance 30 ms"
+      ],
+      "priority": 490,
+      "phase": 4,
+      "qualityClass": "feedback-atom",
+      "actionBeatIds": ["ollie-beat", "grind-beat", "bail-beat"],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": ["scripts/skater/trick_feedback.gd", "scripts/fx/sparks_pool.gd"],
+      "testFile": "tests_staged/test_q04_feedback_atom.sh",
+      "verify": "bash tests_staged/test_q04_feedback_atom.sh"
+    },
+    {
+      "id": "US-Q05",
+      "title": "Camera, input matrix, mobile viewport and occlusion proven",
+      "description": "Capstone of phase 5 (all US-5xx mini-stories pass first). Follow cam honors BRIEF constants (distance 5.2, FOV kick thresholds, trauma decay); keyboard, gamepad and touch-emulation inputs each drive the same public actions; portrait 390x844 keeps critical HUD inside safe areas with minimum target sizes; wall-hug occlusion rule engages on the warehouse corridor case.",
+      "acceptanceCriteria": [
+        "camera FOV reads 62 base, 72 at 10 m/s, 78 at 13 m/s within lerp tolerance",
+        "keyboard probe: steer left/right and ollie respond through parse_input_event path with sub-100 ms simulated latency",
+        "gamepad probe: stick axis and face buttons produce identical state deltas as keyboard equivalents",
+        "touch probe at 390x844: all interactive targets at least 96 px, nothing critical outside safe insets",
+        "occlusion case: camera distance clamps to 2.6 m and skater stays on-screen for the full 1.5 s corridor pass",
+        "tests_staged/test_q05_camera_input.sh exits 0 including both input probes"
+      ],
+      "priority": 590,
+      "phase": 5,
+      "qualityClass": "camera-input",
+      "evidenceIds": ["mobile", "traversal"],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": ["scripts/camera/follow_cam.gd", "scripts/input/input_router.gd"],
+      "testFile": "tests_staged/test_q05_camera_input.sh",
+      "verify": "bash tests_staged/test_q05_camera_input.sh"
+    },
+    {
+      "id": "US-Q06",
+      "title": "Performance and resilience budgets met in worst scene",
+      "description": "Capstone of phase 6 (all US-6xx mini-stories pass first). 30-second worst-scene soak (seed 7, full park, both AI skaters, grind particles, music plus SFX) holds tier budgets from contract performanceTiers.target; degradation ladder demonstrably engages when budgets are artificially tightened; missing-media resilience verified by hiding assets at runtime.",
+      "acceptanceCriteria": [
+        "metrics() over 30 s reports p95 frame time at most 16.9 ms",
+        "draw calls at most 220, active objects at most 900, particles at most 400 throughout soak",
+        "resident asset memory at most 350 MB reported by sim",
+        "forcing degrade level 1 halves particle spawn rate measurably and drops AI count to 1",
+        "hiding board GLB mid-boot falls back to gray hull and run remains playable",
+        "tests_staged/test_q06_performance_resilience.sh exits 0 printing budget table"
+      ],
+      "priority": 690,
+      "phase": 6,
+      "qualityClass": "performance-resilience",
+      "performanceTierIds": ["target"],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": ["scripts/perf/budget_governor.gd", "scripts/perf/metrics_reporter.gd"],
+      "testFile": "tests_staged/test_q06_performance_resilience.sh",
+      "verify": "bash tests_staged/test_q06_performance_resilience.sh"
+    },
+    {
+      "id": "US-Q07",
+      "title": "Critique closure and ship proof: evidence set green, package boots, playtest checklist ready",
+      "description": "Capstone of phase 7 (critique findings filed and fixed). Full canonical evidence set regenerates deterministically; adversarial critique pass (CRITIC.md protocol) files zero new findings; macOS packaged build boots to title via double-click simulation path; human playtest checklist for Hari written covering first-click experience and discoverable controls (law 12).",
+      "acceptanceCriteria": [
+        "all six canonical evidence captures regenerate green from fixed seeds",
+        "critique round files zero new blocking findings against CRITIC.md checklist",
+        "packaged macOS build directory exists and its executable launches headless to title state with exit 0 smoke",
+        "PLAYTEST-CHECKLIST.md exists naming first-click steps, controls table, and known limitations",
+        "ATTRIBUTION.md covers every manifest license including CC-BY music credit",
+        "tests_staged/test_q07_critique_ship.sh exits 0"
+      ],
+      "priority": 790,
+      "phase": 7,
+      "qualityClass": "critique-ship",
+      "evidenceIds": ["title", "traversal", "primary-action", "failure", "mobile", "worst-performance"],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": ["tools/export_macos.sh", "PLAYTEST-CHECKLIST.md"],
+      "testFile": "tests_staged/test_q07_critique_ship.sh",
+      "verify": "bash tests_staged/test_q07_critique_ship.sh"
+    }
+  ]
+}

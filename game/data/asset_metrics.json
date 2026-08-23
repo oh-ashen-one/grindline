@@ -1,0 +1,654 @@
+{
+ "assets/models/board/skateboard.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.15,
+   -0.0,
+   -0.35
+  ],
+  "boundsMax": [
+   0.15,
+   0.137,
+   0.35
+  ],
+  "triangles": 240
+ },
+ "assets/models/characters/skater_boy.glb": {
+  "animations": {
+   "static": 100,
+   "idle": 1333,
+   "walk": 667,
+   "sprint": 500,
+   "jump": 500,
+   "fall": 333,
+   "crouch": 167,
+   "sit": 167,
+   "drive": 167,
+   "die": 333,
+   "pick-up": 333,
+   "emote-yes": 667,
+   "emote-no": 667,
+   "holding-right": 167,
+   "holding-left": 167,
+   "holding-both": 167,
+   "holding-right-shoot": 200,
+   "holding-left-shoot": 200,
+   "holding-both-shoot": 200,
+   "attack-melee-right": 417,
+   "attack-melee-left": 417,
+   "attack-kick-right": 533,
+   "attack-kick-left": 533,
+   "interact-right": 667,
+   "interact-left": 667,
+   "skate": 517,
+   "skate-stand": 500,
+   "skate-air": 667,
+   "skate-grab": 500
+  },
+  "boundsMin": [
+   -0.39,
+   0.0,
+   -0.187
+  ],
+  "boundsMax": [
+   0.39,
+   0.773,
+   0.274
+  ],
+  "triangles": 419
+ },
+ "assets/models/characters/skater_girl.glb": {
+  "animations": {
+   "static": 100,
+   "idle": 1333,
+   "walk": 667,
+   "sprint": 500,
+   "jump": 500,
+   "fall": 333,
+   "crouch": 167,
+   "sit": 167,
+   "drive": 167,
+   "die": 333,
+   "pick-up": 333,
+   "emote-yes": 667,
+   "emote-no": 667,
+   "holding-right": 167,
+   "holding-left": 167,
+   "holding-both": 167,
+   "holding-right-shoot": 200,
+   "holding-left-shoot": 200,
+   "holding-both-shoot": 200,
+   "attack-melee-right": 417,
+   "attack-melee-left": 417,
+   "attack-kick-right": 533,
+   "attack-kick-left": 533,
+   "interact-right": 667,
+   "interact-left": 667,
+   "skate": 517,
+   "skate-stand": 500,
+   "skate-air": 667,
+   "skate-grab": 500
+  },
+  "boundsMin": [
+   -0.39,
+   0.0,
+   -0.323
+  ],
+  "boundsMax": [
+   0.39,
+   0.664,
+   0.19
+  ],
+  "triangles": 408
+ },
+ "assets/park/bank.glb": {
+  "animations": {},
+  "boundsMin": [
+   -2,
+   0,
+   -1.5
+  ],
+  "boundsMax": [
+   2,
+   1.2,
+   1.5
+  ],
+  "triangles": 8
+ },
+ "assets/park/funbox.glb": {
+  "animations": {},
+  "boundsMin": [
+   -3,
+   0,
+   -2.5
+  ],
+  "boundsMax": [
+   3,
+   1,
+   2.5
+  ],
+  "triangles": 12
+ },
+ "assets/park/kenney/bowl-corner-inner.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.5,
+   0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   0.8,
+   0.5
+  ],
+  "triangles": 136
+ },
+ "assets/park/kenney/bowl-corner-outer.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.5,
+   0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   0.8,
+   0.5
+  ],
+  "triangles": 140
+ },
+ "assets/park/kenney/bowl-side.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.5,
+   0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   0.8,
+   0.5
+  ],
+  "triangles": 44
+ },
+ "assets/park/kenney/floor-concrete.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.5,
+   0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   0.0,
+   0.5
+  ],
+  "triangles": 2
+ },
+ "assets/park/kenney/floor-wood.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.5,
+   -0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   0.025,
+   0.5
+  ],
+  "triangles": 32
+ },
+ "assets/park/kenney/half-pipe.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.5,
+   0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   0.8,
+   0.5
+  ],
+  "triangles": 44
+ },
+ "assets/park/kenney/obstacle-box.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.5,
+   -0.05,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   0.15,
+   0.5
+  ],
+  "triangles": 28
+ },
+ "assets/park/kenney/obstacle-end.glb": {
+  "animations": {},
+  "boundsMin": [
+   -1.0,
+   0.0,
+   0.0
+  ],
+  "boundsMax": [
+   0.0,
+   0.3,
+   0.5
+  ],
+  "triangles": 94
+ },
+ "assets/park/kenney/obstacle-middle.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.5,
+   -0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   0.55,
+   0.5
+  ],
+  "triangles": 136
+ },
+ "assets/park/kenney/pallet.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.211,
+   -0.0,
+   -0.211
+  ],
+  "boundsMax": [
+   0.211,
+   0.134,
+   0.211
+  ],
+  "triangles": 108
+ },
+ "assets/park/kenney/rail-curve.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.55,
+   0.0,
+   0.45
+  ],
+  "boundsMax": [
+   0.0,
+   0.25,
+   1.0
+  ],
+  "triangles": 86
+ },
+ "assets/park/kenney/rail-high.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.075,
+   -0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.075,
+   0.45,
+   0.5
+  ],
+  "triangles": 90
+ },
+ "assets/park/kenney/rail-low.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.075,
+   0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.075,
+   0.25,
+   0.5
+  ],
+  "triangles": 90
+ },
+ "assets/park/kenney/rail-slope.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.075,
+   0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.075,
+   0.45,
+   0.5
+  ],
+  "triangles": 90
+ },
+ "assets/park/kenney/steps.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.5,
+   0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   0.4,
+   0.5
+  ],
+  "triangles": 84
+ },
+ "assets/park/kenney/structure-platform.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.5,
+   -0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   0.8,
+   0.0
+  ],
+  "triangles": 108
+ },
+ "assets/park/kenney/structure-wood.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.5,
+   -0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   0.7,
+   0.5
+  ],
+  "triangles": 184
+ },
+ "assets/park/kicker.glb": {
+  "animations": {},
+  "boundsMin": [
+   -1.5,
+   0,
+   -1.1
+  ],
+  "boundsMax": [
+   1.5,
+   0.8,
+   1.1
+  ],
+  "triangles": 8
+ },
+ "assets/park/ledge.glb": {
+  "animations": {},
+  "boundsMin": [
+   -2,
+   0,
+   -0.3
+  ],
+  "boundsMax": [
+   2,
+   0.5,
+   0.3
+  ],
+  "triangles": 12
+ },
+ "assets/park/quarter_pipe.glb": {
+  "animations": {},
+  "boundsMin": [
+   0,
+   -0.18,
+   -2
+  ],
+  "boundsMax": [
+   2.26,
+   2.92,
+   2.04
+  ],
+  "triangles": 196
+ },
+ "assets/park/rail.glb": {
+  "animations": {},
+  "boundsMin": [
+   -2,
+   0,
+   -0.05
+  ],
+  "boundsMax": [
+   2,
+   0.6,
+   0.05
+  ],
+  "triangles": 148
+ },
+ "assets/park/spine.glb": {
+  "animations": {},
+  "boundsMin": [
+   -2,
+   0,
+   -1.5
+  ],
+  "boundsMax": [
+   2,
+   1,
+   1.5
+  ],
+  "triangles": 6
+ },
+ "assets/park/warehouse_wall.glb": {
+  "animations": {},
+  "boundsMin": [
+   -20.45,
+   0,
+   -0.95
+  ],
+  "boundsMax": [
+   20.45,
+   9,
+   0.25
+  ],
+  "triangles": 60
+ },
+ "assets/props/box-large.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.55,
+   0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.55,
+   0.55,
+   0.5
+  ],
+  "triangles": 70
+ },
+ "assets/props/box-long.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.55,
+   0.0,
+   -0.25
+  ],
+  "boundsMax": [
+   0.55,
+   0.55,
+   0.25
+  ],
+  "triangles": 70
+ },
+ "assets/props/box-small.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.298,
+   0.0,
+   -0.25
+  ],
+  "boundsMax": [
+   0.297,
+   0.55,
+   0.25
+  ],
+  "triangles": 70
+ },
+ "assets/props/box-wide.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.298,
+   0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.297,
+   0.55,
+   0.5
+  ],
+  "triangles": 70
+ },
+ "assets/props/cone.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.15,
+   0.0,
+   -0.15
+  ],
+  "boundsMax": [
+   0.15,
+   0.306,
+   0.15
+  ],
+  "triangles": 66
+ },
+ "assets/props/door-wide-open.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.9,
+   0.82,
+   0.4
+  ],
+  "boundsMax": [
+   0.9,
+   1.6,
+   0.7
+  ],
+  "triangles": 16
+ },
+ "assets/props/hopper-round.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.559,
+   0.0,
+   -0.559
+  ],
+  "boundsMax": [
+   0.559,
+   1.0,
+   0.559
+  ],
+  "triangles": 144
+ },
+ "assets/props/machine-fortified.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.6,
+   -0.0,
+   -0.8
+  ],
+  "boundsMax": [
+   0.6,
+   1.35,
+   0.8
+  ],
+  "triangles": 320
+ },
+ "assets/props/machine.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.6,
+   -0.0,
+   -0.75
+  ],
+  "boundsMax": [
+   0.6,
+   1.3,
+   0.75
+  ],
+  "triangles": 268
+ },
+ "assets/props/pipe-large-curve.glb": {
+  "animations": {},
+  "boundsMin": [
+   -1.002,
+   -0.0,
+   -0.746
+  ],
+  "boundsMax": [
+   0.5,
+   1.0,
+   0.5
+  ],
+  "triangles": 332
+ },
+ "assets/props/piston-round.glb": {
+  "animations": {
+   "toggle-on": 200,
+   "toggle-off": 200,
+   "toggle": 500
+  },
+  "boundsMin": [
+   -0.5,
+   0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   1.0,
+   0.5
+  ],
+  "triangles": 276
+ },
+ "assets/props/structure-wall.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.5,
+   0.0,
+   -0.5
+  ],
+  "boundsMax": [
+   0.5,
+   3.0,
+   1.5
+  ],
+  "triangles": 26
+ },
+ "assets/props/structure-yellow-high.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.15,
+   -0.0,
+   -0.55
+  ],
+  "boundsMax": [
+   0.15,
+   1.5,
+   0.55
+  ],
+  "triangles": 392
+ },
+ "assets/props/warning-traffic.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.2,
+   0.0,
+   -0.2
+  ],
+  "boundsMax": [
+   0.2,
+   1.551,
+   0.2
+  ],
+  "triangles": 176
+ }
+}

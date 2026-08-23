@@ -1,7 +1,25 @@
+# Godot
 .godot/
 *.tmp
+export_presets.cfg.bak
+
+# build artifacts
+build/
 shots/
+*.dmg
+
+# loop forensics
+LAST_VERIFY.txt
+LAST_REPLY.md
+LAST_THINKING.md
+LAST_PLAN.md
+.sim_last_output.txt
 scripts/ralph/trajectory.jsonl
-scripts/ralph/archive/
-LAST_*.txt
-LAST_*.md
+scripts/ralph/__pycache__/
+__pycache__/
+
+# downloads staged elsewhere
+*.zip
+
+# OS
+.DS_Store
