@@ -35,3 +35,10 @@
   watching AirState.airborne falling edge. GDScript traps hit: strip() vs
   strip_edges(), coroutine await patterns, Variant inference errors,
   load_steps count must match ext+sub+1, mktemp BSD wants trailing X's.
+
+- [2026-08-23] Q04 green (12/15). Feedback node pattern: trick_feedback.gd
+  self-registers group 'feedback'; emitters (air/grind) call notify_* loosely.
+  Bridge hoists qa tables into result top-level pre-finish (adapter, beats,
+  beats_ok derived). Probe dispatch matches KIND not NAME. bail atom fires
+  any time. Remaining: Q05 camera/input/mobile, Q06 perf soak, Q07 ship.
+  Context note: if this session ends, HANDOFF.md has everything.
