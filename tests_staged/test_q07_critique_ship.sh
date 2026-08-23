@@ -31,7 +31,7 @@ cat > "$CMDS" <<'JSON'
 }
 JSON
 
-run_sim "$CMDS" || die "evidence sim failed"
+run_sim_gfx "$CMDS" || die "evidence sim failed"
 for shot in title traversal primary-action failure mobile; do
   [[ -s "$SHOTS_DIR/$shot.png" ]] || die "missing evidence shot $shot.png"
 done

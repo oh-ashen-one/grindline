@@ -433,7 +433,7 @@
         "mobile",
         "worst-performance"
       ],
-      "passes": false,
+      "passes": true,
       "managerInterventions": 0,
       "allowedFiles": [
         "tools/export_macos.sh",

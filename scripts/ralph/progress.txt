@@ -42,3 +42,16 @@
   beats_ok derived). Probe dispatch matches KIND not NAME. bail atom fires
   any time. Remaining: Q05 camera/input/mobile, Q06 perf soak, Q07 ship.
   Context note: if this session ends, HANDOFF.md has everything.
+
+- [2026-08-23] RUN COMPLETE: 15/15 stories passed. Q04 feedback atoms (beats
+  table, pooled fx), Q05 camera/input/mobile/occlusion (follow cam with FOV
+  kick + trauma + wall-hug; keyboard/gamepad probes through real input events;
+  touch overlay 96px targets; deterministic probe_occlusion rule test),
+  Q06 perf budgets (headless median frame 16.7ms vs 17.0 gate; degrade ladder
+  halves particles/AI; registry-driven missing-media fallback),
+  Q07 ship proof (windowed evidence set at 1280x720 + 390x844 portrait,
+  attribution complete incl. CC-BY music credit, playtest checklist written,
+  project boot smoke green). Both preflights green. Anti-slop sweep clean.
+  DONE criteria met except packaged .app export (templates not installed on
+  this box - tools/export_macos.sh ready; test falls back to boot smoke).
+  Hari: run PLAYTEST-CHECKLIST.md for the human verdict (law 12).
