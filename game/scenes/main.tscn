@@ -1,6 +1,7 @@
 [gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/orchestration/app_flow.gd" id="1_app"]
+[ext_resource type="Script" path="res://scripts/orchestration/run_flow.gd" id="6_flow"]
 [ext_resource type="FontFile" path="res://assets/ui/fonts/BebasNeue-Regular.ttf" id="2_font"]
 
 [sub_resource type="LabelSettings" id="ls_wordmark"]
@@ -13,6 +14,9 @@ shadow_offset = Vector2(5, 5)
 
 [node name="Main" type="Node"]
 script = ExtResource("1_app")
+
+[node name="RunFlow" type="Node" parent="."]
+script = ExtResource("6_flow")
 
 [node name="TitleLayer" type="CanvasLayer" parent="."]
 

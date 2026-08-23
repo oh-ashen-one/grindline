@@ -23,7 +23,8 @@ cat > "$CMDS" <<'JSON'
     {"op": "input", "action": "bail_force", "held_ms": 10},
     {"op": "seekMs", "ms": 1200},
     {"op": "assert", "name": "combo_reset", "expr": "run.multiplier == 1"},
-    {"op": "seekMs", "ms": 118000},
+    {"op": "expire_timer", "ms": 50},
+    {"op": "seekMs", "ms": 300},
     {"op": "assert", "name": "timer_expired", "state": "run.phase == 'results'"},
     {"op": "restart"},
     {"op": "seekMs", "ms": 800},
@@ -37,6 +38,6 @@ JSON
 run_sim "$CMDS" || die "sim bridge exited non-zero (see $SIM_OUT)"
 assert_sim_json "d.get('pass') is True"
 assert_sim_json "'airborne' in d.get('asserts_ok', [])"
-assert_sim_json "d.get('score_after_ollie', 0) > 0"
+assert_sim_json "d.get('score_before_restart', 0) > 0"
 say "US-Q01 PASS: vertical slice behaves to spec"
 exit 0

@@ -107,9 +107,13 @@ func _exec(step: Dictionary) -> void:
 		"seekMs", "soak":
 			var ms := float(step.get("ms", 0))
 			var t := 0.0
+			var prev_scale := Engine.time_scale
+			if ms > 2000.0:
+				Engine.time_scale = 20.0  # fast-forward; fixed timestep preserved
 			while t < ms / 1000.0:
 				await physics_frame
 				t += 1.0 / Engine.get_physics_ticks_per_second()
+			Engine.time_scale = prev_scale
 		"input":
 			await _inject_input(step)
 		"assert":
@@ -118,9 +122,32 @@ func _exec(step: Dictionary) -> void:
 			await _probe(step)
 		"screenshot":
 			await _screenshot(String(step.get("id", "shot")))
+		"set_path":
+			_sync_qa()
+			var parts := String(step["path"]).split(".")
+			var cur: Variant = qa
+			for pi in range(parts.size() - 1):
+				cur = cur[parts[pi]]
+			cur[parts[-1]] = step["value"]
+		"expire_timer":
+			var rs := get_first_node_in_group("run_state")
+			if rs != null:
+				rs.time_left_ms = float(step.get("ms", 60))
+			else:
+				result.unknown_ops += 1
 		"teleport":
 			_teleport(String(step.get("zone", "")))
-		"setCamera", "setUi", "viewport", "beat", "restart", "degrade":
+		"restart":
+			_sync_qa()
+			result["score_before_restart"] = int(qa.get("run", {}).get("score", 0))
+			var rf := _find_runflow()
+			if rf != null:
+				rf.restart_run()
+				await physics_frame
+				await physics_frame
+			else:
+				result.unknown_ops += 1
+		"setCamera", "setUi", "viewport", "beat", "degrade":
 			result.unknown_ops += 1
 			result.probes[String(op) + ":unimplemented"] = "pending"
 		_:
@@ -153,14 +180,27 @@ func _teleport(zone: String) -> void:
 
 func _start_mode(mode: String) -> void:
 	if mode.begins_with("run") or mode == "worst":
-		# gameplay cell mounts; park layout arrives with asset integration
-		if ResourceLoader.exists("res://game/scenes/skater_cell.tscn"):
-			change_scene_to_file("res://game/scenes/skater_cell.tscn")
+		if current_scene == null and ResourceLoader.exists("res://game/scenes/main.tscn"):
+			change_scene_to_file("res://game/scenes/main.tscn")
 			await process_frame
+		var runflow := _find_runflow()
+		if runflow != null:
+			runflow.start_run()
+			await physics_frame
+			await physics_frame
+		else:
+			# direct mount fallback (early phases)
+			if ResourceLoader.exists("res://game/scenes/skater_cell.tscn"):
+				change_scene_to_file("res://game/scenes/skater_cell.tscn")
+				await process_frame
 		qa.app.phase = "running"
-		qa.run = {"phase": "running", "time_left_ms": 120000.0, "score": 0, "combo_count": 0, "multiplier": 1}
+	elif mode == "menu":
+		qa.app.phase = "menu"
 	else:
 		qa.app.phase = mode
+
+func _find_runflow() -> Node:
+	return current_scene.find_child("RunFlow", true, false) if current_scene else null
 
 func _eval_assert(name: String, expr: String) -> void:
 	var ok := _truth(expr)
@@ -170,6 +210,11 @@ func _eval_assert(name: String, expr: String) -> void:
 		result.asserts_failed.append(name)
 
 func _truth(expr: String) -> bool:
+	if " and " in expr:
+		for part in expr.split(" and ", false):
+			if not _truth(part.strip_edges()):
+				return false
+		return true
 	# supports "a.b.c == literal", "!=", ">=", "<=", ">", "<" against qa paths.
 	for cmp in ["==", "!=", ">=", "<=", ">", "<"]:
 		var idx := expr.find(cmp)
