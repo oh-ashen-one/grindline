@@ -41,6 +41,8 @@ func _launch() -> void:
 		return
 	parent.velocity.y = OLLIE_VY
 	airborne = true
+	for fb in get_tree().get_nodes_in_group("feedback"):
+		fb.notify_ollie()
 	_trick_window_open = true
 	_takeoff_y = parent.global_position.y
 	apex_height_m = 0.0

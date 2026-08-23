@@ -42,6 +42,9 @@ func _track_landings() -> void:
 	if Input.is_action_just_pressed("bail_force"):
 		multiplier = 1  # pending combo wiped; banked score stays
 
+func beat_fired(_id: String) -> void:
+	pass  # HUD hook lands with feedback-atoms UI story
+
 func get_qa_dict() -> Dictionary:
 	return {
 		"run": {

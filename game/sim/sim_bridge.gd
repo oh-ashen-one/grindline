@@ -60,6 +60,17 @@ func _run_async() -> void:
 			pass
 	_sync_qa()
 	result["adapter"] = qa.get("adapter", {})
+	result["beats"] = qa.get("beats", {})
+	var beats_ok: Array = []
+	for bid: String in result["beats"].keys():
+		var ch: Dictionary = result["beats"][bid]
+		var all_ok := true
+		for ckey in ["state", "motion", "visual", "audio", "hud"]:
+			if ch.get(ckey) != true:
+				all_ok = false
+		if all_ok:
+			beats_ok.append(bid)
+	result["beats_ok"] = beats_ok
 	var gate: bool = bool(parsed.get("gate", false))
 	result.pass = result.asserts_failed.is_empty() and result.unknown_ops == 0
 	if gate:
@@ -153,11 +164,28 @@ func _exec(step: Dictionary) -> void:
 			_apply_camera(String(step.get("id", "")))
 		"setUi":
 			_apply_ui(String(step.get("id", "")))
-		"viewport", "beat", "degrade":
+		"beat":
+			await _run_beat(String(step.get("id", "")))
+		"viewport", "degrade":
 			result.unknown_ops += 1
 			result.probes[String(op) + ":unimplemented"] = "pending"
 		_:
 			result.unknown_ops += 1
+
+func _run_beat(id: String) -> void:
+	match id:
+		"ollie-beat":
+			await _exec({"op": "input", "action": "push", "held_ms": 600})
+			await _exec({"op": "input", "action": "ollie", "held_ms": 60})
+		"grind-beat":
+			await _exec({"op": "teleport", "zone": "rail_approach"})
+			await _exec({"op": "input", "action": "push", "held_ms": 550})
+			await _exec({"op": "input", "action": "ollie", "held_ms": 60})
+			await _exec({"op": "seekMs", "ms": 500})
+		"bail-beat":
+			await _exec({"op": "input", "action": "bail_force", "held_ms": 10})
+			await _exec({"op": "seekMs", "ms": 400})
+	await physics_frame
 
 const ZONES := {
 	"rail_approach": {"pos": Vector3(0, 1.2, -3.4), "heading_deg": 180.0},
@@ -435,6 +463,16 @@ func _probe(step: Dictionary) -> void:
 				result.probes_ok.append(name)
 			else:
 				result.probes[name] = JSON.stringify(rep)
+		"pool_discipline":
+			var fb: Node = null
+			for n in get_nodes_in_group("feedback"):
+				fb = n
+				break
+			if fb != null:
+				result.probes[name] = "ok"
+				result.probes_ok.append(name)
+			else:
+				result.probes[name] = "no feedback node"
 		"degrade_report":
 			_sync_qa()
 			var dgr: Dictionary = qa.get("adapter", {})

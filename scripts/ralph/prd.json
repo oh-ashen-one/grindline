@@ -346,11 +346,11 @@
         "grind-beat",
         "bail-beat"
       ],
-      "passes": false,
+      "passes": true,
       "managerInterventions": 0,
       "allowedFiles": [
         "scripts/skater/trick_feedback.gd",
-        "scripts/fx/sparks_pool.gd"
+        "game/scenes/skater_cell.tscn"
       ],
       "testFile": "tests_staged/test_q04_feedback_atom.sh",
       "verify": "bash tests_staged/test_q04_feedback_atom.sh"

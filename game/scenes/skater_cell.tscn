@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/skater/locomotion.gd" id="1_loco"]
 [ext_resource type="PackedScene" path="res://assets/models/characters/skater_boy.glb" id="2_boy"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/run/run_state.gd" id="5_run"]
 [ext_resource type="Script" path="res://scripts/fx/light_rig.gd" id="7_light"]
 [ext_resource type="Script" path="res://scripts/park/layout_builder.gd" id="8_builder"]
+[ext_resource type="Script" path="res://scripts/skater/trick_feedback.gd" id="9_fb"]
 
 [sub_resource type="BoxShape3D" id="shape_floor"]
 size = Vector3(24, 1, 24)
@@ -63,6 +64,9 @@ script = ExtResource("3_air")
 
 [node name="GrindState" type="Node" parent="Skater"]
 script = ExtResource("4_grind")
+
+[node name="Feedback" type="Node" parent="Skater"]
+script = ExtResource("9_fb")
 
 [node name="RunState" type="Node" parent="."]
 script = ExtResource("5_run")

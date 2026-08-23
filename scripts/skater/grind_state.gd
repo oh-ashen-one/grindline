@@ -60,8 +60,12 @@ func _try_capture() -> void:
 
 func _latch(body: Node3D) -> void:
 	grinding = true
+	trick_window_open = true
 	rail_body = body
 	balance_value = 0.5
+	for fb in get_tree().get_nodes_in_group("feedback"):
+		var perp := absf((parent.global_position - body.global_position).length())
+		fb.notify_grind_latch(minf(perp, LATERAL_SNAP))
 	_axis_name = str(body.get_meta("rail_axis", "z"))
 	_axis = Vector3(1, 0, 0) if _axis_name == "x" else Vector3(0, 0, 1)
 	var top_y := float(body.get_meta("top_y", body.global_position.y))
