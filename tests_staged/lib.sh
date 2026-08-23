@@ -1,7 +1,7 @@
 #!/bin/bash
 # tests_staged/lib.sh — manager-owned verify helpers (law 15). Tests are the
 # spec; game code makes them pass. Never edit a test to make code pass.
-set -uo pipefail
+set -euo pipefail
 GRINDLINE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 GODOT_BIN="${GODOT_BIN:-/opt/homebrew/bin/godot}"
 SHOTS_DIR="$GRINDLINE_ROOT/shots"

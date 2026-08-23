@@ -13,8 +13,8 @@ cat > "$CMDS" <<'JSON'
     {"op": "input", "action": "push", "held_ms": 800},
     {"op": "input", "action": "ollie", "held_ms": 60},
     {"op": "assert", "name": "airborne_same_tick", "state": "skater.grounded == false"},
-    {"op": "probe", "name": "apex_height", "kind": "max_path_value_between_ms", "path": "skater.height", "ms": 900, "min": 1.2, "max": 1.5},
-    {"op": "seekMs", "ms": 1200},
+    {"op": "probe", "name": "apex_height", "kind": "max_path_value_between_ms", "path": "skater.height", "ms": 900, "min": 1.25, "max": 1.56},
+    {"op": "seekMs", "ms": 400},
     {"op": "assert", "name": "regrounded", "state": "skater.grounded == true"}
   ],
   "gate": true

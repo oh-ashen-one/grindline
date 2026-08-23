@@ -28,12 +28,14 @@ func _physics_process(delta: float) -> void:
 		heading += steer * STEER_RATE * delta * clampf(speed / 6.0, 0.4, 1.0)
 
 	var forward := Vector3(sin(heading), 0.0, cos(heading))
-	var vel := forward * speed
+	# horizontal comes from locomotion; vertical belongs to air_state/gravity.
+	velocity.x = forward.x * speed
+	velocity.z = forward.z * speed
 	if not is_on_floor():
-		vel.y -= GRAVITY * delta
-	else:
-		vel.y = -0.5  # stick to floor
-	velocity = vel
+		velocity.y -= GRAVITY * delta
+	elif velocity.y <= 0.0:
+		velocity.y = -0.5  # stick to floor only when not launching
+	# rising velocities pass through untouched (ollie impulse lives here)
 	move_and_slide()
 
 func get_qa_dict() -> Dictionary:
@@ -43,5 +45,7 @@ func get_qa_dict() -> Dictionary:
 			"grounded": is_on_floor(),
 			"height": global_position.y,
 			"heading_deg": rad_to_deg(heading),
+			"world_y": snappedf(global_position.y, 0.01),
+			"floor_flag": is_on_floor(),
 		}
 	}

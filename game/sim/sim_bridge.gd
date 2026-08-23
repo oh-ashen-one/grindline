@@ -97,6 +97,9 @@ func _exec(step: Dictionary) -> void:
 	match op:
 		"noop":
 			pass
+		"dump":
+			_sync_qa()
+			print("SIM DUMP ", JSON.stringify(qa))
 		"reset":
 			qa = {"app": {"phase": "title"}, "skater": {}, "run": {}, "balance": {}, "grind": {}, "camera": {}}
 		"start":
@@ -249,6 +252,25 @@ func _probe(step: Dictionary) -> void:
 				result.probes_ok.append(name)
 			else:
 				result.probes[name] = "got %s" % v3
+		"max_path_value_between_ms":
+			var dur := float(step.get("ms", 1000)) / 1000.0
+			var best := -INF
+			var t2 := 0.0
+			while t2 < dur:
+				_sync_qa()
+				var sv: Variant = _lookup(String(step["path"]))
+				if OS.get_environment("GL_DEBUG") != "":
+					print("SAMPLE t=%.3f path=%s val=%s" % [t2, step["path"], sv])
+				if sv != null:
+					best = maxf(best, float(sv))
+				await physics_frame
+				t2 += 1.0 / Engine.get_physics_ticks_per_second()
+			if best >= float(step.get("min", -INF)) and best <= float(step.get("max", INF)):
+				result.probes[name] = "ok"
+				result.metrics["apex_" + name] = best
+				result.probes_ok.append(name)
+			else:
+				result.probes[name] = "apex %.3f outside [%s,%s]" % [best, step.get("min"), step.get("max")]
 		_:
 			result.unknown_ops += 1
 

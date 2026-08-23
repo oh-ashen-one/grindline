@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/skater/locomotion.gd" id="1_loco"]
 [ext_resource type="PackedScene" path="res://assets/models/characters/skater_boy.glb" id="2_boy"]
+[ext_resource type="Script" path="res://scripts/skater/air_state.gd" id="3_air"]
 
 [sub_resource type="BoxShape3D" id="shape_floor"]
 size = Vector3(24, 1, 24)
@@ -39,6 +40,9 @@ script = ExtResource("1_loco")
 
 [node name="Shape" type="CollisionShape3D" parent="Skater"]
 shape = SubResource("shape_skater")
+
+[node name="AirState" type="Node" parent="Skater"]
+script = ExtResource("3_air")
 
 [node name="Visual" parent="Skater" instance=ExtResource("2_boy")]
 transform = Transform3D(2.263, 0, 0, 0, 2.263, 0, 0, 0, 2.263, 0, -0.85, 0)

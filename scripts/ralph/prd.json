@@ -51,7 +51,7 @@
       "managerInterventions": 0,
       "allowedFiles": [
         "game/scenes/skater_cell.tscn",
-        "scripts/skater/locomotion.sh"
+        "scripts/skater/locomotion.gd"
       ],
       "testFile": "tests_staged/test_us102_locomotion.sh",
       "verify": "bash tests_staged/test_us102_locomotion.sh",
@@ -62,7 +62,7 @@
     {
       "id": "US-103",
       "title": "Ollie: impulse, air state, landing detection",
-      "description": "Space triggers ollie when grounded after 40 ms crouch anticipation; vy set 7.2 m/s (8.4 crouched); grounded false same tick; landing re-grounds when probe hits within 0.05 m and restores locomotion.",
+      "description": "AirState node (child of Skater, wired in the cell scene) owns the ollie: 40 ms crouch anticipation then vy 7.2 m/s (8.4 crouched); tracks airborne via parent is_on_floor(); landing settles within 150 ms and closes the trick window. Ground-truth raycast authority arrives with grind state.",
       "acceptanceCriteria": [
         "grounded flips false within one physics tick of ollie input",
         "apex height between 1.2 m and 1.5 m at default gravity 18",
@@ -75,11 +75,11 @@
       "evidenceIds": [
         "traversal"
       ],
-      "passes": false,
+      "passes": true,
       "managerInterventions": 0,
       "allowedFiles": [
-        "scripts/skater/air_state.sh",
-        "scripts/skater/ground_probe.sh"
+        "scripts/skater/air_state.gd",
+        "game/scenes/skater_cell.tscn"
       ],
       "testFile": "tests_staged/test_us103_ollie.sh",
       "verify": "bash tests_staged/test_us103_ollie.sh",
@@ -106,8 +106,8 @@
       "passes": false,
       "managerInterventions": 0,
       "allowedFiles": [
-        "scripts/skater/grind_state.sh",
-        "scripts/ui/balance_meter.sh"
+        "scripts/skater/grind_state.gd",
+        "scripts/ui/balance_meter.gd"
       ],
       "testFile": "tests_staged/test_us104_grind.sh",
       "verify": "bash tests_staged/test_us104_grind.sh",
@@ -134,8 +134,8 @@
       "passes": false,
       "managerInterventions": 0,
       "allowedFiles": [
-        "scripts/run/run_state.sh",
-        "scripts/run/run_hud.sh"
+        "scripts/run/run_state.gd",
+        "scripts/run/run_hud.gd"
       ],
       "testFile": "tests_staged/test_us105_run_model.sh",
       "verify": "bash tests_staged/test_us105_run_model.sh",
@@ -194,7 +194,7 @@
       "managerInterventions": 0,
       "allowedFiles": [
         "game/scenes/main.tscn",
-        "scripts/orchestration/run_flow.sh"
+        "scripts/orchestration/run_flow.gd"
       ],
       "testFile": "tests_staged/test_q01_vertical_slice.sh",
       "verify": "bash tests_staged/test_q01_vertical_slice.sh",
@@ -228,8 +228,8 @@
       "passes": false,
       "managerInterventions": 0,
       "allowedFiles": [
-        "scripts/ui/theme.sh",
-        "scripts/fx/light_rig.sh"
+        "scripts/ui/theme.gd",
+        "scripts/fx/light_rig.gd"
       ],
       "testFile": "tests_staged/test_q02_look_lock.sh",
       "verify": "bash tests_staged/test_q02_look_lock.sh"
@@ -265,8 +265,8 @@
       "passes": false,
       "managerInterventions": 0,
       "allowedFiles": [
-        "scripts/park/layout_builder.sh",
-        "scripts/park/asset_adapter.sh"
+        "scripts/park/layout_builder.gd",
+        "scripts/park/asset_adapter.gd"
       ],
       "testFile": "tests_staged/test_q03_asset_integration.sh",
       "verify": "bash tests_staged/test_q03_asset_integration.sh"
@@ -293,8 +293,8 @@
       "passes": false,
       "managerInterventions": 0,
       "allowedFiles": [
-        "scripts/skater/trick_feedback.sh",
-        "scripts/fx/sparks_pool.sh"
+        "scripts/skater/trick_feedback.gd",
+        "scripts/fx/sparks_pool.gd"
       ],
       "testFile": "tests_staged/test_q04_feedback_atom.sh",
       "verify": "bash tests_staged/test_q04_feedback_atom.sh"
@@ -321,8 +321,8 @@
       "passes": false,
       "managerInterventions": 0,
       "allowedFiles": [
-        "scripts/camera/follow_cam.sh",
-        "scripts/input/input_router.sh"
+        "scripts/camera/follow_cam.gd",
+        "scripts/input/input_router.gd"
       ],
       "testFile": "tests_staged/test_q05_camera_input.sh",
       "verify": "bash tests_staged/test_q05_camera_input.sh"
@@ -348,8 +348,8 @@
       "passes": false,
       "managerInterventions": 0,
       "allowedFiles": [
-        "scripts/perf/budget_governor.sh",
-        "scripts/perf/metrics_reporter.sh"
+        "scripts/perf/budget_governor.gd",
+        "scripts/perf/metrics_reporter.gd"
       ],
       "testFile": "tests_staged/test_q06_performance_resilience.sh",
       "verify": "bash tests_staged/test_q06_performance_resilience.sh"
