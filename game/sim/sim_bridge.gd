@@ -58,6 +58,8 @@ func _run_async() -> void:
 		await _exec(step)
 		if result.pass and step == steps[-1]:
 			pass
+	_sync_qa()
+	result["adapter"] = qa.get("adapter", {})
 	var gate: bool = bool(parsed.get("gate", false))
 	result.pass = result.asserts_failed.is_empty() and result.unknown_ops == 0
 	if gate:
@@ -409,6 +411,38 @@ func _probe(step: Dictionary) -> void:
 				result.probes_ok.append(name)
 			else:
 				result.probes[name] = "apex %.3f outside [%s,%s]" % [best, step.get("min"), step.get("max")]
+		"adapter_report":
+			_sync_qa()
+			var a: Dictionary = qa.get("adapter", {})
+			var want_missing := expect_degraded
+			if not a.is_empty() and int(a.get("loaded", 0)) >= 20 and (a.get("missing", 99) == 0) != want_missing:
+				result.probes[name] = "ok"
+				result.probes_ok.append(name)
+				result.metrics["draw_calls"] = RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME)
+			else:
+				result.probes[name] = JSON.stringify(a)
+		"clip_report":
+			_sync_qa()
+			var scene: Node = current_scene
+			var builder: Node = null
+			for n in get_nodes_in_group("qa_state"):
+				if n.has_method("clip_report"):
+					builder = n
+					break
+			var rep: Dictionary = builder.clip_report() if builder != null and builder.has_method("clip_report") else {}
+			if rep.get("idle") and rep.get("skate") and rep.get("skate-air") and rep.get("die"):
+				result.probes[name] = "ok"
+				result.probes_ok.append(name)
+			else:
+				result.probes[name] = JSON.stringify(rep)
+		"degrade_report":
+			_sync_qa()
+			var dgr: Dictionary = qa.get("adapter", {})
+			if bool(dgr.get("degraded", false)) == true:
+				result.probes[name] = "ok"
+				result.probes_ok.append(name)
+			else:
+				result.probes[name] = "expected degraded"
 		"env_report":
 			_sync_qa()
 			var e: Dictionary = qa.get("env", {})

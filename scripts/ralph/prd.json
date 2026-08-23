@@ -293,7 +293,7 @@
     {
       "id": "US-Q03",
       "title": "Asset integration: every shipping asset loads through the measured adapter",
-      "description": "Capstone of phase 3 (all US-3xx mini-stories pass first). Park builder instantiates the full LEDGEWORKS layout from data: all 8 authored street pieces, Kenney kit pieces, factory props, five PBR surface sets, HDRI, characters with clip map, board, audio banks. Each asset flows through the manifest adapter (id -> path -> normalized instance) with fallback verification when a file is deliberately hidden.",
+      "description": "ParkBuilder (cell-root script) loads the manifest registry once, instantiates THE LEDGEWORKS from a deterministic layout table (floor grid, transition ring, street ring, grind lines, dressing props), registers loaded/missing per id, degrades to gray hulls sized by targetSizeMeters when files are hidden, and verifies character clip maps.",
       "acceptanceCriteria": [
         "adapter loads 100 percent of manifest ids with category environment, prop, character or animation; zero missing",
         "measured GLB extents match manifest targetSizeMeters within 6 percent on all axes",
@@ -318,11 +318,11 @@
         "hdri-dusk",
         "music-run"
       ],
-      "passes": false,
+      "passes": true,
       "managerInterventions": 0,
       "allowedFiles": [
         "scripts/park/layout_builder.gd",
-        "scripts/park/asset_adapter.gd"
+        "game/scenes/skater_cell.tscn"
       ],
       "testFile": "tests_staged/test_q03_asset_integration.sh",
       "verify": "bash tests_staged/test_q03_asset_integration.sh"

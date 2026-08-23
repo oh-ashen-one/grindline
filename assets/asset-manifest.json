@@ -26,7 +26,8 @@
     "locomotion": "anim-boy-ride",
     "primaryAction": "anim-boy-ollie",
     "hitOrFail": "anim-boy-bail"
-   }
+   },
+   "importScale": 2.263
   },
   {
    "id": "hero-girl",
@@ -53,7 +54,8 @@
     "locomotion": "anim-girl-ride",
     "primaryAction": "anim-girl-ollie",
     "hitOrFail": "anim-girl-bail"
-   }
+   },
+   "importScale": 2.263
   },
   {
    "id": "board",

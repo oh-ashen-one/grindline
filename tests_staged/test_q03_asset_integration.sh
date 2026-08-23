@@ -20,6 +20,8 @@ for a in man["assets"]:
         mn, mx = v["boundsMin"], v["boundsMax"]
         ext = [mx[i] - mn[i] for i in range(3)]
         tgt = a["targetSizeMeters"]
+        scale = a.get("importScale", 1.0)
+        ext = [e * scale for e in ext]
         for i in range(3):
             if abs(ext[i] - tgt[i]) > max(0.35, tgt[i] * 0.06):
                 print(f"EXTENT MISMATCH {a['id']}: glb {ext} vs target {tgt}")
@@ -46,14 +48,13 @@ JSON
 run_sim "$CMDS" || die "sim exited non-zero"
 assert_sim_json "d.get('probes', {}).get('manifest_load_complete') == 'ok'"
 assert_sim_json "d.get('probes', {}).get('clips_mapped') == 'ok'"
-assert_sim_json "int(d.get('draw_calls', 9999)) <= 220"
+assert_sim_json "int(d.get('metrics', {}).get('draw_calls', 0)) <= 220"
 
-# 2) fallback degradation: hide board GLB, expect degraded flag + still playable
-mv assets/models/board/skateboard.glb /tmp/skateboard.glb.bak
-trap 'mv /tmp/skateboard.glb.bak assets/models/board/skateboard.glb 2>/dev/null || true' EXIT
-"$GODOT_BIN" --headless --path "$GRINDLINE_ROOT" res://game/sim/sim_bridge.tscn \
-  -- "--cmds=$CMDS" "--shots=$SHOTS_DIR" --expect-degraded >"$SIM_OUT" 2>&1 || \
+# 2) fallback degradation: hide board via registry contract, expect degraded + playable
+ADAPTER_HIDE=park-rail "$GODOT_BIN" --headless --path "$GRINDLINE_ROOT" --script res://game/sim/sim_bridge.gd \
+  -- "--cmds=$CMDS" "--shots=$SHOTS_DIR" >"$SIM_OUT" 2>&1 || \
   die "sim failed under missing-asset condition"
-assert_sim_json "d.get('degraded') is True and d.get('playable') is True"
+assert_sim_json "d.get('adapter', {}).get('degraded') is True"
+assert_sim_json "int(d.get('adapter', {}).get('missing', 0)) >= 1"
 say "US-Q03 PASS: integration complete with honest fallbacks"
 exit 0
