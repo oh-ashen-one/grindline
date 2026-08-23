@@ -24,3 +24,14 @@
   tests + 3 input probes staged as honest RED specs (fail fast on missing
   project.godot). ATTRIBUTION.md covers CC-BY music credit. Committed.
   Next: phase 1 mini-stories US-101.. with tests, then capstone US-Q01.
+
+- [2026-08-23] PHASE 1 COMPLETE (7/13): US-101..106 + US-Q01 green.
+  Patterns earned: bridge ops grow per story (seekMs/soak fast-forward via
+  Engine.time_scale 20x for >2s seeks; set_path mutates mirror only - use
+  purposeful ops like expire_timer for node writes; teleport sets heading var
+  too; approx_path/lt_prev/path_in_range_ms/max_path_value_between_ms probes).
+  Physics ownership: locomotion owns horizontal+stick; air_state owns vy;
+  grind_state locks height while grinding. Landing banking via run_state
+  watching AirState.airborne falling edge. GDScript traps hit: strip() vs
+  strip_edges(), coroutine await patterns, Variant inference errors,
+  load_steps count must match ext+sub+1, mktemp BSD wants trailing X's.
