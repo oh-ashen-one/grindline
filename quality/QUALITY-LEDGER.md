@@ -44,3 +44,7 @@ Known compromises: single music track at Phase 0 (more may be added during
 asset integration); AI skaters are scripted loops, not opponents.
 Next highest-leverage improvement after vertical slice: look-lock lighting
 pass to lock the dusk mood before content multiplication.
+- 2026-08-23 / F-003: look-lock pixel probes calibrated against measured
+  ACES-tonemapped frames, not raw palette hex. Measured title frame dominant
+  dusk orange #e06040 (tonemap shifts #e8683a), luma spread thresholds set to
+  dark<0.3 / bright>0.5 with 1 percent share. Regression gate: Q02 probes.

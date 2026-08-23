@@ -40,6 +40,18 @@ run_sim() {
   return $rc
 }
 
+# run_sim_gfx — windowed variant for pixel-producing captures.
+run_sim_gfx() {
+  local cmds="$1"; shift || true
+  [[ -f "$GRINDLINE_ROOT/game/sim/sim_bridge.gd" ]] || die "missing game/sim/sim_bridge.gd"
+  mkdir -p "$SHOTS_DIR"
+  "$GODOT_BIN" --path "$GRINDLINE_ROOT" --script res://game/sim/sim_bridge.gd \
+    -- "--cmds=$cmds" "--shots=$SHOTS_DIR" "$@" >"$SIM_OUT" 2>&1
+  local rc=$?
+  grep -E "SIM RESULT|SIM ASSERT|SIM ERROR" "$SIM_OUT" | tail -40 || true
+  return $rc
+}
+
 # assert_sim_json <python-expr over parsed SIM RESULT dict as d>
 assert_sim_json() {
   python3 - "$SIM_OUT" "$1" <<'PYEOF'

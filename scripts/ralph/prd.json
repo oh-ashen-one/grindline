@@ -277,7 +277,7 @@
         "title",
         "primary-action"
       ],
-      "passes": false,
+      "passes": true,
       "managerInterventions": 0,
       "allowedFiles": [
         "scripts/ui/theme.gd",

@@ -1,8 +1,38 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/orchestration/app_flow.gd" id="1_app"]
 [ext_resource type="Script" path="res://scripts/orchestration/run_flow.gd" id="6_flow"]
+[ext_resource type="PackedScene" path="res://assets/models/characters/skater_boy.glb" id="7_boy"]
+[ext_resource type="PackedScene" path="res://assets/models/board/skateboard.glb" id="8_board"]
 [ext_resource type="FontFile" path="res://assets/ui/fonts/BebasNeue-Regular.ttf" id="2_font"]
+
+[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
+sky_top_color = Color(0.164706, 0.101961, 0.2, 1)
+sky_horizon_color = Color(0.909804, 0.407843, 0.227451, 1)
+ground_bottom_color = Color(0.12, 0.09, 0.1, 1)
+ground_horizon_color = Color(0.909804, 0.407843, 0.227451, 1)
+
+[sub_resource type="Sky" id="sky_res"]
+sky_material = SubResource("sky_mat")
+
+[sub_resource type="Environment" id="env_res"]
+background_mode = 2
+sky = SubResource("sky_res")
+tonemap_mode = 3
+
+[sub_resource type="BoxShape3D" id="floor_shape"]
+size = Vector3(30, 1, 30)
+
+[sub_resource type="PlaneMesh" id="floor_mesh"]
+size = Vector2(30, 30)
+
+[sub_resource type="StandardMaterial3D" id="floor_mat"]
+albedo_color = Color(0.607843, 0.592157, 0.560784, 1)
+roughness = 0.9
+
+[sub_resource type="CapsuleShape3D" id="skater_shape"]
+radius = 0.4
+height = 1.75
 
 [sub_resource type="LabelSettings" id="ls_wordmark"]
 font = ExtResource("2_font")
@@ -17,6 +47,43 @@ script = ExtResource("1_app")
 
 [node name="RunFlow" type="Node" parent="."]
 script = ExtResource("6_flow")
+
+[node name="MenuWorld" type="Node3D" parent="."]
+
+[node name="MenuEnv" type="WorldEnvironment" parent="MenuWorld"]
+environment = SubResource("env_res")
+
+[node name="MenuSun" type="DirectionalLight3D" parent="MenuWorld"]
+transform = Transform3D(0.813798, 0.351041, -0.463995, 0, 0.797763, 0.602984, 0.581233, -0.490768, 0.649054, 0, 8, 0)
+light_energy = 1.2
+light_color = Color(1, 0.85098, 0.658824, 1)
+
+[node name="MenuFloor" type="StaticBody3D" parent="MenuWorld"]
+
+[node name="MenuFloorShape" type="CollisionShape3D" parent="MenuWorld/MenuFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("floor_shape")
+
+[node name="MenuFloorMesh" type="MeshInstance3D" parent="MenuWorld/MenuFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("floor_mesh")
+surface_material_override/0 = SubResource("floor_mat")
+
+[node name="TitleSkater" type="CharacterBody3D" parent="MenuWorld"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
+
+[node name="TitleSkaterShape" type="CollisionShape3D" parent="MenuWorld/TitleSkater"]
+shape = SubResource("skater_shape")
+
+[node name="Visual" parent="MenuWorld/TitleSkater" instance=ExtResource("7_boy")]
+transform = Transform3D(2.263, 0, 0, 0, 2.263, 0, 0, 0, 2.263, 0, -0.85, 0)
+
+[node name="BoardVisual" parent="MenuWorld/TitleSkater" instance=ExtResource("8_board")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.82, 0)
+
+[node name="MenuCam" type="Camera3D" parent="MenuWorld"]
+transform = Transform3D(1, 0, 0, 0, 0.961222, 0.275836, 0, -0.275836, 0.961222, 0, 2.4, 5.6)
+fov = 62.0
 
 [node name="TitleLayer" type="CanvasLayer" parent="."]
 

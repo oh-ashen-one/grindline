@@ -147,7 +147,11 @@ func _exec(step: Dictionary) -> void:
 				await physics_frame
 			else:
 				result.unknown_ops += 1
-		"setCamera", "setUi", "viewport", "beat", "degrade":
+		"setCamera":
+			_apply_camera(String(step.get("id", "")))
+		"setUi":
+			_apply_ui(String(step.get("id", "")))
+		"viewport", "beat", "degrade":
 			result.unknown_ops += 1
 			result.probes[String(op) + ":unimplemented"] = "pending"
 		_:
@@ -156,6 +160,30 @@ func _exec(step: Dictionary) -> void:
 const ZONES := {
 	"rail_approach": {"pos": Vector3(0, 1.2, -3.4), "heading_deg": 180.0},
 }
+
+const CAM_PRESETS := {
+	"menu_orbit": {"pos": Vector3(0, 2.4, 5.6), "fov": 62.0},
+	"follow_default": {"pos": Vector3(0, 2.1, 5.2), "fov": 62.0},
+	"follow_action": {"pos": Vector3(0, 1.8, 3.8), "fov": 66.0},
+}
+
+func _apply_camera(preset: String) -> void:
+	var p: Variant = CAM_PRESETS.get(preset)
+	if p == null or current_scene == null:
+		result.probes["camera:" + preset] = "unknown"
+		return
+	var cam: Camera3D = current_scene.find_child("CamRig", true, false)
+	if cam == null:
+		cam = current_scene.find_child("Camera3D", true, false)
+	if cam != null:
+		cam.fov = p["fov"]
+
+func _apply_ui(id: String) -> void:
+	if current_scene == null:
+		return
+	var layer := current_scene.find_child("TitleLayer", true, false)
+	if layer != null:
+		layer.visible = id in ["menu", "title"]
 
 func _teleport(zone: String) -> void:
 	var z: Variant = ZONES.get(zone)
@@ -287,9 +315,46 @@ func _probe(step: Dictionary) -> void:
 	var kind := String(step.get("kind", ""))
 	var name := String(step.get("name", kind))
 	# pixel probes need a real renderer; headless reports honestly.
-	if DisplayServer.get_name() == "headless" and kind in ["font_region", "color_cluster", "luma_contrast", "ui_targets", "hud_safe_area"]:
+	var pixel_kind := kind in ["font_region", "color_cluster", "luma_contrast"]
+	if DisplayServer.get_name() == "headless" and pixel_kind:
 		result.probes[name] = "unavailable_headless"
 		return
+	if pixel_kind:
+		var img := await _grab_image()
+		if img == null or img.is_empty():
+			result.probes[name] = "no_frame"
+			return
+		match kind:
+			"font_region":
+				var r: Array = step.get("region", [40, 40, 620, 240])
+				var paper := Color(0.960784, 0.917647, 0.847059)
+				var found := 0
+				for y in range(int(r[1]), int(r[3]), 2):
+					for x in range(int(r[0]), int(r[2]), 2):
+						if x >= img.get_width() or y >= img.get_height():
+							continue
+						var c := img.get_pixel(x, y)
+						if absf(c.r - paper.r) < 0.12 and absf(c.g - paper.g) < 0.12 and absf(c.b - paper.b) < 0.12:
+							found += 1
+				result.probes[name] = "ok" if found * 4 >= 120 else "paper px %d too few" % (found * 4)
+				if result.probes[name] == "ok":
+					result.probes_ok.append(name)
+				return
+			"color_cluster":
+				var hex: String = step.get("hex", "#ffffff")
+				if _probe_color_cluster(img, hex, int(step.get("min_pixels", 200))):
+					result.probes[name] = "ok"
+					result.probes_ok.append(name)
+				else:
+					result.probes[name] = "cluster under min_pixels"
+				return
+			"luma_contrast":
+				if _probe_luma_spread(img):
+					result.probes[name] = "ok"
+					result.probes_ok.append(name)
+				else:
+					result.probes[name] = "insufficient luma spread"
+				return
 	match kind:
 		"note_path":
 			var v: Variant = _lookup(String(step["path"]))
@@ -424,8 +489,40 @@ func _screenshot(id: String) -> void:
 	if DisplayServer.get_name() == "headless":
 		result.shots.append(id + ":unavailable_headless")
 		return
-	await process_frame
+	await RenderingServer.frame_post_draw
 	var img := root.get_texture().get_image()
 	var path := "%s/%s.png" % [shots_dir, id]
 	img.save_png(path)
 	result.shots.append(path)
+	result.metrics["shot_" + id] = path
+
+func _grab_image() -> Image:
+	await RenderingServer.frame_post_draw
+	return root.get_texture().get_image()
+
+func _probe_color_cluster(img: Image, hex: String, min_pixels: int) -> bool:
+	var target := Color(hex)
+	var count := 0
+	var step := 2
+	for y in range(0, img.get_height(), step):
+		for x in range(0, img.get_width(), step):
+			var c := img.get_pixel(x, y)
+			if absf(c.r - target.r) < 0.18 and absf(c.g - target.g) < 0.18 and absf(c.b - target.b) < 0.18:
+				count += 1
+	return count * step * step >= min_pixels
+
+func _probe_luma_spread(img: Image) -> bool:
+	var dark := 0
+	var bright := 0
+	var total := 0
+	var step := 4
+	for y in range(0, img.get_height(), step):
+		for x in range(0, img.get_width(), step):
+			var c := img.get_pixel(x, y)
+			var l := c.get_luminance()
+			total += 1
+			if l < 0.3:
+				dark += 1
+			elif l > 0.5:
+				bright += 1
+	return total > 0 and float(dark) / total > 0.01 and float(bright) / total > 0.01

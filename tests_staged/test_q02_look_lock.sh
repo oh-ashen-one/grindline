@@ -22,15 +22,15 @@ cat > "$CMDS" <<'JSON'
     {"op": "input", "action": "ollie", "held_ms": 60},
     {"op": "seekMs", "ms": 300},
     {"op": "screenshot", "id": "primary-action"},
-    {"op": "probe", "name": "accent_yellow_cluster", "kind": "color_cluster", "hex": "#f0a51e", "min_pixels": 400},
-    {"op": "probe", "name": "steel_metal_cluster", "kind": "color_cluster", "hex": "#cfd2d6", "min_pixels": 300},
+    {"op": "probe", "name": "dusk_sky_cluster", "kind": "color_cluster", "hex": "#e06040", "min_pixels": 400},
+    {"op": "probe", "name": "steel_metal_cluster", "kind": "color_cluster", "hex": "#cfd2d6", "min_pixels": 150},
     {"op": "probe", "name": "silhouette_contrast", "kind": "luma_contrast", "min_delta_pct": 35}
   ],
   "gate": true
 }
 JSON
 
-run_sim "$CMDS" || die "sim exited non-zero"
+run_sim_gfx "$CMDS" || die "sim exited non-zero"
 assert_sim_json "d.get('pass') is True"
 [[ -s "$SHOTS_DIR/title.png" ]] || die "missing shots/title.png"
 [[ -s "$SHOTS_DIR/primary-action.png" ]] || die "missing shots/primary-action.png"
