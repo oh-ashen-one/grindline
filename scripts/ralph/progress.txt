@@ -1,0 +1,26 @@
+# Codebase Patterns
+
+- Builder for grindline is ox-alpha (this CLI), per scripts/ralph/OX-ALPHA.md.
+  Judge = shell verifies in tests_staged/. Manager pre-approved goal; no local
+  models; never touch clipfarm/LM Studio.
+- Project layout: ~/grindline IS the Godot project root (bonebreaker pattern).
+  Assets under assets/ (preflight expects $ROOT/assets). Harness/playbook
+  lives separately at ~/0x-alpha-gaming-loop.
+- Asset pipeline: tools/measure_assets.py -> game/data/asset_metrics.json;
+  tools/build_asset_manifest.py -> assets/asset-manifest.json (+MD with
+  absolute paths — gate regex rejects spaces in paths).
+- Blender authoring: strict Z-up, explicit meshes (no operator rotations);
+  glTF export flips to Y-up automatically.
+- cook_forever.sh tmux supervisor was killed 2026-08-23 by manager decision:
+  ox-alpha drives the loop interactively now. Do not relaunch it while this
+  loop is active (it would spawn a competing builder).
+
+## Iterations
+
+- [2026-08-23] PHASE 0 COMPLETE by ox-alpha takeover (Hari ended old session):
+  assets staged+pinned (108 entries), both preflights GREEN, BRIEF.md design
+  bible written, contract.json complete, QUALITY-LEDGER.md seeded (F-001,
+  F-002), prd.json Q01-Q07 authored with real acceptance criteria, 7 quality
+  tests + 3 input probes staged as honest RED specs (fail fast on missing
+  project.godot). ATTRIBUTION.md covers CC-BY music credit. Committed.
+  Next: phase 1 mini-stories US-101.. with tests, then capstone US-Q01.
