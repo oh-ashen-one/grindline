@@ -41,6 +41,11 @@ func _initialize() -> void:
 
 func _run_async() -> void:
 	await process_frame
+	# mount the game's main scene so qa_state nodes register
+	if current_scene == null and ResourceLoader.exists("res://game/scenes/main.tscn"):
+		change_scene_to_file("res://game/scenes/main.tscn")
+		await process_frame
+		await process_frame
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(cmds_path))
 	if typeof(parsed) != TYPE_DICTIONARY:
 		result.reason = "commands file is not a JSON object"
@@ -72,7 +77,22 @@ func _compact(d: Dictionary) -> Dictionary:
 
 # ---------------- op dispatch ----------------
 
+func _sync_qa() -> void:
+	# gameplay modules join group "qa_state" and expose get_qa_dict();
+	# their truth merges into the bridge's view before every op.
+	for n in get_nodes_in_group("qa_state"):
+		if n.has_method("get_qa_dict"):
+			_deep_merge(qa, n.get_qa_dict())
+
+func _deep_merge(base: Dictionary, extra: Dictionary) -> void:
+	for k: String in extra:
+		if typeof(extra[k]) == TYPE_DICTIONARY and typeof(base.get(k)) == TYPE_DICTIONARY:
+			_deep_merge(base[k], extra[k])
+		else:
+			base[k] = extra[k]
+
 func _exec(step: Dictionary) -> void:
+	_sync_qa()
 	var op := String(step.get("op", ""))
 	match op:
 		"noop":

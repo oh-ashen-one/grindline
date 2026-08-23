@@ -5,6 +5,7 @@ config_version=5
 [application]
 
 config/name="GRINDLINE"
+run/main_scene="res://game/scenes/main.tscn"
 config/description="THPS2-style arcade skating in a dusk industrial plaza."
 run/max_fps=120
 

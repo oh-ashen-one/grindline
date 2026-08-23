@@ -159,7 +159,7 @@
       "evidenceIds": [
         "title"
       ],
-      "passes": false,
+      "passes": true,
       "managerInterventions": 0,
       "allowedFiles": [
         "game/scenes/main.tscn",
