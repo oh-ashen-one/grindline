@@ -118,7 +118,7 @@
     {
       "id": "US-105",
       "title": "Run model: timer, score, combo, multiplier, bail reset",
-      "description": "run_state autoload owns time_left_ms (120000 start), score, combo_count, multiplier; bail resets multiplier and combo but not score bank; expiry flips phase to results; signals drive HUD only.",
+      "description": "RunState node (in cell scene): 120000 ms countdown exact to sim ticks, ollie-landing detection banks combo_count and pending points x multiplier, bail_force resets multiplier and pending within one tick, expiry flips phase to results. HUD visuals arrive with feedback atoms.",
       "acceptanceCriteria": [
         "timer counts down at exactly 1000 ms per second sim time",
         "ollie landing adds base points and increments combo_count once",
@@ -131,11 +131,11 @@
       "evidenceIds": [
         "traversal"
       ],
-      "passes": false,
+      "passes": true,
       "managerInterventions": 0,
       "allowedFiles": [
         "scripts/run/run_state.gd",
-        "scripts/run/run_hud.gd"
+        "game/scenes/skater_cell.tscn"
       ],
       "testFile": "tests_staged/test_us105_run_model.sh",
       "verify": "bash tests_staged/test_us105_run_model.sh",

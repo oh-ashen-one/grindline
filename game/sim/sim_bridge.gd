@@ -299,6 +299,19 @@ func _probe(step: Dictionary) -> void:
 				result.probes_ok.append(name)
 			else:
 				result.probes[name] = "apex %.3f outside [%s,%s]" % [best, step.get("min"), step.get("max")]
+		"approx_path":
+			var av: Variant = _lookup(String(step["path"]))
+			if av == null:
+				result.probes[name] = "no_value"
+			else:
+				var want := float(step["value"])
+				var tol := float(step.get("tol", 0.001))
+				var got := float(av)
+				if absf(got - want) <= tol:
+					result.probes[name] = "ok"
+					result.probes_ok.append(name)
+				else:
+					result.probes[name] = "got %.3f want %.3f" % [got, want]
 		"lt_prev", "path_in_range_ms":
 			var dur := float(step.get("ms", 500)) / 1000.0
 			var first: Variant = null
