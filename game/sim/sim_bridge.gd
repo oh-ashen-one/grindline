@@ -101,7 +101,7 @@ func _exec(step: Dictionary) -> void:
 			qa = {"app": {"phase": "title"}, "skater": {}, "run": {}, "balance": {}, "grind": {}, "camera": {}}
 		"start":
 			_start_mode(String(step.get("mode", "run")))
-		"seekMs":
+		"seekMs", "soak":
 			var ms := float(step.get("ms", 0))
 			var t := 0.0
 			while t < ms / 1000.0:
@@ -122,8 +122,11 @@ func _exec(step: Dictionary) -> void:
 			result.unknown_ops += 1
 
 func _start_mode(mode: String) -> void:
-	# world modules replace this as phases land; title-only for now.
-	if mode.begins_with("run"):
+	if mode.begins_with("run") or mode == "worst":
+		# gameplay cell mounts; park layout arrives with asset integration
+		if ResourceLoader.exists("res://game/scenes/skater_cell.tscn"):
+			change_scene_to_file("res://game/scenes/skater_cell.tscn")
+			await process_frame
 		qa.app.phase = "running"
 		qa.run = {"phase": "running", "time_left_ms": 120000.0, "score": 0, "combo_count": 0, "multiplier": 1}
 	else:
@@ -201,6 +204,9 @@ func _key_for(name: String) -> Key:
 		"bail_force", "key_b": return KEY_B
 		_: return KEY_NONE
 
+var _notes := {}          # probe scratchpad: name -> value snapshot
+var _prev_vals := {}      # lt_prev tracking
+
 func _probe(step: Dictionary) -> void:
 	var kind := String(step.get("kind", ""))
 	var name := String(step.get("name", kind))
@@ -208,8 +214,43 @@ func _probe(step: Dictionary) -> void:
 	if DisplayServer.get_name() == "headless" and kind in ["font_region", "color_cluster", "luma_contrast", "ui_targets", "hud_safe_area"]:
 		result.probes[name] = "unavailable_headless"
 		return
-	result.probes[name] = "ok"
-	result.probes_ok.append(name)
+	match kind:
+		"note_path":
+			var v: Variant = _lookup(String(step["path"]))
+			if v == null:
+				result.probes[name] = "no_value"
+				return
+			_notes[name] = float(v)
+			result.probes[name] = "ok"
+			result.probes_ok.append(name)
+		"delta_from_note":
+			var base: Variant = _notes.get(step.get("from", ""), null)
+			var cur: Variant = _lookup(String(step["path"]))
+			if base == null or cur == null:
+				result.probes[name] = "no_value"
+				return
+			var delta := absf(float(cur) - float(base))
+			if delta >= float(step.get("min_abs", 0.0)):
+				result.probes[name] = "ok"
+				result.probes_ok.append(name)
+			else:
+				result.probes[name] = "delta %.2f < %s" % [delta, step.get("min_abs")]
+		"scalar_gte":
+			var v2: Variant = _lookup(String(step["path"]))
+			if v2 != null and float(v2) >= float(step["value"]):
+				result.probes[name] = "ok"
+				result.probes_ok.append(name)
+			else:
+				result.probes[name] = "got %s" % v2
+		"scalar_lte":
+			var v3: Variant = _lookup(String(step["path"]))
+			if v3 != null and float(v3) <= float(step["value"]):
+				result.probes[name] = "ok"
+				result.probes_ok.append(name)
+			else:
+				result.probes[name] = "got %s" % v3
+		_:
+			result.unknown_ops += 1
 
 func _screenshot(id: String) -> void:
 	if shots_dir == "":

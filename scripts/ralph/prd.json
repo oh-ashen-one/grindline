@@ -47,7 +47,7 @@
       "evidenceIds": [
         "traversal"
       ],
-      "passes": false,
+      "passes": true,
       "managerInterventions": 0,
       "allowedFiles": [
         "game/scenes/skater_cell.tscn",

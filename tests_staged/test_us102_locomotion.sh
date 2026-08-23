@@ -12,7 +12,9 @@ cat > "$CMDS" <<'JSON'
     {"op": "seekMs", "ms": 500},
     {"op": "input", "action": "push", "held_ms": 2000},
     {"op": "probe", "name": "speed_reached", "kind": "scalar_gte", "path": "skater.speed", "value": 8.0},
-    {"op": "probe", "name": "heading_turned", "kind": "heading_delta", "min_deg": 60},
+    {"op": "probe", "name": "hdg_before", "kind": "note_path", "path": "skater.heading_deg"},
+    {"op": "input", "action": "steer_left", "held_ms": 400},
+    {"op": "probe", "name": "heading_turned", "kind": "delta_from_note", "from": "hdg_before", "path": "skater.heading_deg", "min_abs": 60},
     {"op": "soak", "ms": 3000, "script": "idle"},
     {"op": "probe", "name": "friction_decayed", "kind": "scalar_lte", "path": "skater.speed", "value": 1.0}
   ],
@@ -21,6 +23,7 @@ cat > "$CMDS" <<'JSON'
 JSON
 run_sim "$CMDS" || die "sim failed"
 assert_sim_json "'speed_reached' in d.get('probes_ok', [])"
+assert_sim_json "'heading_turned' in d.get('probes_ok', [])"
 assert_sim_json "'friction_decayed' in d.get('probes_ok', [])"
 say "US-102 PASS: locomotion constants verified"
 exit 0
