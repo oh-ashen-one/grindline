@@ -27,12 +27,13 @@ import_gate() {
 }
 
 # run_sim <commands-json-file> [extra args...]
-# Requires game/sim/sim_bridge.tscn (the deterministic QA transport).
+# Drives game/sim/sim_bridge.gd (the deterministic QA transport, SceneTree
+# script mode). Extra args pass through (e.g. --expect-degraded).
 run_sim() {
   local cmds="$1"; shift || true
-  [[ -f "$GRINDLINE_ROOT/game/sim/sim_bridge.tscn" ]] || die "missing game/sim/sim_bridge.tscn"
+  [[ -f "$GRINDLINE_ROOT/game/sim/sim_bridge.gd" ]] || die "missing game/sim/sim_bridge.gd"
   mkdir -p "$SHOTS_DIR"
-  "$GODOT_BIN" --headless --path "$GRINDLINE_ROOT" res://game/sim/sim_bridge.tscn \
+  "$GODOT_BIN" --headless --path "$GRINDLINE_ROOT" --script res://game/sim/sim_bridge.gd \
     -- "--cmds=$cmds" "--shots=$SHOTS_DIR" "$@" >"$SIM_OUT" 2>&1
   local rc=$?
   grep -E "SIM RESULT|SIM ASSERT|SIM ERROR" "$SIM_OUT" | tail -40 || true

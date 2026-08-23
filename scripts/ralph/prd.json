@@ -1,9 +1,176 @@
 {
   "projectName": "grindline",
   "branchName": "ralph/grindline",
-  "description": "GRINDLINE: THPS2-style arcade skating in Godot 4 — one dusk industrial plaza, 2-minute scored runs, ollies/grinds/manuals, S-K-A-T-E objectives, 4-skater roster, ship-quality.",
+  "description": "GRINDLINE: THPS2-style arcade skating in Godot 4 \u2014 one dusk industrial plaza, 2-minute scored runs, ollies/grinds/manuals, S-K-A-T-E objectives, 4-skater roster, ship-quality.",
   "regressionVerify": "jq -r '.userStories[] | select(.passes==true) | .verify' scripts/ralph/prd.json | while IFS= read -r cmd; do echo \"REGRESSION: $cmd\"; bash -c \"$cmd\" || exit 1; done",
   "userStories": [
+    {
+      "id": "US-101",
+      "title": "Project skeleton: boot, title state, sim bridge transport",
+      "description": "project.godot at repo root (main scene placeholder, input map declared); headless sim bridge scene accepts a JSON command file, executes reset/start/seekMs/input/assert/probe/screenshot ops against a growing app API, prints 'SIM RESULT {json}' lines and exits with gate semantics. Unimplemented ops report pass:false with reason rather than crashing.",
+      "acceptanceCriteria": [
+        "godot --headless --path . --import completes with zero errors",
+        "sim bridge executes a 5-op JSON script including an unknown-op probe without crashing",
+        "SIM RESULT line is valid JSON on stdout",
+        "screenshot op writes a valid PNG into shots/",
+        "exit code 0 only when gate passes"
+      ],
+      "priority": 101,
+      "phase": 1,
+      "qualityClass": "vertical-slice",
+      "evidenceIds": [
+        "traversal"
+      ],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": [
+        "project.godot",
+        "game/sim/sim_bridge.sh"
+      ],
+      "testFile": "tests_staged/test_us101_boot.sh",
+      "verify": "bash tests_staged/test_us101_boot.sh",
+      "blockedBy": []
+    },
+    {
+      "id": "US-102",
+      "title": "Skater body: push acceleration, steering, friction on flat floor",
+      "description": "CharacterBody3D skater (Kenney boy GLB placeholder-scale ok for slice) on concrete floor cell; hold push applies 6.5 m/s^2 to max 11 m/s along facing; steer rotates heading 3.5 rad/s at speed; ground friction decel 4.0 m/s^2 when idle.",
+      "acceptanceCriteria": [
+        "push reaches 8 m/s within 2 s of held input",
+        "heading turns at least 60 deg in 400 ms while moving",
+        "speed decays to under 1 m/s within 3 s of releasing inputs",
+        "skater stays grounded on flat floor without drifting vertically"
+      ],
+      "priority": 102,
+      "phase": 1,
+      "qualityClass": "vertical-slice",
+      "evidenceIds": [
+        "traversal"
+      ],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": [
+        "game/scenes/skater_cell.tscn",
+        "scripts/skater/locomotion.sh"
+      ],
+      "testFile": "tests_staged/test_us102_locomotion.sh",
+      "verify": "bash tests_staged/test_us102_locomotion.sh",
+      "blockedBy": [
+        "US-101"
+      ]
+    },
+    {
+      "id": "US-103",
+      "title": "Ollie: impulse, air state, landing detection",
+      "description": "Space triggers ollie when grounded after 40 ms crouch anticipation; vy set 7.2 m/s (8.4 crouched); grounded false same tick; landing re-grounds when probe hits within 0.05 m and restores locomotion.",
+      "acceptanceCriteria": [
+        "grounded flips false within one physics tick of ollie input",
+        "apex height between 1.2 m and 1.5 m at default gravity 18",
+        "landing re-grounds and plays land settle within 150 ms of contact",
+        "trick window closes on landing"
+      ],
+      "priority": 103,
+      "phase": 1,
+      "qualityClass": "vertical-slice",
+      "evidenceIds": [
+        "traversal"
+      ],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": [
+        "scripts/skater/air_state.sh",
+        "scripts/skater/ground_probe.sh"
+      ],
+      "testFile": "tests_staged/test_us103_ollie.sh",
+      "verify": "bash tests_staged/test_us103_ollie.sh",
+      "blockedBy": [
+        "US-102"
+      ]
+    },
+    {
+      "id": "US-104",
+      "title": "Grind latch + balance meter on the flat rail",
+      "description": "Shape-cast below feet finds Rail node group 'grind'; airborne + capture radius 0.35 m latches board to rail axis; velocity redirects along it; balance meter starts 0.5, decays 0.22/s scaled by slope, input corrects 0.35/s per unit, fail outside 0.06..0.94 drops to bail.",
+      "acceptanceCriteria": [
+        "latch snaps lateral offset under 0.15 m and zeroes vertical velocity",
+        "meter value decays measurably without input over 500 ms",
+        "full stick correction holds meter inside band for 2 s",
+        "exiting band triggers bail state and unlock from rail"
+      ],
+      "priority": 104,
+      "phase": 1,
+      "qualityClass": "vertical-slice",
+      "evidenceIds": [
+        "traversal"
+      ],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": [
+        "scripts/skater/grind_state.sh",
+        "scripts/ui/balance_meter.sh"
+      ],
+      "testFile": "tests_staged/test_us104_grind.sh",
+      "verify": "bash tests_staged/test_us104_grind.sh",
+      "blockedBy": [
+        "US-103"
+      ]
+    },
+    {
+      "id": "US-105",
+      "title": "Run model: timer, score, combo, multiplier, bail reset",
+      "description": "run_state autoload owns time_left_ms (120000 start), score, combo_count, multiplier; bail resets multiplier and combo but not score bank; expiry flips phase to results; signals drive HUD only.",
+      "acceptanceCriteria": [
+        "timer counts down at exactly 1000 ms per second sim time",
+        "ollie landing adds base points and increments combo_count once",
+        "bail_force zeroes pending combo and sets multiplier to 1 within one tick",
+        "phase becomes results when time_left_ms hits 0"
+      ],
+      "priority": 105,
+      "phase": 1,
+      "qualityClass": "vertical-slice",
+      "evidenceIds": [
+        "traversal"
+      ],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": [
+        "scripts/run/run_state.sh",
+        "scripts/run/run_hud.sh"
+      ],
+      "testFile": "tests_staged/test_us105_run_model.sh",
+      "verify": "bash tests_staged/test_us105_run_model.sh",
+      "blockedBy": [
+        "US-104"
+      ]
+    },
+    {
+      "id": "US-106",
+      "title": "Title state and app phase machine",
+      "description": "main scene boots into app phase machine (title for now; menu/run/results slots arrive with later stories). Title shows GRINDLINE wordmark in Bebas Neue plus press-start prompt chip; any key/button advances phase flag.",
+      "acceptanceCriteria": [
+        "boot reaches title within 3 s real time",
+        "wordmark label uses font-bebas resource",
+        "press-start chip visible bottom-left at 48 px min height",
+        "sim assert app.phase == 'title' passes from a cold boot"
+      ],
+      "priority": 106,
+      "phase": 1,
+      "qualityClass": "vertical-slice",
+      "evidenceIds": [
+        "title"
+      ],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": [
+        "game/scenes/main.tscn",
+        "scripts/orchestration/app_flow.gd"
+      ],
+      "testFile": "tests_staged/test_us106_title.sh",
+      "verify": "bash tests_staged/test_us106_title.sh",
+      "blockedBy": [
+        "US-101"
+      ]
+    },
     {
       "id": "US-Q01",
       "title": "Playable vertical slice: control-to-score-to-restart loop",
@@ -19,12 +186,26 @@
       "priority": 190,
       "phase": 1,
       "qualityClass": "vertical-slice",
-      "evidenceIds": ["traversal", "failure"],
+      "evidenceIds": [
+        "traversal",
+        "failure"
+      ],
       "passes": false,
       "managerInterventions": 0,
-      "allowedFiles": ["game/scenes/main.tscn", "scripts/orchestration/run_flow.gd"],
+      "allowedFiles": [
+        "game/scenes/main.tscn",
+        "scripts/orchestration/run_flow.sh"
+      ],
       "testFile": "tests_staged/test_q01_vertical_slice.sh",
-      "verify": "bash tests_staged/test_q01_vertical_slice.sh"
+      "verify": "bash tests_staged/test_q01_vertical_slice.sh",
+      "blockedBy": [
+        "US-101",
+        "US-102",
+        "US-103",
+        "US-104",
+        "US-105",
+        "US-106"
+      ]
     },
     {
       "id": "US-Q02",
@@ -40,10 +221,16 @@
       "priority": 290,
       "phase": 2,
       "qualityClass": "look-lock",
-      "evidenceIds": ["title", "primary-action"],
+      "evidenceIds": [
+        "title",
+        "primary-action"
+      ],
       "passes": false,
       "managerInterventions": 0,
-      "allowedFiles": ["scripts/ui/theme.gd", "scripts/fx/light_rig.gd"],
+      "allowedFiles": [
+        "scripts/ui/theme.sh",
+        "scripts/fx/light_rig.sh"
+      ],
       "testFile": "tests_staged/test_q02_look_lock.sh",
       "verify": "bash tests_staged/test_q02_look_lock.sh"
     },
@@ -62,10 +249,25 @@
       "priority": 390,
       "phase": 3,
       "qualityClass": "asset-integration",
-      "assetIds": ["hero-boy", "hero-girl", "board", "park-quarter_pipe", "park-funbox", "park-rail", "k-half-pipe", "k-floor-concrete", "tex-concrete", "hdri-dusk", "music-run"],
+      "assetIds": [
+        "hero-boy",
+        "hero-girl",
+        "board",
+        "park-quarter_pipe",
+        "park-funbox",
+        "park-rail",
+        "k-half-pipe",
+        "k-floor-concrete",
+        "tex-concrete",
+        "hdri-dusk",
+        "music-run"
+      ],
       "passes": false,
       "managerInterventions": 0,
-      "allowedFiles": ["scripts/park/layout_builder.gd", "scripts/park/asset_adapter.gd"],
+      "allowedFiles": [
+        "scripts/park/layout_builder.sh",
+        "scripts/park/asset_adapter.sh"
+      ],
       "testFile": "tests_staged/test_q03_asset_integration.sh",
       "verify": "bash tests_staged/test_q03_asset_integration.sh"
     },
@@ -83,10 +285,17 @@
       "priority": 490,
       "phase": 4,
       "qualityClass": "feedback-atom",
-      "actionBeatIds": ["ollie-beat", "grind-beat", "bail-beat"],
+      "actionBeatIds": [
+        "ollie-beat",
+        "grind-beat",
+        "bail-beat"
+      ],
       "passes": false,
       "managerInterventions": 0,
-      "allowedFiles": ["scripts/skater/trick_feedback.gd", "scripts/fx/sparks_pool.gd"],
+      "allowedFiles": [
+        "scripts/skater/trick_feedback.sh",
+        "scripts/fx/sparks_pool.sh"
+      ],
       "testFile": "tests_staged/test_q04_feedback_atom.sh",
       "verify": "bash tests_staged/test_q04_feedback_atom.sh"
     },
@@ -105,10 +314,16 @@
       "priority": 590,
       "phase": 5,
       "qualityClass": "camera-input",
-      "evidenceIds": ["mobile", "traversal"],
+      "evidenceIds": [
+        "mobile",
+        "traversal"
+      ],
       "passes": false,
       "managerInterventions": 0,
-      "allowedFiles": ["scripts/camera/follow_cam.gd", "scripts/input/input_router.gd"],
+      "allowedFiles": [
+        "scripts/camera/follow_cam.sh",
+        "scripts/input/input_router.sh"
+      ],
       "testFile": "tests_staged/test_q05_camera_input.sh",
       "verify": "bash tests_staged/test_q05_camera_input.sh"
     },
@@ -127,10 +342,15 @@
       "priority": 690,
       "phase": 6,
       "qualityClass": "performance-resilience",
-      "performanceTierIds": ["target"],
+      "performanceTierIds": [
+        "target"
+      ],
       "passes": false,
       "managerInterventions": 0,
-      "allowedFiles": ["scripts/perf/budget_governor.gd", "scripts/perf/metrics_reporter.gd"],
+      "allowedFiles": [
+        "scripts/perf/budget_governor.sh",
+        "scripts/perf/metrics_reporter.sh"
+      ],
       "testFile": "tests_staged/test_q06_performance_resilience.sh",
       "verify": "bash tests_staged/test_q06_performance_resilience.sh"
     },
@@ -149,10 +369,20 @@
       "priority": 790,
       "phase": 7,
       "qualityClass": "critique-ship",
-      "evidenceIds": ["title", "traversal", "primary-action", "failure", "mobile", "worst-performance"],
+      "evidenceIds": [
+        "title",
+        "traversal",
+        "primary-action",
+        "failure",
+        "mobile",
+        "worst-performance"
+      ],
       "passes": false,
       "managerInterventions": 0,
-      "allowedFiles": ["tools/export_macos.sh", "PLAYTEST-CHECKLIST.md"],
+      "allowedFiles": [
+        "tools/export_macos.sh",
+        "PLAYTEST-CHECKLIST.md"
+      ],
       "testFile": "tests_staged/test_q07_critique_ship.sh",
       "verify": "bash tests_staged/test_q07_critique_ship.sh"
     }
