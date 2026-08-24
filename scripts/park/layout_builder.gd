@@ -136,7 +136,7 @@ func instantiate_asset(id: String) -> Node3D:
 		loaded += 1
 		var inst := packed.instantiate()
 		inst.name = "Asset_" + id
-		if id.begins_with("park-") and not id in ["park-rail", "park-warehouse_wall"]:
+		if id.begins_with("park-") and not id in ["park-rail", "park-warehouse_wall", "park-skyline"]:
 			var tex: Texture2D = load("res://assets/textures/Concrete034/Concrete034_1K-JPG_Color.jpg")
 			var nrm: Texture2D = load("res://assets/textures/Concrete034/Concrete034_1K-JPG_NormalGL.jpg")
 			var mat := StandardMaterial3D.new()

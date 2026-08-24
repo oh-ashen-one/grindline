@@ -21,8 +21,6 @@ height = 1.75
 
 [sub_resource type="PlaneMesh" id="mesh_floor"]
 size = Vector2(48, 48)
-subdivide_width = 8
-subdivide_depth = 8
 
 [sub_resource type="StandardMaterial3D" id="floor_mat"]
 albedo_texture = ExtResource("12_concrete")
