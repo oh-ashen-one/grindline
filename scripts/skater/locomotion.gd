@@ -65,6 +65,12 @@ func _apply_holding_visibility() -> void:
 
 var _mounting := false
 
+func _mount_board() -> void:
+	_holding = false
+	_apply_holding_visibility()
+	if _anim != null:
+		_anim.play("Run", 0.2)
+
 func _drop_board() -> void:
 	if _mounting:
 		return
@@ -112,6 +118,11 @@ func _physics_process(delta: float) -> void:
 	var pushing := Input.is_action_pressed("push")
 	var steer := Input.get_axis("steer_right", "steer_left")  # left = +1
 
+	if Input.is_action_just_pressed("dismount"):
+		if _holding:
+			_drop_board()
+		else:
+			_mount_board()
 	if pushing and _holding:
 		_drop_board()
 	if pushing:
@@ -122,14 +133,20 @@ func _physics_process(delta: float) -> void:
 	if speed > 0.1:
 		heading += steer * STEER_RATE * delta * clampf(speed / 6.0, 0.4, 1.0)
 
-	# animation state (slim hero: Idle / Run / Jump / Roll)
-	if _holding or _mounting:
-		return
-	if is_on_floor():
-		if speed > 0.6 and not _holding:
-			_play_clip("run", clampf(speed / 7.0, 0.8, 1.6))
+	# animation state
+	if _holding:
+		if is_on_floor() and speed > 0.6:
+			_play_clip("run", 1.1)          # running with board in hand
 		else:
 			_play_clip("idle")
+		return
+	if _mounting:
+		return
+	if is_on_floor() and speed > 0.6:
+		if pushing:
+			_play_clip("run", 1.2)          # push cycle while riding
+		else:
+			_play_clip("walk", 0.55)        # carving feet, slower = pumping
 
 	var forward := Vector3(sin(heading), 0.0, cos(heading))
 	# horizontal comes from locomotion; vertical belongs to air_state/gravity.

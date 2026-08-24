@@ -86,3 +86,17 @@
   tween arc with body crouch dip; ride = Run clip w/ board underfoot.
   ALL 12 regression stories green. NEW TRAP: new GLBs need
   godot --headless --import before ResourceLoader.exists() sees them.
+
+- [2024-08-24] PLAYTEST ROUND 3 FIXES: trimesh collision on ALL park pieces
+  (was: no collision, ran through everything); auto-ground all pieces; floor
+  visual aligned; F-key dismount/remount toggle; boundary walls ±23.5;
+  shadow bias/blur fix; skyline in layout+manifest.
+  REGRESSIONS (top of next-session queue):
+  1. ollie apex 0.12 (spec 1.25-1.56) — vy=7.2 not sticking; suspect new
+     trimesh colliders near spawn or mount-tween interference. Debug with
+     vy print per frame after _launch.
+  2. grind latch broken — new grind bodies are trimesh children of MESH
+     instances with meta top_y fallback wrong for world-space; latch probe
+     needs the body's world top surface, not node origin.
+  3. ride still uses Run/Walk clips — need authored skate-stance pose.
+  Everything else green: menu flow, carry-idle, collision, skyline, bounds.

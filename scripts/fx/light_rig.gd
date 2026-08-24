@@ -48,6 +48,9 @@ func _build() -> void:
 	var azim := deg_to_rad(SUN_AZIMUTH_DEG)
 	_sun.rotation = Vector3(pitch, azim, 0)
 	_sun.shadow_enabled = true
+	_sun.shadow_bias = 0.04
+	_sun.shadow_normal_bias = 2.0
+	_sun.shadow_blur = 1.2
 	add_child(_sun)
 
 func get_qa_dict() -> Dictionary:

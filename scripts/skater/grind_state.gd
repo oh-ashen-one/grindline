@@ -68,7 +68,7 @@ func _latch(body: Node3D) -> void:
 		fb.notify_grind_latch(minf(perp, LATERAL_SNAP))
 	_axis_name = str(body.get_meta("rail_axis", "z"))
 	_axis = Vector3(1, 0, 0) if _axis_name == "x" else Vector3(0, 0, 1)
-	var top_y := float(body.get_meta("top_y", body.global_position.y))
+	var top_y := float(body.get_meta("top_y", body.global_position.y + 0.55))
 	# redirect horizontal speed along the rail, snap laterally, kill vertical
 	var hspeed := Vector2(parent.velocity.x, parent.velocity.z).length()
 	if hspeed < 2.0:

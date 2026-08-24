@@ -46,6 +46,7 @@ func _ready() -> void:
 
 func build() -> void:
 	_load_registry()
+	_add_bounds()
 	for entry: Array in LAYOUT:
 		var node := instantiate_asset(String(entry[0]))
 		if node != null:
@@ -56,6 +57,22 @@ func build() -> void:
 			var aabb := _combined_aabb(node)
 			if aabb.size.y > 0.0:
 				node.position.y -= aabb.position.y
+			_add_collision(node, String(entry[0]))
+
+func _add_collision(node: Node3D, id: String) -> void:
+	for mi in node.find_children("*", "MeshInstance3D", true, false):
+		if (mi as MeshInstance3D).get_mesh() == null:
+			continue
+		(mi as MeshInstance3D).create_trimesh_collision()
+	var grindy := id in ["park-rail", "park-ledge", "k-rail-high", "k-rail-low",
+		"k-rail-slope", "k-rail-curve", "park-funbox", "k-obstacle-middle"]
+	if grindy:
+		for body in node.find_children("*", "StaticBody3D", true, false):
+			body.add_to_group("grind")
+			body.set_meta("rail_axis", "x" if "rail" in id or "ledge" in id else "z")
+			body.set_meta("rail_len", 4.0)
+			body.set_meta("top_y", node.global_position.y + 0.05)
+			body.set_meta("world", true)
 
 func _combined_aabb(node: Node3D) -> AABB:
 	var total := AABB(node.position, Vector3.ZERO)
@@ -68,6 +85,19 @@ func _combined_aabb(node: Node3D) -> AABB:
 		else:
 			total = total.merge(ab)
 	return total
+
+func _add_bounds() -> void:
+	for i in 4:
+		var body := StaticBody3D.new()
+		var shape := BoxShape3D.new()
+		shape.size = Vector3(48, 8, 1) if i % 2 == 0 else Vector3(1, 8, 48)
+		body.add_child(CollisionShape3D.new())
+		body.get_child(0).shape = shape
+		var off := 23.5
+		body.position = Vector3(0, 4, off) if i == 0 else Vector3(0, 4, -off) if i == 1 \
+			else Vector3(off, 4, 0) if i == 2 else Vector3(-off, 4, 0)
+		body.name = "Bounds%d" % i
+		add_child(body)
 
 func _load_registry() -> void:
 	if not _registry.is_empty():
