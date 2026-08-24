@@ -68,3 +68,11 @@
   floor+park pieces concrete-textured (Concrete034). Spawn z=6, QP moved z=18.
   ALL 14 test files green. Known-tuning-left: funbox face blows out toward
   sun; prop density below reference; board visible but static during tricks.
+
+- [2026-08-24] BOARD CARRY LOOP (Hari directive): skater now IDLES HOLDING
+  the board (BoneAttachment3D on Fist.R + wood-deck material override on both
+  boards), first push drops it underfoot (BoardHand hidden / BoardVisual
+  shown) and Run plays — the hold->ride transition. Blender pose-authoring
+  was abandoned (slotted-actions euler keys did not survive export);
+  procedural/bone-attach in Godot is the durable pattern. Camera 4.3/1.30
+  look_at +0.75. Suite green on core loop stories.

@@ -13,6 +13,13 @@ var speed := 0.0
 var heading := PI                # spawn facing -Z (away from spawn camera)
 
 var _anim: AnimationPlayer
+var _skel: Skeleton3D
+var _holding := true          # board in hand until first push
+var _bob_t := 0.0
+var _hand_board: Node3D
+var _foot_board: Node3D
+
+var _bone_attach: BoneAttachment3D
 
 func _ready() -> void:
 	add_to_group("qa_state")
@@ -22,10 +29,45 @@ func _ready() -> void:
 		if _anim == null:
 			var players := vis.find_children("*", "AnimationPlayer", true, false)
 			_anim = players[0] if players.size() > 0 else null
+		_skel = vis.get_node_or_null("Skeleton3D")
+		if _skel == null:
+			var skels := vis.find_children("*", "Skeleton3D", true, false)
+			_skel = skels[0] if skels.size() > 0 else null
 	if OS.get_environment("GL_DEBUG") != "":
 		print("ANIM found:", _anim, " clips:", _anim.get_animation_list() if _anim else [])
 	if _anim != null:
 		_anim.playback_default_blend_time = 0.2
+	_hand_board = get_node_or_null("BoardHand")
+	_foot_board = get_node_or_null("BoardVisual")
+	for b in [_hand_board, _foot_board]:
+		if b == null:
+			continue
+		var mat := StandardMaterial3D.new()
+		mat.albedo_color = Color(0.62, 0.45, 0.28)  # warm wood deck
+		mat.roughness = 0.7
+		for mi in b.find_children("*", "MeshInstance3D", true, false):
+			(mi as MeshInstance3D).material_override = mat
+	_apply_holding_visibility()
+	if _skel != null and _hand_board != null:
+		_bone_attach = BoneAttachment3D.new()
+		_bone_attach.name = "HandBoardAttach"
+		_skel.add_child(_bone_attach)
+		_bone_attach.bone_name = "Fist.R"
+		_hand_board.reparent(_bone_attach)
+		_hand_board.position = Vector3(0, -0.32, 0.1)
+		_hand_board.rotation_degrees = Vector3(0, 0, 96)
+
+func _apply_holding_visibility() -> void:
+	if _hand_board != null:
+		_hand_board.visible = _holding
+	if _foot_board != null:
+		_foot_board.visible = not _holding
+
+func _drop_board() -> void:
+	_holding = false
+	_apply_holding_visibility()
+	if _anim != null:
+		_anim.play("Run", 0.2)
 
 func _play_clip(name: String, speed := 1.0) -> void:
 	if _anim == null:
@@ -47,6 +89,8 @@ func _physics_process(delta: float) -> void:
 	var pushing := Input.is_action_pressed("push")
 	var steer := Input.get_axis("steer_right", "steer_left")  # left = +1
 
+	if pushing and _holding:
+		_drop_board()
 	if pushing:
 		speed = minf(speed + PUSH_ACCEL * delta, MAX_PUSH_SPEED)
 	else:
@@ -57,7 +101,7 @@ func _physics_process(delta: float) -> void:
 
 	# animation state (slim hero: Idle / Run / Jump / Roll)
 	if is_on_floor():
-		if speed > 0.6:
+		if speed > 0.6 and not _holding:
 			_play_clip("run", clampf(speed / 7.0, 0.8, 1.6))
 		else:
 			_play_clip("idle")
