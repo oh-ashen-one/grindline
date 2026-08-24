@@ -109,6 +109,7 @@
    "Jump": 1042,
    "PickUp": 1250,
    "Punch": 750,
+   "push": 1750,
    "RecieveHit": 625,
    "ride": 1667,
    "Roll": 917,
