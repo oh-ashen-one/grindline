@@ -148,6 +148,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			_play_clip("walk", 0.55)        # carving feet, slower = pumping
 
+	rotation.y = heading   # face the direction we actually move
 	var forward := Vector3(sin(heading), 0.0, cos(heading))
 	# horizontal comes from locomotion; vertical belongs to air_state/gravity.
 	velocity.x = forward.x * speed
