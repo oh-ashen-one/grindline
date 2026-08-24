@@ -41,6 +41,14 @@ func _launch() -> void:
 		return
 	parent.velocity.y = OLLIE_VY
 	airborne = true
+	var loco := parent.get_node_or_null("AnimationPlayer") 
+	var vis := parent.get_node_or_null("Visual")
+	var ap: AnimationPlayer = loco if loco else (vis.find_children("*", "AnimationPlayer", true, false)[0] if vis and vis.find_children("*", "AnimationPlayer", true, false).size() > 0 else null)
+	if ap:
+		for a2 in ap.get_animation_list():
+			if String(a2).to_lower().ends_with("jump"):
+				ap.play(a2, 0.1)
+				break
 	for fb in get_tree().get_nodes_in_group("feedback"):
 		fb.notify_ollie()
 	_trick_window_open = true

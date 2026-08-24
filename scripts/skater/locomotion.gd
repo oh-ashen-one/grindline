@@ -10,10 +10,38 @@ const FRICTION_DECEL := 4.0      # brief: m/s^2 when idle on flat ground
 const GRAVITY := 18.0            # brief: arcade gravity
 
 var speed := 0.0
-var heading := 0.0               # radians, CCW around +Y
+var heading := PI                # spawn facing -Z (away from spawn camera)
+
+var _anim: AnimationPlayer
 
 func _ready() -> void:
 	add_to_group("qa_state")
+	var vis := get_node_or_null("Visual")
+	if vis != null:
+		_anim = vis.get_node_or_null("AnimationPlayer")
+		if _anim == null:
+			var players := vis.find_children("*", "AnimationPlayer", true, false)
+			_anim = players[0] if players.size() > 0 else null
+	if OS.get_environment("GL_DEBUG") != "":
+		print("ANIM found:", _anim, " clips:", _anim.get_animation_list() if _anim else [])
+	if _anim != null:
+		_anim.playback_default_blend_time = 0.2
+
+func _play_clip(name: String, speed := 1.0) -> void:
+	if _anim == null:
+		return
+	var target := ""
+	for a in _anim.get_animation_list():
+		if String(a).to_lower().ends_with(name) or String(a).to_lower() == name:
+			target = a
+			break
+	if target == "":
+		if OS.get_environment("GL_DEBUG") != "":
+			print("PLAYCLIP miss:", name)
+		return
+	if _anim.current_animation != target:
+		_anim.play(target, 0.2)
+		_anim.speed_scale = speed
 
 func _physics_process(delta: float) -> void:
 	var pushing := Input.is_action_pressed("push")
@@ -26,6 +54,13 @@ func _physics_process(delta: float) -> void:
 
 	if speed > 0.1:
 		heading += steer * STEER_RATE * delta * clampf(speed / 6.0, 0.4, 1.0)
+
+	# animation state (slim hero: Idle / Run / Jump / Roll)
+	if is_on_floor():
+		if speed > 0.6:
+			_play_clip("run", clampf(speed / 7.0, 0.8, 1.6))
+		else:
+			_play_clip("idle")
 
 	var forward := Vector3(sin(heading), 0.0, cos(heading))
 	# horizontal comes from locomotion; vertical belongs to air_state/gravity.

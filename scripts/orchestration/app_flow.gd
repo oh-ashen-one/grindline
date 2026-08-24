@@ -26,7 +26,7 @@ func get_qa_dict() -> Dictionary:
 func _unhandled_input(event: InputEvent) -> void:
 	match phase:
 		"title":
-			if _is_press(event):
+			if _is_press(event) and run_flow.run_phase == "idle":
 				_open_menu()
 		"menu":
 			if event.is_action_pressed("ui_cancel"):
@@ -47,6 +47,7 @@ func _on_play() -> void:
 		return
 	phase = "running"
 	menu_layer.visible = false
+	title_layer.visible = false
 	run_flow.start_run()
 	var cam: Camera3D = run_flow.get_node_or_null("RunInstance/CamRig")
 	if cam != null:
@@ -56,6 +57,7 @@ func _end_run_to_menu() -> void:
 	phase = "menu"
 	run_flow.reset_to_menu()
 	menu_layer.visible = true
+	title_layer.visible = true
 	title_layer.get_node("Title/PressStart").visible = false
 	get_viewport().set_input_as_handled()
 

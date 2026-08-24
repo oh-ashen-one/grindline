@@ -3,13 +3,13 @@ extends Camera3D
 ## Spring-follows the Skater with look-ahead, FOV kick, trauma shake,
 ## wall-hug occlusion clamp.
 
-const DISTANCE := 5.2
-const HEIGHT := 2.1
+const DISTANCE := 3.4
+const HEIGHT := 1.55
 const MIN_DISTANCE := 2.6          # brief: wall-hug clamp
 const POS_DAMP := 8.0              # brief: lerp /s exponential
 const ROT_DAMP := 6.0
 const LOOK_AHEAD := 2.2            # brief: m along velocity
-const FOV_BASE := 62.0             # brief
+const FOV_BASE := 56.0             # brief v2
 const FOV_KICK_10 := 72.0
 const FOV_KICK_13 := 78.0
 const TRAUMA_DECAY := 1.4          # brief: /s
@@ -17,11 +17,13 @@ const SHAPE_MAX_OFFSET := 0.4      # brief: trauma^2 * 0.4
 
 var trauma := 0.0
 var _force_hug := false
+var _snapped := false
 var _skater: Node3D
 
 func _ready() -> void:
 	add_to_group("qa_state")
 	fov = FOV_BASE
+	current = true
 
 func _physics_process(delta: float) -> void:
 	if _skater == null:
@@ -29,6 +31,9 @@ func _physics_process(delta: float) -> void:
 			if get_tree().current_scene != null else null
 		if _skater == null:
 			return
+	if not _snapped:
+		_snapped = true
+		global_position = _skater.global_position + Vector3(0, HEIGHT, DISTANCE)
 	var sv: Vector3 = _skater.velocity
 	var hvel := Vector3(sv.x, 0, sv.z)
 	var spd := hvel.length()
@@ -44,13 +49,13 @@ func _physics_process(delta: float) -> void:
 	if OS.get_environment("GL_DEBUG") != "" and Engine.get_physics_frames() % 30 == 0:
 		print("CAM want=%s hit=%s" % [want, hit.keys()])
 	var target := want
-	if hit.has("position") or _force_hug:
+	if not hit.is_empty() or _force_hug:
 		# brief occlusion rule: hug the wall at min distance
 		var dir := (want - _skater.global_position).normalized()
 		target = _skater.global_position + dir * MIN_DISTANCE
 	var k := 1.0 - exp(-POS_DAMP * delta)
 	global_position = global_position.lerp(target, k)
-	look_at(_skater.global_position + Vector3.UP * 1.1)
+	look_at(_skater.global_position + Vector3.UP * 0.9)
 	if OS.get_environment("GL_DEBUG") != "" and Engine.get_physics_frames() % 45 == 0:
 		print("CAMDBG spd=%.2f fov=%.2f skater=%s" % [spd, fov, _skater])
 	# FOV kick by speed (brief thresholds)

@@ -15,7 +15,7 @@ const LAYOUT := [
 	["k-floor-concrete", Vector3(-4, 0, 4), 0],
 	["k-floor-concrete", Vector3(4, 0, 4), 180],
 	["park-funbox", Vector3(0, 0, 0), 0],
-	["park-quarter_pipe", Vector3(0, 0, 14), 180],
+	["park-quarter_pipe", Vector3(0, 0, 18), 180],
 	["park-quarter_pipe", Vector3(8, 0, -14), 0],
 	["park-bank", Vector3(-10, 0, 6), 90],
 	["park-kicker", Vector3(-3.5, 1.05, 0), 270],
@@ -89,6 +89,18 @@ func instantiate_asset(id: String) -> Node3D:
 		loaded += 1
 		var inst := packed.instantiate()
 		inst.name = "Asset_" + id
+		if id.begins_with("park-") and not id in ["park-rail", "park-warehouse_wall"]:
+			var tex: Texture2D = load("res://assets/textures/Concrete034/Concrete034_1K-JPG_Color.jpg")
+			var nrm: Texture2D = load("res://assets/textures/Concrete034/Concrete034_1K-JPG_NormalGL.jpg")
+			var mat := StandardMaterial3D.new()
+			mat.albedo_texture = tex
+			mat.normal_enabled = true
+			mat.normal_texture = nrm
+			mat.albedo_color = Color(0.62, 0.60, 0.57)
+			mat.roughness = 0.93
+			mat.uv1_scale = Vector3(2.5, 2.5, 2.5)
+			for mi in inst.find_children("*", "MeshInstance3D", true, false):
+				(mi as MeshInstance3D).material_override = mat
 		return inst
 	loaded += 1  # textures/audio verified present via ResourceLoader check
 	return null
@@ -105,7 +117,7 @@ func _hull(size: Vector3) -> MeshInstance3D:
 
 func clip_report() -> Dictionary:
 	print("CLIPREPORT called on ", name, " scene=", get_tree().current_scene.name if get_tree() else "none")
-	var out := {"idle": false, "skate": false, "skate-air": false, "die": false}
+	var out := {"idle": false, "run": false, "jump": false, "roll": false}
 	var scene := get_tree().current_scene if get_tree() else null
 	var skater := scene.find_child("Skater", true, false) if scene else null
 	var visual := skater.get_node_or_null("Visual") if skater else null
@@ -118,8 +130,9 @@ func clip_report() -> Dictionary:
 		return out
 	for ap: AnimationPlayer in visual.find_children("*", "AnimationPlayer", true, false):
 		for anim_name in ap.get_animation_list():
+			var lower := String(anim_name).to_lower()
 			for key: String in out.keys():
-				if String(anim_name).contains(key):
+				if lower.contains(key):
 					out[key] = true
 	return out
 

@@ -55,3 +55,16 @@
   DONE criteria met except packaged .app export (templates not installed on
   this box - tools/export_macos.sh ready; test falls back to boot smoke).
   Hari: run PLAYTEST-CHECKLIST.md for the human verdict (law 12).
+
+- [2026-08-24] VISUAL OVERHAUL (Hari directive: match THPS1+2 PS5 reference):
+  heroes swapped to Quaternius UAC slim characters (skater_slim_boy/girl.glb,
+  scale 0.526, native Idle/Run/Jump/Roll/Death clips — NO retargeting; the
+  Blender constraint-retarget pipeline fought slotted-actions API and was
+  abandoned in favor of native clips). Kenney chibis retired to fallback.
+  Menu flow fixed (US-107): title->menu->PLAY->run through real input path.
+  RunFlow owns MenuLayer/TitleLayer/MenuWorld visibility; MenuCam.current=false
+  on run start (was silently rendering the diorama cam!). Camera 3.4/1.55/56.
+  Lighting: sun -38deg 0.95 energy, haze fog 0.0005, ACES exposure 0.92,
+  floor+park pieces concrete-textured (Concrete034). Spawn z=6, QP moved z=18.
+  ALL 14 test files green. Known-tuning-left: funbox face blows out toward
+  sun; prop density below reference; board visible but static during tricks.

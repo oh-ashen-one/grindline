@@ -484,6 +484,16 @@ func _probe(step: Dictionary) -> void:
 				else:
 					result.probes[name] = "insufficient luma spread"
 				return
+	if kind == "ui_min_height":
+		var nd2 := current_scene.find_child(String(step["node"]), true, false) if current_scene else null
+		var mn := float(step.get("min_px", 48))
+		var h := (nd2 as Control).size.y if nd2 is Control else 0.0
+		if h >= mn:
+			result.probes[name] = "ok"
+			result.probes_ok.append(name)
+		else:
+			result.probes[name] = "height %.0f < %s" % [h, step.get("min_px")]
+		return
 	if kind == "node_visible":
 		var nd := current_scene.find_child(String(step["node"]), true, false) if current_scene else null
 		var want_vis := bool(step.get("expect", true))
@@ -587,7 +597,7 @@ func _probe(step: Dictionary) -> void:
 					builder = n
 					break
 			var rep: Dictionary = builder.clip_report() if builder != null and builder.has_method("clip_report") else {}
-			if rep.get("idle") and rep.get("skate") and rep.get("skate-air") and rep.get("die"):
+			if rep.get("idle") and rep.get("run") and rep.get("jump") and rep.get("roll"):
 				result.probes[name] = "ok"
 				result.probes_ok.append(name)
 			else:
@@ -668,6 +678,21 @@ func _probe(step: Dictionary) -> void:
 				result.probes_ok.append(name)
 			else:
 				result.probes[name] = JSON.stringify(gov)
+		"aabb_probe":
+			var scn2: Node = current_scene
+			var sk2 := scn2.find_child("Skater", true, false) if scn2 else null
+			var vis2 := sk2.get_node_or_null("Visual") if sk2 else null
+			var aout := []
+			if vis2 != null:
+				for mi2 in vis2.find_children("*", "MeshInstance3D", true, false):
+					var ab: AABB = (mi2 as MeshInstance3D).get_aabb()
+					var top_world: Vector3 = mi2.to_global(ab.position + Vector3(0, ab.size.y, 0))
+					var bot_world: Vector3 = mi2.to_global(ab.position)
+					aout.append({ "n": mi2.name,
+						"top_y": snappedf(top_world.y, 0.01), "bot_y": snappedf(bot_world.y, 0.01),
+						"skater_y": snappedf(sk2.global_position.y, 0.01) })
+			result.probes[name] = JSON.stringify(aout)
+			result.metrics["aabb"] = JSON.stringify(aout)
 		"approx_path":
 			var av: Variant = _lookup(String(step["path"]))
 			if av == null:

@@ -3,11 +3,11 @@ extends Node
 ## Builds/owns WorldEnvironment + sun so every scene gets identical light.
 ## QA: env_report probe reads back live values.
 
-const SUN_PITCH_DEG := -22.0     # brief
+const SUN_PITCH_DEG := -38.0     # brief v2: golden-hour higher key
 const SUN_AZIMUTH_DEG := 35.0
-const SUN_ENERGY := 1.2          # brief
-const SUN_COLOR := Color(1.0, 0.850980, 0.658824)   # #ffd9a9 warm key
-const FOG_COLOR := Color(0.85, 0.55, 0.33)          # #d98d55
+const SUN_ENERGY := 0.95          # brief v2.2
+const SUN_COLOR := Color(1.0, 0.878431, 0.729412)   # #ffe0ba warm key
+const FOG_COLOR := Color(0.91, 0.78, 0.62)          # #e8c79e hazy gold
 const FOG_NEAR := 45.0           # brief
 const FOG_FAR := 120.0           # brief
 
@@ -27,7 +27,7 @@ func _build() -> void:
 	var mat := ProceduralSkyMaterial.new()
 	# dusk grade on the procedural sky; HDRIs arrive via asset integration
 	mat.sky_top_color = Color(0.164706, 0.101961, 0.2)         # #2a1a33
-	mat.sky_horizon_color = Color(0.909804, 0.407843, 0.227451) # #e8683a
+	mat.sky_horizon_color = Color(0.909804, 0.45, 0.20) # dusk orange
 	mat.ground_bottom_color = Color(0.12, 0.09, 0.10)
 	mat.ground_horizon_color = Color(0.909804, 0.407843, 0.227451)
 	sky.sky_material = mat
@@ -35,8 +35,9 @@ func _build() -> void:
 	e.sky = sky
 	e.fog_enabled = true
 	e.fog_light_color = FOG_COLOR
-	e.fog_density = 0.004
+	e.fog_density = 0.0005
 	e.tonemap_mode = Environment.TONE_MAPPER_ACES
+	e.tonemap_exposure = 0.92
 	_env.environment = e
 	add_child(_env)
 

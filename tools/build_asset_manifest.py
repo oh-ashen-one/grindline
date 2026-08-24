@@ -36,12 +36,13 @@ def entry(id_, role, cat, src, lic, path, fallback, **kw):
     e.update(kw)
     return e
 
-def glb_entry(id_, role, cat, src, lic, apath, fallback, ingame=None, motion="none", front="-Z"):
+def glb_entry(id_, role, cat, src, lic, apath, fallback, ingame=None, motion="none", front="-Z", importScale=None):
     key = f"assets/{apath}"
     size = ingame or ext_of(key)
     return entry(id_, role, cat, src, lic, apath, fallback,
                  targetSizeMeters=size, frontAxis=front, upAxis="+Y",
-                 rootMotion=motion, maxTriangles=tri_budget(key), maxTextureMB=8)
+                 rootMotion=motion, maxTriangles=tri_budget(key), maxTextureMB=8,
+                 **({"importScale": importScale} if importScale else {}))
 
 K = "https://kenney.nl/assets/mini-skate"
 FK = "https://kenney.nl/assets/factory-kit"
@@ -50,27 +51,26 @@ AC = "https://ambientcg.com"
 PH = "https://polyhaven.com/a/industrial-sunset-puresky"
 OGA_FIGHT = "https://opengameart.org/content/fight-them-until-we-cant"
 
-CHAR_SCALE = 2.263          # brief: chibi 0.773 m -> hero 1.75 m
-BOY = "assets/models/characters/skater_boy.glb"
-GIRL = "assets/models/characters/skater_girl.glb"
-BOY_A = {n: d for n, d in M3D[BOY]["animations"].items()}
-GIRL_A = {n: d for n, d in M3D[GIRL]["animations"].items()}
+CHAR_SCALE = 0.526          # slim UAC: 3.325 u -> 1.75 m hero
+BOY = "assets/models/characters/skater_slim_boy.glb"
+GIRL = "assets/models/characters/skater_slim_girl.glb"
 
-def anim_entries(prefix, path, anims, src):
+def anim_entries(prefix, path, src):
+    # slim heroes: measure clip durations from the GLB directly
+    key = f"assets/{Path(path).name}"
+    anims = {a.split("|")[-1]: d for a, d in M3D[key]["animations"].items()} if key in M3D else {}
     def a(name, cid, dur, **kw):
         return entry(f"anim-{prefix}-{cid}", "hero", "animation", src, "CC0-1.0",
                      path, "hold last pose",
                      durationMs=dur, upAxis="+Y", rootMotion="none", **kw)
+    g = lambda n, d: int(anims.get(n, d))
     out = [
-        a("idle", "idle", anims["idle"]),
-        a("ride", "ride", anims["skate"], gaitCycleMs=anims["skate"]),
-        a("ollie", "ollie", anims["skate-air"], contactFrameMs=int(anims["skate-air"]*0.12)),
-        a("bail", "bail", anims["die"], contactFrameMs=0),
-        a("push-stand", "stand", anims["skate-stand"]),
-        a("grab", "grab", anims["skate-grab"], contactFrameMs=int(anims["skate-grab"]*0.4)),
-        a("walk", "walk", anims["walk"], gaitCycleMs=anims["walk"]),
-        a("jump", "jump", anims["jump"], contactFrameMs=int(anims["jump"]*0.2)),
-        a("fall", "fall", anims["fall"]),
+        a("idle", "idle", g("Idle", 1300)),
+        a("ride", "ride", g("Run", 700), gaitCycleMs=g("Run", 700)),
+        a("ollie", "ollie", g("Jump", 1000), contactFrameMs=int(g("Jump", 1000)*0.15)),
+        a("bail", "bail", g("Roll", 800), contactFrameMs=int(g("Roll", 800)*0.2)),
+        a("walk", "walk", g("Walk", 1000), gaitCycleMs=g("Walk", 1000)),
+        a("bail-death", "death", g("Death", 1200), contactFrameMs=0),
     ]
     return out
 
@@ -78,20 +78,24 @@ assets = []
 
 # ---- heroes -------------------------------------------------------------
 assets += [
-    glb_entry("hero-boy", "hero", "character", K, "CC0-1.0",
-              "models/characters/skater_boy.glb", "debug capsule (non-shipping)",
-              ingame=[round(x*CHAR_SCALE,3) for x in ext_of(BOY)], front="+Z"),
-    glb_entry("hero-girl", "hero", "character", K, "CC0-1.0",
-              "models/characters/skater_girl.glb", "debug capsule (non-shipping)",
-              ingame=[round(x*CHAR_SCALE,3) for x in ext_of(GIRL)], front="+Z"),
+    glb_entry("hero-boy", "hero", "character",
+              "https://quaternius.com/packs/ultimateanimatedcharacter.html", "CC0-1.0",
+              "models/characters/skater_slim_boy.glb", "debug capsule (non-shipping)",
+              ingame=[round(x*CHAR_SCALE,3) for x in ext_of(BOY)], front="+Z",
+              importScale=CHAR_SCALE),
+    glb_entry("hero-girl", "hero", "character",
+              "https://quaternius.com/packs/ultimateanimatedcharacter.html", "CC0-1.0",
+              "models/characters/skater_slim_girl.glb", "debug capsule (non-shipping)",
+              ingame=[round(x*CHAR_SCALE,3) for x in ext_of(GIRL)], front="+Z",
+              importScale=CHAR_SCALE),
     glb_entry("board", "primary-interactable", "prop", K, "CC0-1.0",
               "models/board/skateboard.glb", "debug box (non-shipping)", front="+Z"),
 ]
-assets += anim_entries("boy", BOY, BOY_A, K)
-assets += anim_entries("girl", GIRL, GIRL_A, K)
+assets += anim_entries("boy", BOY, "https://quaternius.com/packs/ultimateanimatedcharacter.html")
+assets += anim_entries("girl", GIRL, "https://quaternius.com/packs/ultimateanimatedcharacter.html")
 
 CLIPS = lambda p: {"idle": f"anim-{p}-idle", "locomotion": f"anim-{p}-ride",
-                   "primaryAction": f"anim-{p}-ollie", "hitOrFail": f"anim-{p}-bail"}
+                   "primaryAction": f"anim-{p}-ollie", "hitOrFail": f"anim-{p}-bail"}  # slim: Idle/Run/Jump/Roll
 for c in assets:
     if c["id"] == "hero-boy": c["clips"] = CLIPS("boy")
     if c["id"] == "hero-girl": c["clips"] = CLIPS("girl")

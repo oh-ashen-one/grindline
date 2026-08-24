@@ -48,3 +48,11 @@ pass to lock the dusk mood before content multiplication.
   ACES-tonemapped frames, not raw palette hex. Measured title frame dominant
   dusk orange #e06040 (tonemap shifts #e8683a), luma spread thresholds set to
   dark<0.3 / bright>0.5 with 1 percent share. Regression gate: Q02 probes.
+- 2026-08-24 / F-004: human playtest rejected chibi proportions ("guy is way
+  too fat"); target locked to THPS 1+2 PS5 reference footage (frames staged
+  as ref-thps-stance/plaza.png, from FA GAMEZ public gameplay video, learned:
+  slim realistic proportions, hazy golden-hour grade, low close cam;
+  mustNotCopy: no THPS characters/logos/levels). Fix: swapped heroes to
+  Quaternius UAC casual characters (same-proportion slim body, CC0) with
+  native Idle/Run/Jump/Roll clips; camera 3.4 m / 1.55 m / FOV 56; sun -38
+  deg warm haze. Regression gate: full suite green + look captures.

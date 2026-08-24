@@ -101,6 +101,70 @@
   ],
   "triangles": 408
  },
+ "assets/models/characters/skater_slim_boy.glb": {
+  "animations": {
+   "Death": 2292,
+   "Defeat": 2500,
+   "Idle": 4167,
+   "Jump": 1042,
+   "PickUp": 1250,
+   "Punch": 750,
+   "RecieveHit": 625,
+   "Roll": 917,
+   "Run": 875,
+   "Run_Carry": 875,
+   "Shoot_OneHanded": 542,
+   "SitDown": 958,
+   "StandUp": 1292,
+   "SwordSlash": 1042,
+   "Victory": 1875,
+   "Walk": 1250,
+   "Walk_Carry": 1250
+  },
+  "boundsMin": [
+   -1.62,
+   -0.019,
+   -0.606
+  ],
+  "boundsMax": [
+   1.62,
+   3.307,
+   0.718
+  ],
+  "triangles": 6492
+ },
+ "assets/models/characters/skater_slim_girl.glb": {
+  "animations": {
+   "Death": 2292,
+   "Defeat": 2500,
+   "Idle": 4167,
+   "Jump": 1042,
+   "PickUp": 1250,
+   "Punch": 750,
+   "RecieveHit": 625,
+   "Roll": 917,
+   "Run": 875,
+   "Run_Carry": 875,
+   "Shoot_OneHanded": 542,
+   "SitDown": 958,
+   "StandUp": 1292,
+   "SwordSlash": 1042,
+   "Victory": 1875,
+   "Walk": 1250,
+   "Walk_Carry": 1250
+  },
+  "boundsMin": [
+   -1.62,
+   -0.019,
+   -0.762
+  ],
+  "boundsMax": [
+   1.62,
+   3.186,
+   0.767
+  ],
+  "triangles": 6624
+ },
  "assets/park/bank.glb": {
   "animations": {},
   "boundsMin": [

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/orchestration/app_flow.gd" id="1_app"]
 [ext_resource type="Script" path="res://scripts/orchestration/run_flow.gd" id="6_flow"]
-[ext_resource type="PackedScene" path="res://assets/models/characters/skater_boy.glb" id="7_boy"]
+[ext_resource type="PackedScene" path="res://assets/models/characters/skater_slim_boy.glb" id="7_boy"]
 [ext_resource type="PackedScene" path="res://assets/models/board/skateboard.glb" id="8_board"]
 [ext_resource type="FontFile" path="res://assets/ui/fonts/BebasNeue-Regular.ttf" id="2_font"]
 
@@ -110,7 +110,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
 shape = SubResource("skater_shape")
 
 [node name="Visual" parent="MenuWorld/TitleSkater" instance=ExtResource("7_boy")]
-transform = Transform3D(2.263, 0, 0, 0, 2.263, 0, 0, 0, 2.263, 0, -0.85, 0)
+transform = Transform3D(0.526, 0, 0, 0, 0.526, 0, 0, 0, 0.526, 0, -0.86, 0)
 
 [node name="BoardVisual" parent="MenuWorld/TitleSkater" instance=ExtResource("8_board")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.82, 0)

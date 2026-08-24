@@ -16,7 +16,9 @@ cat > "$CMDS" <<'JSON'
   "gate": true
 }
 JSON
-run_sim "$CMDS" || die "sim failed"
+RC=0
+run_sim_gfx "$CMDS" || RC=$?
+[[ $RC -eq 0 ]] || die "sim failed rc=$RC"
 assert_sim_json "'at_title' in d.get('asserts_ok', [])"
 assert_sim_json "d.get('probes', {}).get('wordmark_bebas') == 'ok'"
 say "US-106 PASS: title state live"

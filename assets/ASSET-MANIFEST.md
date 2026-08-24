@@ -4,27 +4,21 @@ Required by law 16. Machine truth: `asset-manifest.json`.
 
 | Asset | Source URL | License | Local path | Used by |
 |---|---|---|---|---|
-| hero-boy | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_boy.glb` | roster A/C (palette variants) |
-| hero-girl | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_girl.glb` | roster B/D (palette variants) |
+| hero-boy | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_boy.glb` | roster A/C (palette variants) |
+| hero-girl | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_girl.glb` | roster B/D (palette variants) |
 | board | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/board/skateboard.glb` | all skaters |
-| anim-boy-idle | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_boy.glb` | hero |
-| anim-boy-ride | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_boy.glb` | hero |
-| anim-boy-ollie | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_boy.glb` | hero |
-| anim-boy-bail | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_boy.glb` | hero |
-| anim-boy-stand | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_boy.glb` | hero |
-| anim-boy-grab | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_boy.glb` | hero |
-| anim-boy-walk | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_boy.glb` | hero |
-| anim-boy-jump | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_boy.glb` | hero |
-| anim-boy-fall | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_boy.glb` | hero |
-| anim-girl-idle | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_girl.glb` | hero |
-| anim-girl-ride | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_girl.glb` | hero |
-| anim-girl-ollie | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_girl.glb` | hero |
-| anim-girl-bail | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_girl.glb` | hero |
-| anim-girl-stand | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_girl.glb` | hero |
-| anim-girl-grab | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_girl.glb` | hero |
-| anim-girl-walk | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_girl.glb` | hero |
-| anim-girl-jump | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_girl.glb` | hero |
-| anim-girl-fall | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_girl.glb` | hero |
+| anim-boy-idle | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_boy.glb` | hero |
+| anim-boy-ride | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_boy.glb` | hero |
+| anim-boy-ollie | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_boy.glb` | hero |
+| anim-boy-bail | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_boy.glb` | hero |
+| anim-boy-walk | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_boy.glb` | hero |
+| anim-boy-death | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_boy.glb` | hero |
+| anim-girl-idle | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_girl.glb` | hero |
+| anim-girl-ride | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_girl.glb` | hero |
+| anim-girl-ollie | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_girl.glb` | hero |
+| anim-girl-bail | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_girl.glb` | hero |
+| anim-girl-walk | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_girl.glb` | hero |
+| anim-girl-death | https://quaternius.com/packs/ultimateanimatedcharacter.html | CC0-1.0 | `/Users/midir/grindline/assets/models/characters/skater_slim_girl.glb` | hero |
 | park-quarter_pipe | authored://tools/make_park.py | CC0-1.0 | `/Users/midir/grindline/assets/park/quarter_pipe.glb` | environment-kit |
 | park-bank | authored://tools/make_park.py | CC0-1.0 | `/Users/midir/grindline/assets/park/bank.glb` | environment-kit |
 | park-funbox | authored://tools/make_park.py | CC0-1.0 | `/Users/midir/grindline/assets/park/funbox.glb` | environment-kit |
