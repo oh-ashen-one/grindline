@@ -441,6 +441,34 @@
       ],
       "testFile": "tests_staged/test_q07_critique_ship.sh",
       "verify": "bash tests_staged/test_q07_critique_ship.sh"
+    },
+    {
+      "id": "US-107",
+      "title": "First click works: title -> menu -> PLAY -> run",
+      "description": "Law-12 hole found by human playtest: title said PRESS ANY KEY but no menu existed. app_flow gains a real menu state (PLAY/QUIT, keyboard+gamepad navigable via focus), PLAY starts the run through RunFlow in the same window, Esc from run returns to menu.",
+      "acceptanceCriteria": [
+        "any key on title shows MenuLayer and phase becomes menu",
+        "ui_accept (Enter/gamepad A) on focused PLAY starts a run: phase running, MenuLayer hidden",
+        "Esc during run returns to menu with run torn down",
+        "test drives the real input path via parse_input_event, no direct state mutation"
+      ],
+      "priority": 107,
+      "phase": 1,
+      "qualityClass": "vertical-slice",
+      "evidenceIds": [
+        "title"
+      ],
+      "passes": false,
+      "managerInterventions": 0,
+      "allowedFiles": [
+        "scripts/orchestration/app_flow.gd",
+        "game/scenes/main.tscn"
+      ],
+      "testFile": "tests_staged/test_us107_menu_flow.sh",
+      "verify": "bash tests_staged/test_us107_menu_flow.sh",
+      "blockedBy": [
+        "US-101"
+      ]
     }
   ]
 }

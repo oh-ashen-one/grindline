@@ -29,6 +29,11 @@ func _mount_cell() -> void:
 	inst.name = "RunInstance"
 	add_child(inst)
 
+func reset_to_menu() -> void:
+	for child in get_children():
+		child.queue_free()
+	run_phase = "idle"
+
 func _physics_process(_delta: float) -> void:
 	if run_phase == "running":
 		var rs := _find_run_state()

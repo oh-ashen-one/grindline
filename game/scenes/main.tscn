@@ -45,6 +45,40 @@ shadow_offset = Vector2(5, 5)
 [node name="Main" type="Node"]
 script = ExtResource("1_app")
 
+[node name="MenuLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Dim" type="ColorRect" parent="MenuLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.08, 0.06, 0.05, 0.72)
+
+[node name="Panel" type="PanelContainer" parent="MenuLayer"]
+offset_left = 440.0
+offset_top = 240.0
+offset_right = 840.0
+offset_bottom = 500.0
+
+[node name="VBox" type="VBoxContainer" parent="MenuLayer/Panel"]
+
+[node name="MenuTitle" type="Label" parent="MenuLayer/Panel/VBox"]
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 44
+text = "MAIN MENU"
+
+[node name="PlayBtn" type="Button" parent="MenuLayer/Panel/VBox"]
+custom_minimum_size = Vector2(0, 56)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 34
+text = "PLAY"
+
+[node name="QuitBtn" type="Button" parent="MenuLayer/Panel/VBox"]
+custom_minimum_size = Vector2(0, 56)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 34
+text = "QUIT"
+
 [node name="RunFlow" type="Node" parent="."]
 script = ExtResource("6_flow")
 

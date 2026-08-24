@@ -432,6 +432,8 @@ func _key_for(name: String) -> Key:
 		"ollie", "key_space": return KEY_SPACE
 		"bail_force", "key_b": return KEY_B
 		"correct_hold", "key_d": return KEY_D
+		"any_key", "key_space": return KEY_SPACE
+		"ui_accept", "key_enter": return KEY_ENTER
 		_: return KEY_NONE
 
 var _notes := {}          # probe scratchpad: name -> value snapshot
@@ -482,6 +484,14 @@ func _probe(step: Dictionary) -> void:
 				else:
 					result.probes[name] = "insufficient luma spread"
 				return
+	if kind == "node_visible":
+		var nd := current_scene.find_child(String(step["node"]), true, false) if current_scene else null
+		var want_vis := bool(step.get("expect", true))
+		var is_vis: bool = nd != null and nd.visible
+		result.probes[name] = ("ok" if is_vis == want_vis else "visible=%s" % is_vis)
+		if result.probes[name] == "ok":
+			result.probes_ok.append(name)
+		return
 	if kind == "ui_targets":
 		var tlayer := current_scene.find_child("TouchLayer", true, false) if current_scene else null
 		var ok_sz: bool = tlayer != null and tlayer.visible
