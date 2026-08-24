@@ -48,10 +48,12 @@ func build() -> void:
 			node.rotation.y = deg_to_rad(float(entry[2]))
 			add_child(node)
 			node.position = entry[1]
-			# auto-ground: drop piece so its lowest point touches y=0
+			# auto-ground: drop piece so its lowest point sits 2cm below the
+			# floor plane — exact coplanarity z-fights ("floor seizure")
 			var aabb := _combined_aabb(node)
 			if aabb.size.y > 0.0:
 				node.position.y -= aabb.position.y
+				node.position.y -= 0.02
 			_add_collision(node, String(entry[0]))
 
 func _add_collision(node: Node3D, id: String) -> void:
@@ -131,13 +133,17 @@ func instantiate_asset(id: String) -> Node3D:
 		loaded += 1
 		var inst := packed.instantiate()
 		inst.name = "Asset_" + id
+		if id == "park-skyline":
+			# backdrop: keep out of the shadow depth pass (900m pad blows the
+			# shadow map range -> everything reads occluded)
+			for mi in inst.find_children("*", "MeshInstance3D", true, false):
+				(mi as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		if id.begins_with("park-") and not id in ["park-rail", "park-warehouse_wall", "park-skyline"]:
 			var tex: Texture2D = load("res://assets/textures/Concrete034/Concrete034_1K-JPG_Color.jpg")
-			var nrm: Texture2D = load("res://assets/textures/Concrete034/Concrete034_1K-JPG_NormalGL.jpg")
 			var mat := StandardMaterial3D.new()
 			mat.albedo_texture = tex
-			mat.normal_enabled = true
-			mat.normal_texture = nrm
+			# no normal map here: high-frequency normals shimmer/crawl at
+			# distance (temporal aliasing) — albedo carries the surface read
 			mat.albedo_color = Color(0.62, 0.60, 0.57)
 			mat.roughness = 0.93
 			mat.uv1_scale = Vector3(2.5, 2.5, 2.5)

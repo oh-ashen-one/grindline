@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="Script" path="res://scripts/skater/locomotion.gd" id="1_loco"]
 [ext_resource type="PackedScene" path="res://assets/models/characters/skater_slim_boy.glb" id="2_boy"]
@@ -10,7 +10,8 @@
 [ext_resource type="Script" path="res://scripts/park/layout_builder.gd" id="8_builder"]
 [ext_resource type="Script" path="res://scripts/skater/trick_feedback.gd" id="9_fb"]
 [ext_resource type="Script" path="res://scripts/camera/follow_cam.gd" id="10_cam"]
-[ext_resource type="Texture2D" path="res://assets/textures/Concrete034/Concrete034_1K-JPG_Color.jpg" id="12_concrete"]
+[ext_resource type="Texture2D" path="res://assets/textures/plaza/plaza_slab_color.jpg" id="12_concrete"]
+[ext_resource type="Texture2D" path="res://assets/textures/plaza/plaza_slab_rough.jpg" id="13_slabrough"]
 
 [sub_resource type="BoxShape3D" id="shape_floor"]
 size = Vector3(48, 1, 48)
@@ -20,13 +21,14 @@ radius = 0.4
 height = 1.75
 
 [sub_resource type="PlaneMesh" id="mesh_floor"]
-size = Vector2(48, 48)
+size = Vector2(340, 340)
 
 [sub_resource type="StandardMaterial3D" id="floor_mat"]
 albedo_texture = ExtResource("12_concrete")
-albedo_color = Color(0.72, 0.7, 0.67, 1)
-uv1_scale = Vector3(6, 6, 6)
-roughness = 0.95
+albedo_color = Color(0.66, 0.63, 0.59, 1)
+roughness_texture = ExtResource("13_slabrough")
+uv1_scale = Vector3(30, 30, 30)
+roughness = 1.0
 
 [sub_resource type="BoxShape3D" id="shape_occwall"]
 size = Vector3(6, 5, 8)
@@ -58,11 +60,13 @@ shape = SubResource("shape_floor")
 [node name="FloorMesh" type="MeshInstance3D" parent="FloorBody"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("mesh_floor")
+cast_shadow = 0
 surface_material_override/0 = SubResource("floor_mat")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.925417, -0.163175, 0.34202, 0, 0.882948, 0.467513, -0.378896, -0.43265, 0.817117, 0, 8, 0)
-light_energy = 1.2
+transform = Transform3D(0.7986, -0.3707, 0.4742, 0, 0.788, 0.616, -0.6018, -0.4919, 0.6293, 0, 8, 0)
+light_energy = 1.0
+light_color = Color(1, 0.823529, 0.615686, 1)
 
 [node name="CamRig" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 4.5, 7)
@@ -107,6 +111,7 @@ shape = SubResource("shape_occwall")
 [node name="OccMesh" type="MeshInstance3D" parent="OcclusionWall"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("mesh_occwall")
+cast_shadow = 0
 
 [node name="TouchLayer" type="CanvasLayer" parent="."]
 visible = false

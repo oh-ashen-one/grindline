@@ -48,6 +48,10 @@ func _physics_process(delta: float) -> void:
 	var hit := space.intersect_ray(rq)
 	if OS.get_environment("GL_DEBUG") != "" and Engine.get_physics_frames() % 30 == 0:
 		print("CAM want=%s hit=%s" % [want, hit.keys()])
+	if OS.get_environment("FLOORCAM") != "":
+		global_position = _skater.global_position + Vector3(1.2, 0.55, -1.6)
+		look_at(_skater.global_position + Vector3(0, 0.2, -2.5))
+		return
 	var target := want
 	if not hit.is_empty() or _force_hug:
 		# brief occlusion rule: hug the wall at min distance
