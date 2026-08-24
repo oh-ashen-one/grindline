@@ -100,3 +100,10 @@
      needs the body's world top surface, not node origin.
   3. ride still uses Run/Walk clips — need authored skate-stance pose.
   Everything else green: menu flow, carry-idle, collision, skyline, bounds.
+
+- [2024-08-24] RIDE STANCE AUTHORED (Hari: "running through the board"):
+  Blender world-space delta pose authoring WORKS (key insight: REPLACE bone
+  quat with rest-relative world delta, never compound onto current pose;
+  arms swing on local Y axis, legs on X). 'ride' clip on both heroes.
+  Riding plays ride; Run only during active push; dismount F carries board.
+  Known: ollie apex + grind latch regressions still open (see above).
