@@ -125,6 +125,8 @@ func _physics_process(delta: float) -> void:
 			_mount_board()
 	if pushing and _holding:
 		_drop_board()
+	# face travel direction in every state (hold-run used to moonwalk)
+	rotation.y = heading
 	if pushing:
 		speed = minf(speed + PUSH_ACCEL * delta, MAX_PUSH_SPEED)
 	else:
@@ -144,11 +146,12 @@ func _physics_process(delta: float) -> void:
 		return
 	if is_on_floor() and speed > 0.6:
 		if pushing:
-			_play_clip("run", 1.2)          # push cycle while riding
+			_play_clip("push", 1.0)         # back-leg push cycle (reference)
 		else:
-			_play_clip("walk", 0.55)        # carving feet, slower = pumping
+			_play_clip("ride", 1.0)         # sideways skate stance, always
+	elif is_on_floor():
+		_play_clip("ride", 1.0)         # slow roll keeps the stance
 
-	rotation.y = heading   # face the direction we actually move
 	var forward := Vector3(sin(heading), 0.0, cos(heading))
 	# horizontal comes from locomotion; vertical belongs to air_state/gravity.
 	velocity.x = forward.x * speed

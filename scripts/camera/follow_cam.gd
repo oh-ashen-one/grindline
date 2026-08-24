@@ -3,8 +3,8 @@ extends Camera3D
 ## Spring-follows the Skater with look-ahead, FOV kick, trauma shake,
 ## wall-hug occlusion clamp.
 
-const DISTANCE := 4.3
-const HEIGHT := 1.30
+const DISTANCE := 5.1
+const HEIGHT := 1.9
 const MIN_DISTANCE := 2.6          # brief: wall-hug clamp
 const POS_DAMP := 8.0              # brief: lerp /s exponential
 const ROT_DAMP := 6.0
@@ -61,7 +61,7 @@ func _physics_process(delta: float) -> void:
 	global_position = global_position.lerp(target, k)
 	if OS.get_environment("GL_DEBUG") != "" and Engine.get_physics_frames() % 45 == 0:
 		print("CAMFOLLOW cam=", global_position, " skater=", _skater.global_position, " spd=", spd)
-	look_at(_skater.global_position + Vector3.UP * 0.75)
+	look_at(_skater.global_position + Vector3.UP * 0.8)
 	if OS.get_environment("GL_DEBUG") != "" and Engine.get_physics_frames() % 45 == 0:
 		print("CAMDBG spd=%.2f fov=%.2f skater=%s" % [spd, fov, _skater])
 	# FOV kick by speed (brief thresholds)
