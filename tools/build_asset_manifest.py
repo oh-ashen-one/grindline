@@ -101,7 +101,7 @@ for c in assets:
     if c["id"] == "hero-girl": c["clips"] = CLIPS("girl")
 
 # ---- authored street pieces ---------------------------------------------
-for n in ["quarter_pipe", "bank", "funbox", "ledge", "rail", "kicker", "spine", "warehouse_wall"]:
+for n in ["quarter_pipe", "bank", "funbox", "ledge", "rail", "kicker", "spine", "warehouse_wall", "skyline"]:
     assets.append(glb_entry(f"park-{n}", "environment-kit", "environment",
                             "authored://tools/make_park.py", "CC0-1.0",
                             f"park/{n}.glb", "flat floor tile"))

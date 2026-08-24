@@ -76,3 +76,13 @@
   was abandoned (slotted-actions euler keys did not survive export);
   procedural/bone-attach in Godot is the durable pattern. Camera 4.3/1.30
   look_at +0.75. Suite green on core loop stories.
+
+- [2024-08-24] GROUNDING + CITY + MOUNT (Hari playtest round 2):
+  floor visual aligned to collision (was 1m low — everything looked floaty);
+  layout_builder auto-grounds every piece via world AABB (no more floating
+  ramps/cones); skyline.glb authored in Blender (28 window-textured towers
+  in a 55-130m ring + dark ground pad + emissive sun disc, seeded) added to
+  layout+manifest; mount animation: first push tosses board hand->feet on a
+  tween arc with body crouch dip; ride = Run clip w/ board underfoot.
+  ALL 12 regression stories green. NEW TRAP: new GLBs need
+  godot --headless --import before ResourceLoader.exists() sees them.

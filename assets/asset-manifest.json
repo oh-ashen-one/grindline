@@ -425,6 +425,27 @@
    "maxTextureMB": 8
   },
   {
+   "id": "park-skyline",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://tools/make_park.py",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/park/skyline.glb",
+   "sha256": "cd40c6a5ba6d97eadbffbfa0e4165faaf338355506d5881afc3b163bd8a3344e",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    900,
+    1.0,
+    900
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 515,
+   "maxTextureMB": 8
+  },
+  {
    "id": "k-bowl-corner-inner",
    "role": "environment-kit",
    "category": "environment",

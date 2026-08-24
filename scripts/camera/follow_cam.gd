@@ -55,6 +55,8 @@ func _physics_process(delta: float) -> void:
 		target = _skater.global_position + dir * MIN_DISTANCE
 	var k := 1.0 - exp(-POS_DAMP * delta)
 	global_position = global_position.lerp(target, k)
+	if OS.get_environment("GL_DEBUG") != "" and Engine.get_physics_frames() % 45 == 0:
+		print("CAMFOLLOW cam=", global_position, " skater=", _skater.global_position, " spd=", spd)
 	look_at(_skater.global_position + Vector3.UP * 0.75)
 	if OS.get_environment("GL_DEBUG") != "" and Engine.get_physics_frames() % 45 == 0:
 		print("CAMDBG spd=%.2f fov=%.2f skater=%s" % [spd, fov, _skater])

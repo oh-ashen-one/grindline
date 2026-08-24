@@ -9,6 +9,7 @@ const MANIFEST_PATH := "res://assets/asset-manifest.json"
 # outer ring, grind lines. Positions in meters, degrees around Y.
 const LAYOUT := [
 	# id, pos, rot_y_deg
+	["park-skyline", Vector3(0, 0, 0), 0],
 	["k-floor-concrete", Vector3(0, 0, 0), 0],
 	["k-floor-concrete", Vector3(-4, 0, -4), 0],
 	["k-floor-concrete", Vector3(4, 0, -4), 180],
@@ -48,9 +49,25 @@ func build() -> void:
 	for entry: Array in LAYOUT:
 		var node := instantiate_asset(String(entry[0]))
 		if node != null:
-			node.position = entry[1]
 			node.rotation.y = deg_to_rad(float(entry[2]))
 			add_child(node)
+			node.position = entry[1]
+			# auto-ground: drop piece so its lowest point touches y=0
+			var aabb := _combined_aabb(node)
+			if aabb.size.y > 0.0:
+				node.position.y -= aabb.position.y
+
+func _combined_aabb(node: Node3D) -> AABB:
+	var total := AABB(node.position, Vector3.ZERO)
+	var first := true
+	for mi in node.find_children("*", "MeshInstance3D", true, false):
+		var ab: AABB = mi.global_transform * (mi as MeshInstance3D).get_aabb()
+		if first:
+			total = ab
+			first = false
+		else:
+			total = total.merge(ab)
+	return total
 
 func _load_registry() -> void:
 	if not _registry.is_empty():

@@ -63,11 +63,34 @@ func _apply_holding_visibility() -> void:
 	if _foot_board != null:
 		_foot_board.visible = not _holding
 
+var _mounting := false
+
 func _drop_board() -> void:
+	if _mounting:
+		return
 	_holding = false
-	_apply_holding_visibility()
-	if _anim != null:
-		_anim.play("Run", 0.2)
+	_mounting = true
+	if _hand_board != null and _foot_board != null:
+		_foot_board.visible = true
+		var tw := create_tween()
+		tw.set_parallel(true)
+		var mid := (_hand_board.position + _foot_board.position) * 0.5 + Vector3(0, 0.25, 0)
+		tw.tween_property(_hand_board, "position", mid, 0.16).set_trans(Tween.TRANS_QUAD)
+		tw.tween_property(_hand_board, "rotation_degrees", Vector3(0, 0, 0), 0.16)
+		tw.chain().tween_property(_hand_board, "position", _foot_board.position, 0.18) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		tw.chain().tween_callback(func() -> void:
+			_hand_board.visible = false
+			_mounting = false)
+	else:
+		_apply_holding_visibility()
+		_mounting = false
+	# crouch dip on the body while the board drops
+	var vis := get_node_or_null("Visual")
+	if vis != null:
+		var tw2 := create_tween()
+		tw2.tween_property(vis, "position:y", vis.position.y - 0.22, 0.16)
+		tw2.tween_property(vis, "position:y", vis.position.y, 0.24)
 
 func _play_clip(name: String, speed := 1.0) -> void:
 	if _anim == null:
@@ -100,6 +123,8 @@ func _physics_process(delta: float) -> void:
 		heading += steer * STEER_RATE * delta * clampf(speed / 6.0, 0.4, 1.0)
 
 	# animation state (slim hero: Idle / Run / Jump / Roll)
+	if _holding or _mounting:
+		return
 	if is_on_floor():
 		if speed > 0.6 and not _holding:
 			_play_clip("run", clampf(speed / 7.0, 0.8, 1.6))

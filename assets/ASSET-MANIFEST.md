@@ -27,6 +27,7 @@ Required by law 16. Machine truth: `asset-manifest.json`.
 | park-kicker | authored://tools/make_park.py | CC0-1.0 | `/Users/midir/grindline/assets/park/kicker.glb` | environment-kit |
 | park-spine | authored://tools/make_park.py | CC0-1.0 | `/Users/midir/grindline/assets/park/spine.glb` | environment-kit |
 | park-warehouse_wall | authored://tools/make_park.py | CC0-1.0 | `/Users/midir/grindline/assets/park/warehouse_wall.glb` | environment-kit |
+| park-skyline | authored://tools/make_park.py | CC0-1.0 | `/Users/midir/grindline/assets/park/skyline.glb` | environment-kit |
 | k-bowl-corner-inner | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/park/kenney/bowl-corner-inner.glb` | environment-kit |
 | k-bowl-corner-outer | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/park/kenney/bowl-corner-outer.glb` | environment-kit |
 | k-bowl-side | https://kenney.nl/assets/mini-skate | CC0-1.0 | `/Users/midir/grindline/assets/park/kenney/bowl-side.glb` | environment-kit |

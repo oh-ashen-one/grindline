@@ -484,6 +484,12 @@ func _probe(step: Dictionary) -> void:
 				else:
 					result.probes[name] = "insufficient luma spread"
 				return
+	if kind == "node_exists":
+		var nd3 := current_scene.find_child(String(step["node"]), true, false) if current_scene else null
+		result.probes[name] = "ok" if nd3 != null else "missing"
+		if nd3 != null:
+			result.probes_ok.append(name)
+		return
 	if kind == "ui_min_height":
 		var nd2 := current_scene.find_child(String(step["node"]), true, false) if current_scene else null
 		var mn := float(step.get("min_px", 48))
