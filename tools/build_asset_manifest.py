@@ -123,6 +123,18 @@ for n in ["box-large", "box-long", "box-small", "box-wide", "cone", "door-wide-o
     assets.append(glb_entry(f"prop-{n}", "environment-kit", "prop", FK, "CC0-1.0",
                             f"props/{n}.glb", "hidden"))
 
+# ---- street fabric (Blender-authored for the THPS-reference overhaul) -----
+STREET = "authored://tools (Blender-authored street kit)"
+for n, nid in [("lamp", "street-lamp"), ("palm", "street-palm"),
+               ("planter", "street-planter"), ("bench", "street-bench"),
+               ("drain", "street-drain"), ("curb", "street-curb"),
+               ("tramtrack", "street-tramtrack"), ("mural", "mural-panel"),
+               ("paint_red", "paint-red"), ("paint_teal", "paint-teal"),
+               ("paint_yellow", "paint-yellow"), ("cone_red", "cone-red"),
+               ("cone_teal", "cone-teal")]:
+    assets.append(glb_entry(nid, "environment-kit", "environment", STREET, "CC0-1.0",
+                            f"props/street/{n}.glb", "flat floor tile"))
+
 # ---- PBR texture sets -----------------------------------------------------
 for n, nid in [("Concrete034","concrete"), ("Asphalt009","asphalt"), ("Metal032","metal"),
                ("Bricks060","bricks"), ("Planks039","planks")]:

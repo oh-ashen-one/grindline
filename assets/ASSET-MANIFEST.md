@@ -60,6 +60,19 @@ Required by law 16. Machine truth: `asset-manifest.json`.
 | prop-structure-wall | https://kenney.nl/assets/factory-kit | CC0-1.0 | `/Users/midir/grindline/assets/props/structure-wall.glb` | environment-kit |
 | prop-structure-yellow-high | https://kenney.nl/assets/factory-kit | CC0-1.0 | `/Users/midir/grindline/assets/props/structure-yellow-high.glb` | environment-kit |
 | prop-warning-traffic | https://kenney.nl/assets/factory-kit | CC0-1.0 | `/Users/midir/grindline/assets/props/warning-traffic.glb` | environment-kit |
+| street-lamp | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/lamp.glb` | environment-kit |
+| street-palm | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/palm.glb` | environment-kit |
+| street-planter | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/planter.glb` | environment-kit |
+| street-bench | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/bench.glb` | environment-kit |
+| street-drain | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/drain.glb` | environment-kit |
+| street-curb | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/curb.glb` | environment-kit |
+| street-tramtrack | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/tramtrack.glb` | environment-kit |
+| mural-panel | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/mural.glb` | environment-kit |
+| paint-red | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/paint_red.glb` | environment-kit |
+| paint-teal | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/paint_teal.glb` | environment-kit |
+| paint-yellow | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/paint_yellow.glb` | environment-kit |
+| cone-red | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/cone_red.glb` | environment-kit |
+| cone-teal | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/cone_teal.glb` | environment-kit |
 | tex-concrete | https://ambientcg.com | CC0-1.0 | `/Users/midir/grindline/assets/textures/Concrete034/Concrete034_1K-JPG_Color.jpg` | environment-kit |
 | tex-concrete-normal | https://ambientcg.com | CC0-1.0 | `/Users/midir/grindline/assets/textures/Concrete034/Concrete034_1K-JPG_NormalGL.jpg` | environment-kit |
 | tex-asphalt | https://ambientcg.com | CC0-1.0 | `/Users/midir/grindline/assets/textures/Asphalt009/Asphalt009_1K-JPG_Color.jpg` | environment-kit |

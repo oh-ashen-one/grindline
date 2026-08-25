@@ -124,14 +124,14 @@
    "Walk_Carry": 1250
   },
   "boundsMin": [
-   -1.62,
-   -0.019,
-   -0.606
+   -1.601,
+   0.001,
+   -0.335
   ],
   "boundsMax": [
-   1.62,
-   3.307,
-   0.718
+   1.601,
+   2.945,
+   0.394
   ],
   "triangles": 6492
  },
@@ -689,6 +689,188 @@
    0.5
   ],
   "triangles": 276
+ },
+ "assets/props/street/bench.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.9,
+   0,
+   -0.262
+  ],
+  "boundsMax": [
+   0.9,
+   0.86,
+   0.25
+  ],
+  "triangles": 84
+ },
+ "assets/props/street/cone_red.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.16,
+   0,
+   -0.16
+  ],
+  "boundsMax": [
+   0.16,
+   0.32,
+   0.16
+  ],
+  "triangles": 136
+ },
+ "assets/props/street/cone_teal.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.16,
+   0,
+   -0.16
+  ],
+  "boundsMax": [
+   0.16,
+   0.32,
+   0.16
+  ],
+  "triangles": 136
+ },
+ "assets/props/street/curb.glb": {
+  "animations": {},
+  "boundsMin": [
+   -4,
+   0,
+   -0.175
+  ],
+  "boundsMax": [
+   4,
+   0.16,
+   0.175
+  ],
+  "triangles": 12
+ },
+ "assets/props/street/drain.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.65,
+   0,
+   -0.45
+  ],
+  "boundsMax": [
+   0.65,
+   0.07,
+   0.45
+  ],
+  "triangles": 72
+ },
+ "assets/props/street/lamp.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.14,
+   0,
+   -0.14
+  ],
+  "boundsMax": [
+   1.05,
+   4.47,
+   0.14
+  ],
+  "triangles": 92
+ },
+ "assets/props/street/mural.glb": {
+  "animations": {},
+  "boundsMin": [
+   -1.5,
+   0,
+   -0.04
+  ],
+  "boundsMax": [
+   1.5,
+   2.05,
+   0.06
+  ],
+  "triangles": 48
+ },
+ "assets/props/street/paint_red.glb": {
+  "animations": {},
+  "boundsMin": [
+   -2,
+   0,
+   -0.045
+  ],
+  "boundsMax": [
+   2,
+   0.06,
+   0.045
+  ],
+  "triangles": 12
+ },
+ "assets/props/street/paint_teal.glb": {
+  "animations": {},
+  "boundsMin": [
+   -2,
+   0,
+   -0.045
+  ],
+  "boundsMax": [
+   2,
+   0.06,
+   0.045
+  ],
+  "triangles": 12
+ },
+ "assets/props/street/paint_yellow.glb": {
+  "animations": {},
+  "boundsMin": [
+   -2,
+   0,
+   -0.045
+  ],
+  "boundsMax": [
+   2,
+   0.06,
+   0.045
+  ],
+  "triangles": 12
+ },
+ "assets/props/street/palm.glb": {
+  "animations": {},
+  "boundsMin": [
+   -1.151,
+   3.292,
+   -1.75
+  ],
+  "boundsMax": [
+   2.351,
+   4.658,
+   1.75
+  ],
+  "triangles": 120
+ },
+ "assets/props/street/planter.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.65,
+   0,
+   -0.3
+  ],
+  "boundsMax": [
+   0.65,
+   0.9,
+   0.3
+  ],
+  "triangles": 52
+ },
+ "assets/props/street/tramtrack.glb": {
+  "animations": {},
+  "boundsMin": [
+   -0.86,
+   -11.998,
+   -0.045
+  ],
+  "boundsMax": [
+   0.86,
+   12.012,
+   0.045
+  ],
+  "triangles": 48
  },
  "assets/props/structure-wall.glb": {
   "animations": {},
