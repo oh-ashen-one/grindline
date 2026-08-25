@@ -10,11 +10,11 @@ const MANIFEST_PATH := "res://assets/asset-manifest.json"
 const LAYOUT := [
 	# id, pos, rot_y_deg
 	["park-skyline", Vector3(0, 0, 0), 0],
-	["park-funbox", Vector3(0, 0, 0), 0],
+	["park-funbox", Vector3(3.2, 0, 0), 0],
 	["park-quarter_pipe", Vector3(0, 0, 18), 180],
 	["park-quarter_pipe", Vector3(8, 0, -14), 0],
 	["park-bank", Vector3(-10, 0, 6), 90],
-	["park-kicker", Vector3(-3.5, 1.05, 0), 270],
+	["park-kicker", Vector3(-3.9, 1.05, 0), 270],
 	["park-spine", Vector3(9, 0, 7), 0],
 	["park-ledge", Vector3(-6.5, 0.5, -2), 0],
 	["park-rail", Vector3(0, 0.55, -6), 90],
