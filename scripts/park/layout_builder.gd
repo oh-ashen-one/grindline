@@ -28,6 +28,70 @@ const LAYOUT := [
 	["prop-box-small", Vector3(-11.8, 0, 1.2), 75],
 	["prop-machine", Vector3(-12, 0, 10), 270],
 	["prop-warning-traffic", Vector3(11, 0, 3), 0],
+	# --- street fabric (THPS reference: tracks, curbs, drains) ---
+	["street-tramtrack", Vector3(-14, 0, 0), 0],
+	["street-tramtrack", Vector3(17, 0, -3), 0],
+	["street-curb", Vector3(-12.2, 0, -8), 90],
+	["street-curb", Vector3(-12.2, 0, 0), 90],
+	["street-curb", Vector3(-12.2, 0, 8), 90],
+	["street-curb", Vector3(-15.8, 0, -4), 90],
+	["street-curb", Vector3(-15.8, 0, 4), 90],
+	["street-curb", Vector3(20.5, 0, -10), 90],
+	["street-curb", Vector3(20.5, 0, -2), 90],
+	["street-curb", Vector3(14.3, 0, -6), 90],
+	["street-drain", Vector3(-12.2, 0, -1), 90],
+	["street-drain", Vector3(-12.2, 0, 4.5), 90],
+	["street-drain", Vector3(16.9, 0, -9), 0],
+	["street-drain", Vector3(-4.2, 0, 10), 15],
+	["street-drain", Vector3(6.2, 0, -1), 80],
+	# --- street furniture ---
+	["street-lamp", Vector3(-11.2, 0, -8), 180],
+	["street-lamp", Vector3(-11.2, 0, 8), 180],
+	["street-lamp", Vector3(19.5, 0, -4), 0],
+	["street-lamp", Vector3(19.5, 0, 10), 0],
+	["street-lamp", Vector3(-18.5, 0, -14), 180],
+	["street-lamp", Vector3(-18.5, 0, 14), 180],
+	["street-palm", Vector3(-19, 0, -4), 15],
+	["street-palm", Vector3(-19, 0, 3), 200],
+	["street-palm", Vector3(20.5, 0, -14), 90],
+	["street-palm", Vector3(20.5, 0, 16), 250],
+	["street-palm", Vector3(11, 0, 21), 300],
+	["street-planter", Vector3(-16, 0, -10), 10],
+	["street-planter", Vector3(-16, 0, -8.6), 80],
+	["street-planter", Vector3(14, 0, 6), 0],
+	["street-planter", Vector3(15.3, 0, 6.4), 45],
+	["street-bench", Vector3(-13.4, 0, -2), 90],
+	["street-bench", Vector3(13, 0, 12), 200],
+	# --- paint: coping, ledges, grind lines ---
+	["paint-red", Vector3(0, 3.06, 16.08), 0, true],
+	["paint-teal", Vector3(8, 3.06, -15.92), 0, true],
+	["paint-yellow", Vector3(-6.5, 0.5, -2.22), 0, true],
+	["paint-teal", Vector3(-1.4, 0.03, -6), 90],
+	["paint-red", Vector3(1.4, 0.03, -6), 90],
+	["paint-yellow", Vector3(0, 0.03, 12.2), 0],
+	# --- murals ---
+	["mural-panel", Vector3(0, 0, 7.92), 180],
+	["mural-panel", Vector3(-3.08, 0, 11), 90],
+	["mural-panel", Vector3(10, 0, -16), 0],
+	["mural-panel", Vector3(-9, 0, 16.5), 180],
+	# --- cone variety ---
+	["cone-red", Vector3(5.5, 0, 4), 0],
+	["cone-teal", Vector3(-3.8, 0, 8.5), 0],
+	["prop-cone", Vector3(10, 0, -2), 0],
+	["prop-cone", Vector3(-8, 0, 10), 0],
+	# --- outer-ring density (existing kit, now placed) ---
+	["prop-box-long", Vector3(10, 0, 14), 15],
+	["prop-box-wide", Vector3(-14, 0, 12), 40],
+	["prop-hopper-round", Vector3(16, 0, -16), 0],
+	["prop-piston-round", Vector3(-16, 0, 18), 0],
+	["prop-pipe-large-curve", Vector3(18, 0, 2), 90],
+	["prop-structure-wall", Vector3(-18, 0, -18), 30],
+	["prop-structure-yellow-high", Vector3(12, 0, 20), 0],
+	["prop-machine-fortified", Vector3(-15, 0, -14), 200],
+	["prop-door-wide-open", Vector3(-17.5, 0, -6), 90],
+	["k-obstacle-middle", Vector3(3, 0, -10), 90],
+	["k-rail-low", Vector3(-4, 0, 12), 15],
+	["k-structure-platform", Vector3(16, 0, 8), 270],
 ]
 
 var loaded := 0
@@ -49,11 +113,13 @@ func build() -> void:
 			add_child(node)
 			node.position = entry[1]
 			# auto-ground: drop piece so its lowest point sits 2cm below the
-			# floor plane — exact coplanarity z-fights ("floor seizure")
-			var aabb := _combined_aabb(node)
-			if aabb.size.y > 0.0:
-				node.position.y -= aabb.position.y
-				node.position.y -= 0.02
+			# floor plane — exact coplanarity z-fights ("floor seizure").
+			# Optional 4th field pins y (coping strips on ramp lips).
+			if entry.size() < 4 or not bool(entry[3]):
+				var aabb := _combined_aabb(node)
+				if aabb.size.y > 0.0:
+					node.position.y -= aabb.position.y
+					node.position.y -= 0.02
 			_add_collision(node, String(entry[0]))
 
 func _add_collision(node: Node3D, id: String) -> void:
@@ -149,6 +215,25 @@ func instantiate_asset(id: String) -> Node3D:
 			mat.uv1_scale = Vector3(2.5, 2.5, 2.5)
 			for mi in inst.find_children("*", "MeshInstance3D", true, false):
 				(mi as MeshInstance3D).material_override = mat
+		elif id.begins_with("prop-") or id.begins_with("k-"):
+			# Kenney GLBs lost their colormap in export and render bone-white;
+			# paint from a curated street palette (stable per id)
+			var palette: Array[Color] = [
+				Color(0.856, 0.647, 0.125),  # safety yellow
+				Color(0.545, 0.235, 0.157),  # rust
+				Color(0.176, 0.427, 0.427),  # teal
+				Color(0.235, 0.278, 0.353),  # navy steel
+				Color(0.541, 0.522, 0.494),  # warm gray
+				Color(0.608, 0.298, 0.235),  # brick
+				Color(0.302, 0.322, 0.302),  # olive drum
+			]
+			var c: Color = palette[absi(hash(id)) % palette.size()]
+			var pm := StandardMaterial3D.new()
+			pm.albedo_color = c
+			pm.roughness = 0.72
+			pm.metallic = 0.25 if c.get_luminance() < 0.3 else 0.0
+			for mi in inst.find_children("*", "MeshInstance3D", true, false):
+				(mi as MeshInstance3D).material_override = pm
 		return inst
 	loaded += 1  # textures/audio verified present via ResourceLoader check
 	return null

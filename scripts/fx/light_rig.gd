@@ -41,14 +41,14 @@ func _build() -> void:
 	e.sky = sky
 	e.fog_enabled = true
 	e.fog_light_color = FOG_COLOR
-	e.fog_density = 0.0042
+	e.fog_density = 0.005
 	e.fog_aerial_perspective = 0.55
 	e.fog_sky_affect = 0.22
 	e.tonemap_mode = Environment.TONE_MAPPER_ACES
-	e.tonemap_exposure = 1.1
+	e.tonemap_exposure = 0.98
 	e.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	e.ambient_light_sky_contribution = 1.0
-	e.ambient_light_energy = 1.25
+	e.ambient_light_energy = 1.05
 	e.ssao_enabled = true
 	e.ssao_intensity = 2.2
 	e.ssao_radius = 0.9
@@ -82,6 +82,15 @@ func _build() -> void:
 	_sun.directional_shadow_split_3 = 0.55
 	_sun.directional_shadow_blend_splits = true
 	_sun.directional_shadow_fade_start = 0.85
+
+	# warm no-shadow fill lifts ramp faces turned away from the key light
+	# (script-created lights are inert ONLY when shadowed on this setup)
+	var fill := DirectionalLight3D.new()
+	fill.light_color = Color(1.0, 0.85, 0.68)
+	fill.light_energy = 0.5
+	fill.rotation = Vector3(deg_to_rad(-24.0), deg_to_rad(205.0), 0)
+	fill.shadow_enabled = false
+	add_child(fill)
 
 func get_qa_dict() -> Dictionary:
 	var ok_env := _env != null and _env.environment != null and _env.environment.sky != null

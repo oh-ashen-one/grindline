@@ -1734,6 +1734,279 @@
    "peakDb": 1.1,
    "maxFileMB": 2.981,
    "loop": true
+  },
+  {
+   "id": "street-lamp",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/lamp.glb",
+   "sha256": "2c8bdb4c0380af3c7461065f1a7ceb30ae06cc592e2b15a26d4eb53b8695887b",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    1.3,
+    4.5,
+    0.3
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "street-palm",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/palm.glb",
+   "sha256": "df2abd66b6d23421a58c40e6a86fc1e62a5000ef99634444dbb1428067107875",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    2.2,
+    4.6,
+    2.2
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "street-planter",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/planter.glb",
+   "sha256": "b43464a8f941e29c5ec31c4426ddb8b936fcb4e8b251d7dde5ce8feca35f7266",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    1.3,
+    0.75,
+    0.6
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "street-bench",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/bench.glb",
+   "sha256": "6755b5cd8a0bbbf26273862ee74a8403ecc59a335cec98d266d446d06f4b7622",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    1.8,
+    0.8,
+    0.55
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "street-drain",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/drain.glb",
+   "sha256": "bf32fd23e132beaaed79b5ef8f2d83db20558fa1590a9c690f6b9823eb4c7c60",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    1.3,
+    0.07,
+    0.9
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "street-curb",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/curb.glb",
+   "sha256": "ee150c0760a73f1c776dd3bba57a1be53583427569bc9dcbe656383b4c1ea2e7",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    8,
+    0.16,
+    0.35
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "street-tramtrack",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/tramtrack.glb",
+   "sha256": "2a6bf7bd10eddfa34b3cbe41fb3d94cfee2139f376589b91345d0564e8645c22",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    1.8,
+    0.05,
+    24
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "paint-red",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/paint_red.glb",
+   "sha256": "184f126031f85ad2da3c7c3a1211efbee5536353ccf2fd4a11363a08a7abff7f",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    4,
+    0.06,
+    0.09
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "paint-teal",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/paint_teal.glb",
+   "sha256": "ee1f4df93acc386053dd0d1f77bfcf7e18f302007099e0965e86e492e20c7b79",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    4,
+    0.06,
+    0.09
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "paint-yellow",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/paint_yellow.glb",
+   "sha256": "633ecb56c49acf54afc93790ba01ce7e8b9c469ce49c069152791b8a02800df3",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    4,
+    0.06,
+    0.09
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "mural-panel",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/mural.glb",
+   "sha256": "6645cdd397ab64679bf879f8181c80310e27913c040d077570eaeca01ba99042",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    3,
+    2,
+    0.1
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "cone-red",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/cone_red.glb",
+   "sha256": "b1f1978c9d877ff8285f1c6bbb05b8e39b69e032510cde0ed301bdbe11bd3674",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    0.3,
+    0.35,
+    0.3
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "cone-teal",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://assets/props/street (Blender-authored for THPS-reference overhaul)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/props/street/cone_teal.glb",
+   "sha256": "3c2535e962e7153030dbdaf445ae649ae63d1233276409c5b8c9e9f30bdee557",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    0.3,
+    0.35,
+    0.3
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 200,
+   "maxTextureMB": 8
   }
  ]
 }

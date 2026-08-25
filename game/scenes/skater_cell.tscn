@@ -27,7 +27,7 @@ size = Vector2(340, 340)
 albedo_texture = ExtResource("12_concrete")
 albedo_color = Color(0.66, 0.63, 0.59, 1)
 roughness_texture = ExtResource("13_slabrough")
-uv1_scale = Vector3(30, 30, 30)
+uv1_scale = Vector3(22, 22, 22)
 roughness = 1.0
 
 [sub_resource type="BoxShape3D" id="shape_occwall"]

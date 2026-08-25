@@ -239,6 +239,7 @@ func _run_beat(id: String) -> void:
 	await physics_frame
 
 const ZONES := {
+	"plaza_west": {"pos": Vector3(-7.5, 1.2, 12.0), "heading_deg": 168.0},
 	"rail_approach": {"pos": Vector3(0, 1.2, -3.4), "heading_deg": 180.0},
 	"warehouse_corridor": {"pos": Vector3(0, 3.15, 14.9), "heading_deg": 180.0},
 }
