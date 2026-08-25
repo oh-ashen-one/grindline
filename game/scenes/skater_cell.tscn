@@ -25,7 +25,7 @@ size = Vector2(340, 340)
 
 [sub_resource type="StandardMaterial3D" id="floor_mat"]
 albedo_texture = ExtResource("12_concrete")
-albedo_color = Color(0.66, 0.63, 0.59, 1)
+albedo_color = Color(0.58, 0.56, 0.53, 1)
 roughness_texture = ExtResource("13_slabrough")
 uv1_scale = Vector3(22, 22, 22)
 roughness = 1.0

@@ -10,7 +10,7 @@ const SUN_AZIMUTH_DEG := 37.0    # sun behind camera-right: hero lit from our
                                  # side, long shadows raking left across view
 const SUN_ENERGY := 1.0          # pinned by US-201 (±0.05)
 const SUN_COLOR := Color(1.0, 0.823529, 0.615686)   # warm low-sun key #ffd69d
-const FOG_COLOR := Color(0.91, 0.752941, 0.560784)  # r pinned by US-201 (±0.01)
+const FOG_COLOR := Color(0.91, 0.729412, 0.529412)  # r pinned by US-201 (±0.01)
 const FOG_NEAR := 45.0
 const FOG_FAR := 120.0
 
@@ -29,11 +29,11 @@ func _build() -> void:
 	var sky := Sky.new()
 	var mat := ProceduralSkyMaterial.new()
 	# golden-hour: hazy mauve zenith falling to a deep amber horizon
-	mat.sky_top_color = Color(0.32549, 0.243137, 0.32549)      # #533e53 hazy mauve
-	mat.sky_horizon_color = Color(0.941176, 0.545098, 0.286275) # #f08b49 amber
-	mat.sky_curve = 0.12
+	mat.sky_top_color = Color(0.372549, 0.313725, 0.372549)      # #5f505f smoggy mauve-gray
+	mat.sky_horizon_color = Color(0.878431, 0.623529, 0.4) # #e09f66 hazy tan-amber
+	mat.sky_curve = 0.16
 	mat.ground_bottom_color = Color(0.16, 0.12, 0.11)
-	mat.ground_horizon_color = Color(0.909804, 0.517647, 0.278431)
+	mat.ground_horizon_color = Color(0.858824, 0.588235, 0.388235)
 	mat.sun_angle_max = 30.0
 	mat.sun_curve = 0.08
 	sky.sky_material = mat
@@ -41,8 +41,8 @@ func _build() -> void:
 	e.sky = sky
 	e.fog_enabled = true
 	e.fog_light_color = FOG_COLOR
-	e.fog_density = 0.005
-	e.fog_aerial_perspective = 0.55
+	e.fog_density = 0.006
+	e.fog_aerial_perspective = 0.62
 	e.fog_sky_affect = 0.22
 	e.tonemap_mode = Environment.TONE_MAPPER_ACES
 	e.tonemap_exposure = 0.98
