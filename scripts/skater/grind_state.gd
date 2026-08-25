@@ -48,7 +48,9 @@ func _try_capture() -> void:
 	q.transform = Transform3D(Basis(), feet)
 	q.collide_with_areas = false
 	q.collide_with_bodies = true
-	q.collision_mask = 1
+	# rails live on layer 2 (pass-through so approach never deflects);
+	# capture sees solid world (1) + rails (2)
+	q.collision_mask = 3
 	var hits := space.intersect_shape(q, 8)
 	if OS.get_environment("GL_DEBUG") != "":
 		print("CAPTURE probe feet=%s hits=%d" % [feet, hits.size()])

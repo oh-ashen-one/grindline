@@ -87,7 +87,7 @@ func _add_bounds() -> void:
 	for i in 4:
 		var body := StaticBody3D.new()
 		var shape := BoxShape3D.new()
-		shape.size = Vector3(48, 8, 1) if i % 2 == 0 else Vector3(1, 8, 48)
+		shape.size = Vector3(48, 8, 1) if i < 2 else Vector3(1, 8, 48)  # z-walls thin in z, x-walls thin in x
 		body.add_child(CollisionShape3D.new())
 		body.get_child(0).shape = shape
 		var off := 23.5
