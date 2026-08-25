@@ -107,3 +107,56 @@
   arms swing on local Y axis, legs on X). 'ride' clip on both heroes.
   Riding plays ride; Run only during active push; dismount F carries board.
   Known: ollie apex + grind latch regressions still open (see above).
+
+- [2026-08-24] VISUAL OVERHAUL 2 (MEGA-PROMPT execution, 15/15 green):
+  RELIGHT: the "floor seizure" was THREE stacked causes — (1) the tscn had a
+  second unshadowed sun (energy 1.2) washing everything flat; (2) piece
+  bottoms auto-grounded EXACTLY coplanar with the floor plane (z-fight) —
+  now buried 2cm; (3) the QA OcclusionWall cast a real shadow across the
+  entire play field (cast_shadow=0 now). CRITICAL ENGINE TRAP: a
+  script-created DirectionalLight3D with shadow_enabled=true is INERT on
+  this box (Godot 4.7.1 macOS) — env/fog/ambient from the same script work,
+  unshadowed script lights work, shadowed ones contribute ZERO and with
+  shadow on the scene goes black. The sun is now a tscn node ("Sun" in
+  skater_cell.tscn) that light_rig adopts; US-201 pins still respected
+  (pitch -38, energy 1.0, fog r 0.91). Golden-hour grade: azimuth 37 (sun
+  behind camera-right -> hero lit from our side, long shadows raking left),
+  PSSM4 max_dist 70 blur 1.5, warm no-shadow fill 0.5, smoggy-haze sky,
+  exposure 0.98, ACES. Floor: 340m plane, custom plaza_slab texture
+  (Concrete034 base + expansion joints + per-slab tone/damp blotches, gen
+  script /tmp/make_slab_tex.py), uv 22 -> ~7.7m slabs, NO normal map.
+  HERO: skater_slim_boy.glb resculpted chibi->lanky (native height 2.94,
+  tscn Visual scale 0.645 uniform ~= 1.9m). Recipe that finally worked:
+  per-bone weighted vertex blend (v' = sum w_i * M_i(v) / sum w_i), pivot =
+  bone head for spine/arms, but TAIL pivot for leg bones (stretch UP from
+  planted feet — head-pivot legs sink through the floor and the renders
+  lie), head shrink 0.55 toward segment midpoint, replant feet z=0 then
+  global lankify 1.03. All 19 clips survive the Blender round trip.
+  ANIM: riding always plays ride; W held plays push (exaggerated: knee
+  drive 88deg, deep reach, kick-through — authored via world-space
+  rest-relative REPLACE deltas, slot assigned). rotation.y=heading now
+  applies in every state (hold-run used to moonwalk). Camera 5.1/1.9
+  look_at +0.8 for the taller hero. DENSITY: street kit authored in
+  Blender (lamp/palm/planter/bench/drain/curb/tramtrack/mural/paint
+  strips/colored cones, assets/props/street/, transform_apply BEFORE
+  export or the measurer reads unit-cube extents); manifest entries added
+  in tools/build_asset_manifest.py (hand-editing asset-manifest.json gets
+  WIPED by the next rebuild — always go through the generator). Kenney
+  prop-*/k-* GLBs render bone-white (colormap lost in export) -> curated
+  street palette override per id in layout_builder. Tram tracks/curbs/
+  drains/lamps/palms/murals/coping paint placed; 77 loaded, 0 missing.
+  PHYSICS REGRESSIONS FROM LAST SESSION: BOTH FIXED. Root cause of "grind
+  latch misses" + "ollie apex 0.12": the boundary walls had SWAPPED box
+  dims — the north wall was a 1x8x48 needle stabbing into the field along
+  x=0; the rail_approach teleport spawned INSIDE it and depenetration
+  shoved the skater to x=0.9 (capsule r 0.4 + wall half 0.5) every run.
+  Walls now (48,8,1) for z-walls / (1,8,48) for x-walls; grind rails on
+  collision layer 2 (pass-through, no more end-cap deflection) + capture
+  mask 3. Ollie apex now ~1.49 (spec 1.25-1.56). Q03/Q04/Q05 back green.
+  DoD: shots/look_traversal.png vs quality/references/ref-thps-plaza.png —
+  same light mood, slab scale, prop grammar, hazy tower ring; hero
+  tall/skinny riding sideways, board underfoot, pushing like the ref.
+  KNOWN-LEFT: menu world (main.tscn) still uses its own env/old floor for
+  the title diorama (fine — it reads as a menu); skater_slim_girl.glb not
+  resculpted (unused by scenes); billboards/scaffolding density could go
+  higher; ride stance could be more sideways (clip-authored ~28deg chest).
