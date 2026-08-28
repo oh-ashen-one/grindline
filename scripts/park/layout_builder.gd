@@ -28,6 +28,14 @@ const LAYOUT := [
 	["prop-box-small", Vector3(-11.8, 0, 1.2), 75],
 	["prop-machine", Vector3(-12, 0, 10), 270],
 	["prop-warning-traffic", Vector3(11, 0, 3), 0],
+	# --- mid-ground buildings (reference: station block behind the plaza) ---
+	["bldg_sandstone", Vector3(-30, 0, -26), 25],
+	["bldg_brick_tall", Vector3(-6, 0, -38), 8],
+	["bldg_plaster", Vector3(24, 0, -30), -20],
+	["bldg_sandstone2", Vector3(38, 0, -12), -60],
+	["bldg_plaster", Vector3(-38, 0, 6), 70],
+	["bldg_sandstone", Vector3(30, 0, 24), 200],
+	["bldg_brick_tall", Vector3(-26, 0, 30), 150],
 	# --- street fabric (THPS reference: tracks, curbs, drains) ---
 	["street-tramtrack", Vector3(-14, 0, 0), 0],
 	["street-tramtrack", Vector3(17, 0, -3), 0],

@@ -60,6 +60,10 @@ Required by law 16. Machine truth: `asset-manifest.json`.
 | prop-structure-wall | https://kenney.nl/assets/factory-kit | CC0-1.0 | `/Users/midir/grindline/assets/props/structure-wall.glb` | environment-kit |
 | prop-structure-yellow-high | https://kenney.nl/assets/factory-kit | CC0-1.0 | `/Users/midir/grindline/assets/props/structure-yellow-high.glb` | environment-kit |
 | prop-warning-traffic | https://kenney.nl/assets/factory-kit | CC0-1.0 | `/Users/midir/grindline/assets/props/warning-traffic.glb` | environment-kit |
+| bldg_sandstone | authored://tools (Blender-authored mid-ground buildings) | CC0-1.0 | `/Users/midir/grindline/assets/buildings/bldg_sandstone.glb` | environment-kit |
+| bldg_brick_tall | authored://tools (Blender-authored mid-ground buildings) | CC0-1.0 | `/Users/midir/grindline/assets/buildings/bldg_brick_tall.glb` | environment-kit |
+| bldg_plaster | authored://tools (Blender-authored mid-ground buildings) | CC0-1.0 | `/Users/midir/grindline/assets/buildings/bldg_plaster.glb` | environment-kit |
+| bldg_sandstone2 | authored://tools (Blender-authored mid-ground buildings) | CC0-1.0 | `/Users/midir/grindline/assets/buildings/bldg_sandstone2.glb` | environment-kit |
 | street-lamp | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/lamp.glb` | environment-kit |
 | street-palm | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/palm.glb` | environment-kit |
 | street-planter | authored://tools (Blender-authored street kit) | CC0-1.0 | `/Users/midir/grindline/assets/props/street/planter.glb` | environment-kit |

@@ -1,4 +1,60 @@
 {
+ "assets/buildings/bldg_brick_tall.glb": {
+  "animations": {},
+  "boundsMin": [
+   -6.75,
+   -10.5,
+   -6.75
+  ],
+  "boundsMax": [
+   6.75,
+   10.5,
+   6.75
+  ],
+  "triangles": 48
+ },
+ "assets/buildings/bldg_plaster.glb": {
+  "animations": {},
+  "boundsMin": [
+   -9.25,
+   -6,
+   -5.25
+  ],
+  "boundsMax": [
+   9.25,
+   6,
+   5.25
+  ],
+  "triangles": 48
+ },
+ "assets/buildings/bldg_sandstone.glb": {
+  "animations": {},
+  "boundsMin": [
+   -8.25,
+   -7.5,
+   -6.25
+  ],
+  "boundsMax": [
+   8.25,
+   7.5,
+   6.25
+  ],
+  "triangles": 48
+ },
+ "assets/buildings/bldg_sandstone2.glb": {
+  "animations": {},
+  "boundsMin": [
+   -6.25,
+   -9,
+   -7.25
+  ],
+  "boundsMax": [
+   6.25,
+   9,
+   7.25
+  ],
+  "triangles": 48
+ },
  "assets/models/board/skateboard.glb": {
   "animations": {},
   "boundsMin": [

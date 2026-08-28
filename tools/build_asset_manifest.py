@@ -123,6 +123,12 @@ for n in ["box-large", "box-long", "box-small", "box-wide", "cone", "door-wide-o
     assets.append(glb_entry(f"prop-{n}", "environment-kit", "prop", FK, "CC0-1.0",
                             f"props/{n}.glb", "hidden"))
 
+# ---- mid-ground buildings (arched-window facades, authored) ---------------
+BLD = "authored://tools (Blender-authored mid-ground buildings)"
+for n in ["bldg_sandstone", "bldg_brick_tall", "bldg_plaster", "bldg_sandstone2"]:
+    assets.append(glb_entry(n, "environment-kit", "environment", BLD, "CC0-1.0",
+                            f"buildings/{n}.glb", "flat floor tile"))
+
 # ---- street fabric (Blender-authored for the THPS-reference overhaul) -----
 STREET = "authored://tools (Blender-authored street kit)"
 for n, nid in [("lamp", "street-lamp"), ("palm", "street-palm"),

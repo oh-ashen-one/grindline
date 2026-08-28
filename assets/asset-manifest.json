@@ -1109,6 +1109,90 @@
    "maxTextureMB": 8
   },
   {
+   "id": "bldg_sandstone",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://tools (Blender-authored mid-ground buildings)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/buildings/bldg_sandstone.glb",
+   "sha256": "63a6fed51828c5e2a00785221f7de3cbc34b1c03e11de6600ca5b9b7159fda70",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    16.5,
+    15.0,
+    12.5
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 78,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "bldg_brick_tall",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://tools (Blender-authored mid-ground buildings)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/buildings/bldg_brick_tall.glb",
+   "sha256": "f0da86303ed44e83eb6bcb50c5644c6365002773a2ffdf5654e4fb25dbf3121e",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    13.5,
+    21.0,
+    13.5
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 78,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "bldg_plaster",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://tools (Blender-authored mid-ground buildings)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/buildings/bldg_plaster.glb",
+   "sha256": "5ebf41851e8aee12f2f62e61adcbbcbfb4e08b73113c48bf89642eeb1a3b5997",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    18.5,
+    12,
+    10.5
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 78,
+   "maxTextureMB": 8
+  },
+  {
+   "id": "bldg_sandstone2",
+   "role": "environment-kit",
+   "category": "environment",
+   "sourceUrl": "authored://tools (Blender-authored mid-ground buildings)",
+   "license": "CC0-1.0",
+   "shipApproved": true,
+   "path": "assets/buildings/bldg_sandstone2.glb",
+   "sha256": "e247eebd1ed2f8aa97588bbd59000cc6e041aae56aff08b53a088b53b2fe8272",
+   "fallback": "flat floor tile",
+   "targetSizeMeters": [
+    12.5,
+    18,
+    14.5
+   ],
+   "frontAxis": "-Z",
+   "upAxis": "+Y",
+   "rootMotion": "none",
+   "maxTriangles": 78,
+   "maxTextureMB": 8
+  },
+  {
    "id": "street-lamp",
    "role": "environment-kit",
    "category": "environment",

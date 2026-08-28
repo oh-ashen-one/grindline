@@ -27,6 +27,10 @@ func _build() -> void:
 	_env = WorldEnvironment.new()
 	var e := Environment.new()
 	var sky := Sky.new()
+	# NOTE: the industrial-sunset HDRI was tried here and REJECTED — it is a
+	# saturated RED sunset that silhouettes the whole scene. The reference
+	# grade needs a desaturated smoggy tan sky; procedural wins (and is the
+	# manifest's declared fallback).
 	var mat := ProceduralSkyMaterial.new()
 	# golden-hour: hazy mauve zenith falling to a deep amber horizon
 	mat.sky_top_color = Color(0.372549, 0.313725, 0.372549)      # #5f505f smoggy mauve-gray
