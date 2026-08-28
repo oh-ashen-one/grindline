@@ -23,3 +23,6 @@ __pycache__/
 
 # OS
 .DS_Store
+
+# visual reference frames (commercial game screenshots — local only, never published)
+quality/references/
